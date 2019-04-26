@@ -232,6 +232,7 @@ pub enum BatchCommandsRequest_Request_oneof_cmd {
     RawDeleteRange(super::kvrpcpb::RawDeleteRangeRequest),
     RawBatchScan(super::kvrpcpb::RawBatchScanRequest),
     Coprocessor(super::coprocessor::Request),
+    Test(BatchCommandTestRequest),
 }
 
 impl BatchCommandsRequest_Request {
@@ -1316,6 +1317,55 @@ impl BatchCommandsRequest_Request {
             _ => super::coprocessor::Request::default_instance(),
         }
     }
+
+    // .tikvpb.BatchCommandTestRequest Test = 255;
+
+    pub fn clear_Test(&mut self) {
+        self.cmd = ::std::option::Option::None;
+    }
+
+    pub fn has_Test(&self) -> bool {
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_Test(&mut self, v: BatchCommandTestRequest) {
+        self.cmd = ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_Test(&mut self) -> &mut BatchCommandTestRequest {
+        if let ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(_)) = self.cmd {
+        } else {
+            self.cmd = ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(BatchCommandTestRequest::new()));
+        }
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_Test(&mut self) -> BatchCommandTestRequest {
+        if self.has_Test() {
+            match self.cmd.take() {
+                ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            BatchCommandTestRequest::new()
+        }
+    }
+
+    pub fn get_Test(&self) -> &BatchCommandTestRequest {
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(ref v)) => v,
+            _ => BatchCommandTestRequest::default_instance(),
+        }
+    }
 }
 
 impl ::protobuf::Message for BatchCommandsRequest_Request {
@@ -1426,6 +1476,11 @@ impl ::protobuf::Message for BatchCommandsRequest_Request {
             }
         }
         if let Some(BatchCommandsRequest_Request_oneof_cmd::Coprocessor(ref v)) = self.cmd {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(BatchCommandsRequest_Request_oneof_cmd::Test(ref v)) = self.cmd {
             if !v.is_initialized() {
                 return false;
             }
@@ -1569,6 +1624,12 @@ impl ::protobuf::Message for BatchCommandsRequest_Request {
                     }
                     self.cmd = ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Coprocessor(is.read_message()?));
                 },
+                255 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.cmd = ::std::option::Option::Some(BatchCommandsRequest_Request_oneof_cmd::Test(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -1668,6 +1729,10 @@ impl ::protobuf::Message for BatchCommandsRequest_Request {
                     my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
                 &BatchCommandsRequest_Request_oneof_cmd::Coprocessor(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &BatchCommandsRequest_Request_oneof_cmd::Test(ref v) => {
                     let len = v.compute_size();
                     my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -1791,6 +1856,11 @@ impl ::protobuf::Message for BatchCommandsRequest_Request {
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
+                &BatchCommandsRequest_Request_oneof_cmd::Test(ref v) => {
+                    os.write_tag(255, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
             };
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
@@ -1862,6 +1932,7 @@ impl ::protobuf::Clear for BatchCommandsRequest_Request {
         self.clear_RawDeleteRange();
         self.clear_RawBatchScan();
         self.clear_Coprocessor();
+        self.clear_Test();
         self.unknown_fields.clear();
     }
 }
@@ -2113,6 +2184,7 @@ pub enum BatchCommandsResponse_Response_oneof_cmd {
     RawDeleteRange(super::kvrpcpb::RawDeleteRangeResponse),
     RawBatchScan(super::kvrpcpb::RawBatchScanResponse),
     Coprocessor(super::coprocessor::Response),
+    Test(BatchCommandTestResponse),
 }
 
 impl BatchCommandsResponse_Response {
@@ -3197,6 +3269,55 @@ impl BatchCommandsResponse_Response {
             _ => super::coprocessor::Response::default_instance(),
         }
     }
+
+    // .tikvpb.BatchCommandTestResponse Test = 255;
+
+    pub fn clear_Test(&mut self) {
+        self.cmd = ::std::option::Option::None;
+    }
+
+    pub fn has_Test(&self) -> bool {
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_Test(&mut self, v: BatchCommandTestResponse) {
+        self.cmd = ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_Test(&mut self) -> &mut BatchCommandTestResponse {
+        if let ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(_)) = self.cmd {
+        } else {
+            self.cmd = ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(BatchCommandTestResponse::new()));
+        }
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_Test(&mut self) -> BatchCommandTestResponse {
+        if self.has_Test() {
+            match self.cmd.take() {
+                ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            BatchCommandTestResponse::new()
+        }
+    }
+
+    pub fn get_Test(&self) -> &BatchCommandTestResponse {
+        match self.cmd {
+            ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(ref v)) => v,
+            _ => BatchCommandTestResponse::default_instance(),
+        }
+    }
 }
 
 impl ::protobuf::Message for BatchCommandsResponse_Response {
@@ -3307,6 +3428,11 @@ impl ::protobuf::Message for BatchCommandsResponse_Response {
             }
         }
         if let Some(BatchCommandsResponse_Response_oneof_cmd::Coprocessor(ref v)) = self.cmd {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(BatchCommandsResponse_Response_oneof_cmd::Test(ref v)) = self.cmd {
             if !v.is_initialized() {
                 return false;
             }
@@ -3450,6 +3576,12 @@ impl ::protobuf::Message for BatchCommandsResponse_Response {
                     }
                     self.cmd = ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Coprocessor(is.read_message()?));
                 },
+                255 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.cmd = ::std::option::Option::Some(BatchCommandsResponse_Response_oneof_cmd::Test(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -3549,6 +3681,10 @@ impl ::protobuf::Message for BatchCommandsResponse_Response {
                     my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
                 &BatchCommandsResponse_Response_oneof_cmd::Coprocessor(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &BatchCommandsResponse_Response_oneof_cmd::Test(ref v) => {
                     let len = v.compute_size();
                     my_size += 2 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -3672,6 +3808,11 @@ impl ::protobuf::Message for BatchCommandsResponse_Response {
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
+                &BatchCommandsResponse_Response_oneof_cmd::Test(ref v) => {
+                    os.write_tag(255, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
             };
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
@@ -3743,6 +3884,7 @@ impl ::protobuf::Clear for BatchCommandsResponse_Response {
         self.clear_RawDeleteRange();
         self.clear_RawBatchScan();
         self.clear_Coprocessor();
+        self.clear_Test();
         self.unknown_fields.clear();
     }
 }
@@ -3890,6 +4032,292 @@ impl ::protobuf::Clear for BatchRaftMessage {
 }
 
 impl ::protobuf::reflect::ProtobufValue for BatchRaftMessage {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+pub struct BatchCommandTestRequest {
+    // message fields
+    pub test_id: u64,
+    pub delay_time: u64,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl BatchCommandTestRequest {
+    pub fn new() -> BatchCommandTestRequest {
+        ::std::default::Default::default()
+    }
+
+    // uint64 test_id = 1;
+
+    pub fn clear_test_id(&mut self) {
+        self.test_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_test_id(&mut self, v: u64) {
+        self.test_id = v;
+    }
+
+    pub fn get_test_id(&self) -> u64 {
+        self.test_id
+    }
+
+    // uint64 delay_time = 2;
+
+    pub fn clear_delay_time(&mut self) {
+        self.delay_time = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_delay_time(&mut self, v: u64) {
+        self.delay_time = v;
+    }
+
+    pub fn get_delay_time(&self) -> u64 {
+        self.delay_time
+    }
+}
+
+impl ::protobuf::Message for BatchCommandTestRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.test_id = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.delay_time = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.test_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.test_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.delay_time != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.delay_time, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.test_id != 0 {
+            os.write_uint64(1, self.test_id)?;
+        }
+        if self.delay_time != 0 {
+            os.write_uint64(2, self.delay_time)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> BatchCommandTestRequest {
+        BatchCommandTestRequest::new()
+    }
+
+    fn default_instance() -> &'static BatchCommandTestRequest {
+        static mut instance: ::protobuf::lazy::Lazy<BatchCommandTestRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const BatchCommandTestRequest,
+        };
+        unsafe {
+            instance.get(BatchCommandTestRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for BatchCommandTestRequest {
+    fn clear(&mut self) {
+        self.clear_test_id();
+        self.clear_delay_time();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for BatchCommandTestRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+pub struct BatchCommandTestResponse {
+    // message fields
+    pub test_id: u64,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl BatchCommandTestResponse {
+    pub fn new() -> BatchCommandTestResponse {
+        ::std::default::Default::default()
+    }
+
+    // uint64 test_id = 1;
+
+    pub fn clear_test_id(&mut self) {
+        self.test_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_test_id(&mut self, v: u64) {
+        self.test_id = v;
+    }
+
+    pub fn get_test_id(&self) -> u64 {
+        self.test_id
+    }
+}
+
+impl ::protobuf::Message for BatchCommandTestResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.test_id = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.test_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.test_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.test_id != 0 {
+            os.write_uint64(1, self.test_id)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> BatchCommandTestResponse {
+        BatchCommandTestResponse::new()
+    }
+
+    fn default_instance() -> &'static BatchCommandTestResponse {
+        static mut instance: ::protobuf::lazy::Lazy<BatchCommandTestResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const BatchCommandTestResponse,
+        };
+        unsafe {
+            instance.get(BatchCommandTestResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for BatchCommandTestResponse {
+    fn clear(&mut self) {
+        self.clear_test_id();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for BatchCommandTestResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }

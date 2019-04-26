@@ -67,7 +67,7 @@ service Tikv {
 message BatchCommandsRequest {
     repeated Request requests = 1;
     repeated uint64 request_ids = 2;
-    
+
     message Request {
         oneof cmd {
             kvrpcpb.GetRequest Get = 1;
@@ -89,11 +89,13 @@ message BatchCommandsRequest {
             kvrpcpb.RawBatchPutRequest RawBatchPut = 16;
             kvrpcpb.RawDeleteRequest RawDelete = 17;
             kvrpcpb.RawBatchDeleteRequest RawBatchDelete = 18;
-            kvrpcpb.RawScanRequest RawScan = 19;    
+            kvrpcpb.RawScanRequest RawScan = 19;
             kvrpcpb.RawDeleteRangeRequest RawDeleteRange = 20;
             kvrpcpb.RawBatchScanRequest RawBatchScan = 21;
 
             coprocessor.Request Coprocessor = 22;
+
+            BatchCommandTestRequest Test = 255;
         }
     }
 }
@@ -125,15 +127,29 @@ message BatchCommandsResponse {
             kvrpcpb.RawBatchPutResponse RawBatchPut = 16;
             kvrpcpb.RawDeleteResponse RawDelete = 17;
             kvrpcpb.RawBatchDeleteResponse RawBatchDelete = 18;
-            kvrpcpb.RawScanResponse RawScan = 19;    
+            kvrpcpb.RawScanResponse RawScan = 19;
             kvrpcpb.RawDeleteRangeResponse RawDeleteRange = 20;
             kvrpcpb.RawBatchScanResponse RawBatchScan = 21;
 
             coprocessor.Response Coprocessor = 22;
+
+            BatchCommandTestResponse Test = 255;
         }
     }
 }
 
 message BatchRaftMessage {
     repeated raft_serverpb.RaftMessage msgs = 1;
+}
+
+message BatchCommandTestRequest {
+    // Id of the test request
+    uint64 test_id = 1;
+    // The time between receiving the request and sending the response
+    uint64 delay_time = 2;
+}
+
+message BatchCommandTestResponse {
+    // Id of the test response, should be same with the one in the request
+    uint64 test_id = 1;
 }
