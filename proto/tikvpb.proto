@@ -152,4 +152,8 @@ message BatchCommandTestRequest {
 message BatchCommandTestResponse {
     // Id of the test response, should be same with the one in the request
     uint64 test_id = 1;
+    // The time when the response is generated, milliseconds since January 1, 1970 UTC (the "epoch")
+    uint64 reply_time = 2;
+    // The time when the response is sent out, milliseconds since the "epoch"
+    uint64 reply_send_time  = 3;
 }

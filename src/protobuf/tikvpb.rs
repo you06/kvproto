@@ -4199,6 +4199,8 @@ impl ::protobuf::reflect::ProtobufValue for BatchCommandTestRequest {
 pub struct BatchCommandTestResponse {
     // message fields
     pub test_id: u64,
+    pub reply_time: u64,
+    pub reply_send_time: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -4223,6 +4225,36 @@ impl BatchCommandTestResponse {
     pub fn get_test_id(&self) -> u64 {
         self.test_id
     }
+
+    // uint64 reply_time = 2;
+
+    pub fn clear_reply_time(&mut self) {
+        self.reply_time = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_reply_time(&mut self, v: u64) {
+        self.reply_time = v;
+    }
+
+    pub fn get_reply_time(&self) -> u64 {
+        self.reply_time
+    }
+
+    // uint64 reply_send_time = 3;
+
+    pub fn clear_reply_send_time(&mut self) {
+        self.reply_send_time = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_reply_send_time(&mut self, v: u64) {
+        self.reply_send_time = v;
+    }
+
+    pub fn get_reply_send_time(&self) -> u64 {
+        self.reply_send_time
+    }
 }
 
 impl ::protobuf::Message for BatchCommandTestResponse {
@@ -4241,6 +4273,20 @@ impl ::protobuf::Message for BatchCommandTestResponse {
                     let tmp = is.read_uint64()?;
                     self.test_id = tmp;
                 },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.reply_time = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.reply_send_time = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -4256,6 +4302,12 @@ impl ::protobuf::Message for BatchCommandTestResponse {
         if self.test_id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.test_id, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.reply_time != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.reply_time, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.reply_send_time != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.reply_send_time, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -4264,6 +4316,12 @@ impl ::protobuf::Message for BatchCommandTestResponse {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if self.test_id != 0 {
             os.write_uint64(1, self.test_id)?;
+        }
+        if self.reply_time != 0 {
+            os.write_uint64(2, self.reply_time)?;
+        }
+        if self.reply_send_time != 0 {
+            os.write_uint64(3, self.reply_send_time)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -4313,6 +4371,8 @@ impl ::protobuf::Message for BatchCommandTestResponse {
 impl ::protobuf::Clear for BatchCommandTestResponse {
     fn clear(&mut self) {
         self.clear_test_id();
+        self.clear_reply_time();
+        self.clear_reply_send_time();
         self.unknown_fields.clear();
     }
 }
