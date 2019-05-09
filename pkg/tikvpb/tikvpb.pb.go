@@ -46,7 +46,7 @@ func (m *BatchCommandsRequest) Reset()         { *m = BatchCommandsRequest{} }
 func (m *BatchCommandsRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchCommandsRequest) ProtoMessage()    {}
 func (*BatchCommandsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tikvpb_88aa7603daab3d52, []int{0}
+	return fileDescriptor_tikvpb_75905283d4aee744, []int{0}
 }
 func (m *BatchCommandsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -124,7 +124,7 @@ func (m *BatchCommandsRequest_Request) Reset()         { *m = BatchCommandsReque
 func (m *BatchCommandsRequest_Request) String() string { return proto.CompactTextString(m) }
 func (*BatchCommandsRequest_Request) ProtoMessage()    {}
 func (*BatchCommandsRequest_Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tikvpb_88aa7603daab3d52, []int{0, 0}
+	return fileDescriptor_tikvpb_75905283d4aee744, []int{0, 0}
 }
 func (m *BatchCommandsRequest_Request) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -908,7 +908,7 @@ func (m *BatchCommandsResponse) Reset()         { *m = BatchCommandsResponse{} }
 func (m *BatchCommandsResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchCommandsResponse) ProtoMessage()    {}
 func (*BatchCommandsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tikvpb_88aa7603daab3d52, []int{1}
+	return fileDescriptor_tikvpb_75905283d4aee744, []int{1}
 }
 func (m *BatchCommandsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -993,7 +993,7 @@ func (m *BatchCommandsResponse_Response) Reset()         { *m = BatchCommandsRes
 func (m *BatchCommandsResponse_Response) String() string { return proto.CompactTextString(m) }
 func (*BatchCommandsResponse_Response) ProtoMessage()    {}
 func (*BatchCommandsResponse_Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tikvpb_88aa7603daab3d52, []int{1, 0}
+	return fileDescriptor_tikvpb_75905283d4aee744, []int{1, 0}
 }
 func (m *BatchCommandsResponse_Response) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1774,7 +1774,7 @@ func (m *BatchRaftMessage) Reset()         { *m = BatchRaftMessage{} }
 func (m *BatchRaftMessage) String() string { return proto.CompactTextString(m) }
 func (*BatchRaftMessage) ProtoMessage()    {}
 func (*BatchRaftMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tikvpb_88aa7603daab3d52, []int{2}
+	return fileDescriptor_tikvpb_75905283d4aee744, []int{2}
 }
 func (m *BatchRaftMessage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -6582,9 +6582,9 @@ var (
 	ErrIntOverflowTikvpb   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("tikvpb.proto", fileDescriptor_tikvpb_88aa7603daab3d52) }
+func init() { proto.RegisterFile("tikvpb.proto", fileDescriptor_tikvpb_75905283d4aee744) }
 
-var fileDescriptor_tikvpb_88aa7603daab3d52 = []byte{
+var fileDescriptor_tikvpb_75905283d4aee744 = []byte{
 	// 1499 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x98, 0xdd, 0x52, 0x1c, 0x45,
 	0x14, 0xc7, 0x67, 0x61, 0x43, 0xa0, 0x17, 0x02, 0x1c, 0x20, 0x0c, 0x2d, 0x01, 0x1c, 0x63, 0xa4,
