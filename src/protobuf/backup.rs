@@ -25,6 +25,7 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 pub struct BackupEvent {
     // message fields
     pub region_id: u64,
+    pub index: u64,
     pub related_region_ids: ::std::vec::Vec<u64>,
     pub event: BackupEvent_Event,
     pub dependency: u64,
@@ -53,7 +54,22 @@ impl BackupEvent {
         self.region_id
     }
 
-    // repeated uint64 related_region_ids = 2;
+    // uint64 index = 2;
+
+    pub fn clear_index(&mut self) {
+        self.index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_index(&mut self, v: u64) {
+        self.index = v;
+    }
+
+    pub fn get_index(&self) -> u64 {
+        self.index
+    }
+
+    // repeated uint64 related_region_ids = 3;
 
     pub fn clear_related_region_ids(&mut self) {
         self.related_region_ids.clear();
@@ -78,7 +94,7 @@ impl BackupEvent {
         &self.related_region_ids
     }
 
-    // .backup.BackupEvent.Event event = 3;
+    // .backup.BackupEvent.Event event = 4;
 
     pub fn clear_event(&mut self) {
         self.event = BackupEvent_Event::Unknown;
@@ -93,7 +109,7 @@ impl BackupEvent {
         self.event
     }
 
-    // uint64 dependency = 4;
+    // uint64 dependency = 5;
 
     pub fn clear_dependency(&mut self) {
         self.dependency = 0;
@@ -126,12 +142,19 @@ impl ::protobuf::Message for BackupEvent {
                     self.region_id = tmp;
                 },
                 2 => {
-                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.related_region_ids)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.index = tmp;
                 },
                 3 => {
-                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.event = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.related_region_ids)?;
                 },
                 4 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.event = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -153,14 +176,17 @@ impl ::protobuf::Message for BackupEvent {
         if self.region_id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.region_id, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.index != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.index, ::protobuf::wire_format::WireTypeVarint);
+        }
         for value in &self.related_region_ids {
-            my_size += ::protobuf::rt::value_size(2, *value, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(3, *value, ::protobuf::wire_format::WireTypeVarint);
         };
         if self.event != BackupEvent_Event::Unknown {
-            my_size += ::protobuf::rt::enum_size(3, self.event);
+            my_size += ::protobuf::rt::enum_size(4, self.event);
         }
         if self.dependency != 0 {
-            my_size += ::protobuf::rt::value_size(4, self.dependency, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(5, self.dependency, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -171,14 +197,17 @@ impl ::protobuf::Message for BackupEvent {
         if self.region_id != 0 {
             os.write_uint64(1, self.region_id)?;
         }
+        if self.index != 0 {
+            os.write_uint64(2, self.index)?;
+        }
         for v in &self.related_region_ids {
-            os.write_uint64(2, *v)?;
+            os.write_uint64(3, *v)?;
         };
         if self.event != BackupEvent_Event::Unknown {
-            os.write_enum(3, self.event.value())?;
+            os.write_enum(4, self.event.value())?;
         }
         if self.dependency != 0 {
-            os.write_uint64(4, self.dependency)?;
+            os.write_uint64(5, self.dependency)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -228,6 +257,7 @@ impl ::protobuf::Message for BackupEvent {
 impl ::protobuf::Clear for BackupEvent {
     fn clear(&mut self) {
         self.clear_region_id();
+        self.clear_index();
         self.clear_related_region_ids();
         self.clear_event();
         self.clear_dependency();
@@ -241,6 +271,7 @@ impl crate::text::PbPrint for BackupEvent {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.region_id, "region_id", buf);
+        crate::text::PbPrint::fmt(&self.index, "index", buf);
         crate::text::PbPrint::fmt(&self.related_region_ids, "related_region_ids", buf);
         crate::text::PbPrint::fmt(&self.event, "event", buf);
         crate::text::PbPrint::fmt(&self.dependency, "dependency", buf);
@@ -255,6 +286,7 @@ impl ::std::fmt::Debug for BackupEvent {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.region_id, "region_id", &mut s);
+        crate::text::PbPrint::fmt(&self.index, "index", &mut s);
         crate::text::PbPrint::fmt(&self.related_region_ids, "related_region_ids", &mut s);
         crate::text::PbPrint::fmt(&self.event, "event", &mut s);
         crate::text::PbPrint::fmt(&self.dependency, "dependency", &mut s);
