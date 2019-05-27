@@ -32,6 +32,9 @@ message BackupEvent {
 
 message BackupMeta {
     repeated BackupEvent events = 1;
+    uint64 start_backup_dependency = 2;
+    uint64 full_backup_dependency = 3;
+    repeated uint64 inc_backup_dependencies = 4;
 }
 
 message BackupRequest {
