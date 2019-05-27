@@ -338,6 +338,9 @@ impl ::protobuf::reflect::ProtobufValue for BackupEvent_Event {
 pub struct BackupMeta {
     // message fields
     pub events: ::protobuf::RepeatedField<BackupEvent>,
+    pub start_backup_dependency: u64,
+    pub full_backup_dependency: u64,
+    pub inc_backup_dependencies: ::std::vec::Vec<u64>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -372,6 +375,61 @@ impl BackupMeta {
     pub fn get_events(&self) -> &[BackupEvent] {
         &self.events
     }
+
+    // uint64 start_backup_dependency = 2;
+
+    pub fn clear_start_backup_dependency(&mut self) {
+        self.start_backup_dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_start_backup_dependency(&mut self, v: u64) {
+        self.start_backup_dependency = v;
+    }
+
+    pub fn get_start_backup_dependency(&self) -> u64 {
+        self.start_backup_dependency
+    }
+
+    // uint64 full_backup_dependency = 3;
+
+    pub fn clear_full_backup_dependency(&mut self) {
+        self.full_backup_dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_full_backup_dependency(&mut self, v: u64) {
+        self.full_backup_dependency = v;
+    }
+
+    pub fn get_full_backup_dependency(&self) -> u64 {
+        self.full_backup_dependency
+    }
+
+    // repeated uint64 inc_backup_dependencies = 4;
+
+    pub fn clear_inc_backup_dependencies(&mut self) {
+        self.inc_backup_dependencies.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_inc_backup_dependencies(&mut self, v: ::std::vec::Vec<u64>) {
+        self.inc_backup_dependencies = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_inc_backup_dependencies(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.inc_backup_dependencies
+    }
+
+    // Take field
+    pub fn take_inc_backup_dependencies(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.inc_backup_dependencies, ::std::vec::Vec::new())
+    }
+
+    pub fn get_inc_backup_dependencies(&self) -> &[u64] {
+        &self.inc_backup_dependencies
+    }
 }
 
 impl ::protobuf::Message for BackupMeta {
@@ -391,6 +449,23 @@ impl ::protobuf::Message for BackupMeta {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
                 },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.start_backup_dependency = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.full_backup_dependency = tmp;
+                },
+                4 => {
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.inc_backup_dependencies)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -407,6 +482,15 @@ impl ::protobuf::Message for BackupMeta {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
+        if self.start_backup_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.start_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.full_backup_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.inc_backup_dependencies {
+            my_size += ::protobuf::rt::value_size(4, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -417,6 +501,15 @@ impl ::protobuf::Message for BackupMeta {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
+        };
+        if self.start_backup_dependency != 0 {
+            os.write_uint64(2, self.start_backup_dependency)?;
+        }
+        if self.full_backup_dependency != 0 {
+            os.write_uint64(3, self.full_backup_dependency)?;
+        }
+        for v in &self.inc_backup_dependencies {
+            os.write_uint64(4, *v)?;
         };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -466,6 +559,9 @@ impl ::protobuf::Message for BackupMeta {
 impl ::protobuf::Clear for BackupMeta {
     fn clear(&mut self) {
         self.clear_events();
+        self.clear_start_backup_dependency();
+        self.clear_full_backup_dependency();
+        self.clear_inc_backup_dependencies();
         self.unknown_fields.clear();
     }
 }
@@ -476,6 +572,9 @@ impl crate::text::PbPrint for BackupMeta {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.events, "events", buf);
+        crate::text::PbPrint::fmt(&self.start_backup_dependency, "start_backup_dependency", buf);
+        crate::text::PbPrint::fmt(&self.full_backup_dependency, "full_backup_dependency", buf);
+        crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -487,6 +586,9 @@ impl ::std::fmt::Debug for BackupMeta {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.events, "events", &mut s);
+        crate::text::PbPrint::fmt(&self.start_backup_dependency, "start_backup_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.full_backup_dependency, "full_backup_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", &mut s);
         write!(f, "{}", s)
     }
 }
