@@ -1,0 +1,48 @@
+syntax = "proto3";
+package backup;
+
+import "kvrpcpb.proto";
+import "errorpb.proto";
+
+import "gogoproto/gogo.proto";
+import "rustproto.proto";
+
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (rustproto.lite_runtime_all) = true;
+
+option java_package = "org.tikv.kvproto";
+
+message BackupEvent {
+    enum Event {
+        Unknown = 0;
+        Snapshot = 1;
+        Split = 2;
+        PrepareMerge = 3;
+        CommitMerge = 4;
+        RollbackMerge = 5;
+    }
+
+    uint64 region_id = 1;
+    repeated uint64 related_region_ids = 2;
+    Event event = 3;
+    uint64 dependency = 4;
+}
+
+message BackupMeta {
+    repeated BackupEvent events = 1;
+}
+
+message BackupRequest {
+    kvrpcpb.Context context = 1;
+    string location = 2;
+}
+
+message BackupResponse {
+    errorpb.Error region_error = 1;
+}
+
+service Backup {
+    rpc backup(BackupRequest) returns (BackupResponse) {}
+}
