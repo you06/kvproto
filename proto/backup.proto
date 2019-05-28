@@ -3,6 +3,7 @@ package backup;
 
 import "kvrpcpb.proto";
 import "errorpb.proto";
+import "eraftpb.proto";
 
 import "gogoproto/gogo.proto";
 import "rustproto.proto";
@@ -13,6 +14,10 @@ option (gogoproto.unmarshaler_all) = true;
 option (rustproto.lite_runtime_all) = true;
 
 option java_package = "org.tikv.kvproto";
+
+message EntryBatch {
+    repeated eraftpb.Entry entries = 1;
+}
 
 message BackupEvent {
     enum Event {
@@ -41,7 +46,6 @@ message BackupMeta {
 
 message BackupRequest {
     kvrpcpb.Context context = 1;
-    string location = 2;
 }
 
 message BackupResponse {
