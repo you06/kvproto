@@ -34,6 +34,38 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+type BackupState int32
+
+const (
+	BackupState_Unknown           BackupState = 0
+	BackupState_Stop              BackupState = 1
+	BackupState_StartFullBackup   BackupState = 2
+	BackupState_FinishFullBackup  BackupState = 3
+	BackupState_IncrementalBackup BackupState = 4
+)
+
+var BackupState_name = map[int32]string{
+	0: "Unknown",
+	1: "Stop",
+	2: "StartFullBackup",
+	3: "FinishFullBackup",
+	4: "IncrementalBackup",
+}
+var BackupState_value = map[string]int32{
+	"Unknown":           0,
+	"Stop":              1,
+	"StartFullBackup":   2,
+	"FinishFullBackup":  3,
+	"IncrementalBackup": 4,
+}
+
+func (x BackupState) String() string {
+	return proto.EnumName(BackupState_name, int32(x))
+}
+func (BackupState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{0}
+}
+
 type BackupEvent_Event int32
 
 const (
@@ -66,7 +98,7 @@ func (x BackupEvent_Event) String() string {
 	return proto.EnumName(BackupEvent_Event_name, int32(x))
 }
 func (BackupEvent_Event) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{1, 0}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{1, 0}
 }
 
 type EntryBatch struct {
@@ -80,7 +112,7 @@ func (m *EntryBatch) Reset()         { *m = EntryBatch{} }
 func (m *EntryBatch) String() string { return proto.CompactTextString(m) }
 func (*EntryBatch) ProtoMessage()    {}
 func (*EntryBatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{0}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{0}
 }
 func (m *EntryBatch) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -132,7 +164,7 @@ func (m *BackupEvent) Reset()         { *m = BackupEvent{} }
 func (m *BackupEvent) String() string { return proto.CompactTextString(m) }
 func (*BackupEvent) ProtoMessage()    {}
 func (*BackupEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{1}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{1}
 }
 func (m *BackupEvent) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -201,6 +233,7 @@ type BackupMeta struct {
 	StartFullBackupDependency  uint64         `protobuf:"varint,2,opt,name=start_full_backup_dependency,json=startFullBackupDependency,proto3" json:"start_full_backup_dependency,omitempty"`
 	FinishFullBackupDependency uint64         `protobuf:"varint,3,opt,name=finish_full_backup_dependency,json=finishFullBackupDependency,proto3" json:"finish_full_backup_dependency,omitempty"`
 	IncBackupDependencies      []uint64       `protobuf:"varint,4,rep,packed,name=inc_backup_dependencies,json=incBackupDependencies" json:"inc_backup_dependencies,omitempty"`
+	State                      BackupState    `protobuf:"varint,5,opt,name=state,proto3,enum=backup.BackupState" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral       struct{}       `json:"-"`
 	XXX_unrecognized           []byte         `json:"-"`
 	XXX_sizecache              int32          `json:"-"`
@@ -210,7 +243,7 @@ func (m *BackupMeta) Reset()         { *m = BackupMeta{} }
 func (m *BackupMeta) String() string { return proto.CompactTextString(m) }
 func (*BackupMeta) ProtoMessage()    {}
 func (*BackupMeta) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{2}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{2}
 }
 func (m *BackupMeta) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -267,6 +300,285 @@ func (m *BackupMeta) GetIncBackupDependencies() []uint64 {
 	return nil
 }
 
+func (m *BackupMeta) GetState() BackupState {
+	if m != nil {
+		return m.State
+	}
+	return BackupState_Unknown
+}
+
+type StateStepError struct {
+	Current              BackupState `protobuf:"varint,1,opt,name=current,proto3,enum=backup.BackupState" json:"current,omitempty"`
+	Request              BackupState `protobuf:"varint,2,opt,name=request,proto3,enum=backup.BackupState" json:"request,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
+}
+
+func (m *StateStepError) Reset()         { *m = StateStepError{} }
+func (m *StateStepError) String() string { return proto.CompactTextString(m) }
+func (*StateStepError) ProtoMessage()    {}
+func (*StateStepError) Descriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{3}
+}
+func (m *StateStepError) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *StateStepError) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_StateStepError.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *StateStepError) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StateStepError.Merge(dst, src)
+}
+func (m *StateStepError) XXX_Size() int {
+	return m.Size()
+}
+func (m *StateStepError) XXX_DiscardUnknown() {
+	xxx_messageInfo_StateStepError.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StateStepError proto.InternalMessageInfo
+
+func (m *StateStepError) GetCurrent() BackupState {
+	if m != nil {
+		return m.Current
+	}
+	return BackupState_Unknown
+}
+
+func (m *StateStepError) GetRequest() BackupState {
+	if m != nil {
+		return m.Request
+	}
+	return BackupState_Unknown
+}
+
+type ClusterIDError struct {
+	Current              uint64   `protobuf:"varint,1,opt,name=current,proto3" json:"current,omitempty"`
+	Request              uint64   `protobuf:"varint,2,opt,name=request,proto3" json:"request,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ClusterIDError) Reset()         { *m = ClusterIDError{} }
+func (m *ClusterIDError) String() string { return proto.CompactTextString(m) }
+func (*ClusterIDError) ProtoMessage()    {}
+func (*ClusterIDError) Descriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{4}
+}
+func (m *ClusterIDError) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ClusterIDError) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ClusterIDError.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *ClusterIDError) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClusterIDError.Merge(dst, src)
+}
+func (m *ClusterIDError) XXX_Size() int {
+	return m.Size()
+}
+func (m *ClusterIDError) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClusterIDError.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ClusterIDError proto.InternalMessageInfo
+
+func (m *ClusterIDError) GetCurrent() uint64 {
+	if m != nil {
+		return m.Current
+	}
+	return 0
+}
+
+func (m *ClusterIDError) GetRequest() uint64 {
+	if m != nil {
+		return m.Request
+	}
+	return 0
+}
+
+type Error struct {
+	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	// Types that are valid to be assigned to Detail:
+	//	*Error_StateStepError
+	//	*Error_ClusterIdError
+	Detail               isError_Detail `protobuf_oneof:"detail"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *Error) Reset()         { *m = Error{} }
+func (m *Error) String() string { return proto.CompactTextString(m) }
+func (*Error) ProtoMessage()    {}
+func (*Error) Descriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{5}
+}
+func (m *Error) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Error) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Error.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *Error) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Error.Merge(dst, src)
+}
+func (m *Error) XXX_Size() int {
+	return m.Size()
+}
+func (m *Error) XXX_DiscardUnknown() {
+	xxx_messageInfo_Error.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Error proto.InternalMessageInfo
+
+type isError_Detail interface {
+	isError_Detail()
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type Error_StateStepError struct {
+	StateStepError *StateStepError `protobuf:"bytes,2,opt,name=state_step_error,json=stateStepError,oneof"`
+}
+type Error_ClusterIdError struct {
+	ClusterIdError *ClusterIDError `protobuf:"bytes,3,opt,name=cluster_id_error,json=clusterIdError,oneof"`
+}
+
+func (*Error_StateStepError) isError_Detail() {}
+func (*Error_ClusterIdError) isError_Detail() {}
+
+func (m *Error) GetDetail() isError_Detail {
+	if m != nil {
+		return m.Detail
+	}
+	return nil
+}
+
+func (m *Error) GetMsg() string {
+	if m != nil {
+		return m.Msg
+	}
+	return ""
+}
+
+func (m *Error) GetStateStepError() *StateStepError {
+	if x, ok := m.GetDetail().(*Error_StateStepError); ok {
+		return x.StateStepError
+	}
+	return nil
+}
+
+func (m *Error) GetClusterIdError() *ClusterIDError {
+	if x, ok := m.GetDetail().(*Error_ClusterIdError); ok {
+		return x.ClusterIdError
+	}
+	return nil
+}
+
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*Error) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _Error_OneofMarshaler, _Error_OneofUnmarshaler, _Error_OneofSizer, []interface{}{
+		(*Error_StateStepError)(nil),
+		(*Error_ClusterIdError)(nil),
+	}
+}
+
+func _Error_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*Error)
+	// detail
+	switch x := m.Detail.(type) {
+	case *Error_StateStepError:
+		_ = b.EncodeVarint(2<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.StateStepError); err != nil {
+			return err
+		}
+	case *Error_ClusterIdError:
+		_ = b.EncodeVarint(3<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.ClusterIdError); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("Error.Detail has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _Error_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*Error)
+	switch tag {
+	case 2: // detail.state_step_error
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(StateStepError)
+		err := b.DecodeMessage(msg)
+		m.Detail = &Error_StateStepError{msg}
+		return true, err
+	case 3: // detail.cluster_id_error
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ClusterIDError)
+		err := b.DecodeMessage(msg)
+		m.Detail = &Error_ClusterIdError{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _Error_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*Error)
+	// detail
+	switch x := m.Detail.(type) {
+	case *Error_StateStepError:
+		s := proto.Size(x.StateStepError)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Error_ClusterIdError:
+		s := proto.Size(x.ClusterIdError)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
+}
+
 type BackupRegionRequest struct {
 	Context              *kvrpcpb.Context `protobuf:"bytes,1,opt,name=context" json:"context,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
@@ -278,7 +590,7 @@ func (m *BackupRegionRequest) Reset()         { *m = BackupRegionRequest{} }
 func (m *BackupRegionRequest) String() string { return proto.CompactTextString(m) }
 func (*BackupRegionRequest) ProtoMessage()    {}
 func (*BackupRegionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{3}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{6}
 }
 func (m *BackupRegionRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -325,7 +637,7 @@ func (m *BackupRegionResponse) Reset()         { *m = BackupRegionResponse{} }
 func (m *BackupRegionResponse) String() string { return proto.CompactTextString(m) }
 func (*BackupRegionResponse) ProtoMessage()    {}
 func (*BackupRegionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{4}
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{7}
 }
 func (m *BackupRegionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -361,25 +673,26 @@ func (m *BackupRegionResponse) GetRegionError() *errorpb.Error {
 	return nil
 }
 
-type StartFullBackupRequest struct {
-	ClusterId            uint64   `protobuf:"varint,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type BackupRequest struct {
+	ClusterId            uint64      `protobuf:"varint,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	State                BackupState `protobuf:"varint,2,opt,name=state,proto3,enum=backup.BackupState" json:"state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
-func (m *StartFullBackupRequest) Reset()         { *m = StartFullBackupRequest{} }
-func (m *StartFullBackupRequest) String() string { return proto.CompactTextString(m) }
-func (*StartFullBackupRequest) ProtoMessage()    {}
-func (*StartFullBackupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{5}
+func (m *BackupRequest) Reset()         { *m = BackupRequest{} }
+func (m *BackupRequest) String() string { return proto.CompactTextString(m) }
+func (*BackupRequest) ProtoMessage()    {}
+func (*BackupRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{8}
 }
-func (m *StartFullBackupRequest) XXX_Unmarshal(b []byte) error {
+func (m *BackupRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StartFullBackupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *BackupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StartFullBackupRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_BackupRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -389,44 +702,53 @@ func (m *StartFullBackupRequest) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (dst *StartFullBackupRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StartFullBackupRequest.Merge(dst, src)
+func (dst *BackupRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BackupRequest.Merge(dst, src)
 }
-func (m *StartFullBackupRequest) XXX_Size() int {
+func (m *BackupRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *StartFullBackupRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_StartFullBackupRequest.DiscardUnknown(m)
+func (m *BackupRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_BackupRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StartFullBackupRequest proto.InternalMessageInfo
+var xxx_messageInfo_BackupRequest proto.InternalMessageInfo
 
-func (m *StartFullBackupRequest) GetClusterId() uint64 {
+func (m *BackupRequest) GetClusterId() uint64 {
 	if m != nil {
 		return m.ClusterId
 	}
 	return 0
 }
 
-type StartFullBackupResponse struct {
-	StartDependency      uint64   `protobuf:"varint,1,opt,name=start_dependency,json=startDependency,proto3" json:"start_dependency,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+func (m *BackupRequest) GetState() BackupState {
+	if m != nil {
+		return m.State
+	}
+	return BackupState_Unknown
 }
 
-func (m *StartFullBackupResponse) Reset()         { *m = StartFullBackupResponse{} }
-func (m *StartFullBackupResponse) String() string { return proto.CompactTextString(m) }
-func (*StartFullBackupResponse) ProtoMessage()    {}
-func (*StartFullBackupResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{6}
+type BackupResponse struct {
+	Error                *Error      `protobuf:"bytes,1,opt,name=error" json:"error,omitempty"`
+	CurrentDependency    uint64      `protobuf:"varint,2,opt,name=current_dependency,json=currentDependency,proto3" json:"current_dependency,omitempty"`
+	State                BackupState `protobuf:"varint,3,opt,name=state,proto3,enum=backup.BackupState" json:"state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
-func (m *StartFullBackupResponse) XXX_Unmarshal(b []byte) error {
+
+func (m *BackupResponse) Reset()         { *m = BackupResponse{} }
+func (m *BackupResponse) String() string { return proto.CompactTextString(m) }
+func (*BackupResponse) ProtoMessage()    {}
+func (*BackupResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_backup_eff3111f7b72e0ba, []int{9}
+}
+func (m *BackupResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StartFullBackupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *BackupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StartFullBackupResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_BackupResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -436,129 +758,51 @@ func (m *StartFullBackupResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (dst *StartFullBackupResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StartFullBackupResponse.Merge(dst, src)
+func (dst *BackupResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BackupResponse.Merge(dst, src)
 }
-func (m *StartFullBackupResponse) XXX_Size() int {
+func (m *BackupResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *StartFullBackupResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_StartFullBackupResponse.DiscardUnknown(m)
+func (m *BackupResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_BackupResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StartFullBackupResponse proto.InternalMessageInfo
+var xxx_messageInfo_BackupResponse proto.InternalMessageInfo
 
-func (m *StartFullBackupResponse) GetStartDependency() uint64 {
+func (m *BackupResponse) GetError() *Error {
 	if m != nil {
-		return m.StartDependency
+		return m.Error
+	}
+	return nil
+}
+
+func (m *BackupResponse) GetCurrentDependency() uint64 {
+	if m != nil {
+		return m.CurrentDependency
 	}
 	return 0
 }
 
-type FinishFullBackupRequest struct {
-	ClusterId            uint64   `protobuf:"varint,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *FinishFullBackupRequest) Reset()         { *m = FinishFullBackupRequest{} }
-func (m *FinishFullBackupRequest) String() string { return proto.CompactTextString(m) }
-func (*FinishFullBackupRequest) ProtoMessage()    {}
-func (*FinishFullBackupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{7}
-}
-func (m *FinishFullBackupRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *FinishFullBackupRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_FinishFullBackupRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *FinishFullBackupRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_FinishFullBackupRequest.Merge(dst, src)
-}
-func (m *FinishFullBackupRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *FinishFullBackupRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_FinishFullBackupRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_FinishFullBackupRequest proto.InternalMessageInfo
-
-func (m *FinishFullBackupRequest) GetClusterId() uint64 {
+func (m *BackupResponse) GetState() BackupState {
 	if m != nil {
-		return m.ClusterId
+		return m.State
 	}
-	return 0
-}
-
-type FinishFullBackupResponse struct {
-	FinishDependency     uint64   `protobuf:"varint,1,opt,name=finish_dependency,json=finishDependency,proto3" json:"finish_dependency,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *FinishFullBackupResponse) Reset()         { *m = FinishFullBackupResponse{} }
-func (m *FinishFullBackupResponse) String() string { return proto.CompactTextString(m) }
-func (*FinishFullBackupResponse) ProtoMessage()    {}
-func (*FinishFullBackupResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backup_0b73f309888fb835, []int{8}
-}
-func (m *FinishFullBackupResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *FinishFullBackupResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_FinishFullBackupResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (dst *FinishFullBackupResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_FinishFullBackupResponse.Merge(dst, src)
-}
-func (m *FinishFullBackupResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *FinishFullBackupResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_FinishFullBackupResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_FinishFullBackupResponse proto.InternalMessageInfo
-
-func (m *FinishFullBackupResponse) GetFinishDependency() uint64 {
-	if m != nil {
-		return m.FinishDependency
-	}
-	return 0
+	return BackupState_Unknown
 }
 
 func init() {
 	proto.RegisterType((*EntryBatch)(nil), "backup.EntryBatch")
 	proto.RegisterType((*BackupEvent)(nil), "backup.BackupEvent")
 	proto.RegisterType((*BackupMeta)(nil), "backup.BackupMeta")
+	proto.RegisterType((*StateStepError)(nil), "backup.StateStepError")
+	proto.RegisterType((*ClusterIDError)(nil), "backup.ClusterIDError")
+	proto.RegisterType((*Error)(nil), "backup.Error")
 	proto.RegisterType((*BackupRegionRequest)(nil), "backup.BackupRegionRequest")
 	proto.RegisterType((*BackupRegionResponse)(nil), "backup.BackupRegionResponse")
-	proto.RegisterType((*StartFullBackupRequest)(nil), "backup.StartFullBackupRequest")
-	proto.RegisterType((*StartFullBackupResponse)(nil), "backup.StartFullBackupResponse")
-	proto.RegisterType((*FinishFullBackupRequest)(nil), "backup.FinishFullBackupRequest")
-	proto.RegisterType((*FinishFullBackupResponse)(nil), "backup.FinishFullBackupResponse")
+	proto.RegisterType((*BackupRequest)(nil), "backup.BackupRequest")
+	proto.RegisterType((*BackupResponse)(nil), "backup.BackupResponse")
+	proto.RegisterEnum("backup.BackupState", BackupState_name, BackupState_value)
 	proto.RegisterEnum("backup.BackupEvent_Event", BackupEvent_Event_name, BackupEvent_Event_value)
 }
 
@@ -573,9 +817,8 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Backup service
 
 type BackupClient interface {
-	StartFullBackup(ctx context.Context, in *StartFullBackupRequest, opts ...grpc.CallOption) (*StartFullBackupResponse, error)
+	Backup(ctx context.Context, in *BackupRequest, opts ...grpc.CallOption) (*BackupResponse, error)
 	BackupRegion(ctx context.Context, in *BackupRegionRequest, opts ...grpc.CallOption) (*BackupRegionResponse, error)
-	FinishFullBackup(ctx context.Context, in *FinishFullBackupRequest, opts ...grpc.CallOption) (*FinishFullBackupResponse, error)
 }
 
 type backupClient struct {
@@ -586,9 +829,9 @@ func NewBackupClient(cc *grpc.ClientConn) BackupClient {
 	return &backupClient{cc}
 }
 
-func (c *backupClient) StartFullBackup(ctx context.Context, in *StartFullBackupRequest, opts ...grpc.CallOption) (*StartFullBackupResponse, error) {
-	out := new(StartFullBackupResponse)
-	err := c.cc.Invoke(ctx, "/backup.Backup/start_full_backup", in, out, opts...)
+func (c *backupClient) Backup(ctx context.Context, in *BackupRequest, opts ...grpc.CallOption) (*BackupResponse, error) {
+	out := new(BackupResponse)
+	err := c.cc.Invoke(ctx, "/backup.Backup/backup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -604,41 +847,31 @@ func (c *backupClient) BackupRegion(ctx context.Context, in *BackupRegionRequest
 	return out, nil
 }
 
-func (c *backupClient) FinishFullBackup(ctx context.Context, in *FinishFullBackupRequest, opts ...grpc.CallOption) (*FinishFullBackupResponse, error) {
-	out := new(FinishFullBackupResponse)
-	err := c.cc.Invoke(ctx, "/backup.Backup/finish_full_backup", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // Server API for Backup service
 
 type BackupServer interface {
-	StartFullBackup(context.Context, *StartFullBackupRequest) (*StartFullBackupResponse, error)
+	Backup(context.Context, *BackupRequest) (*BackupResponse, error)
 	BackupRegion(context.Context, *BackupRegionRequest) (*BackupRegionResponse, error)
-	FinishFullBackup(context.Context, *FinishFullBackupRequest) (*FinishFullBackupResponse, error)
 }
 
 func RegisterBackupServer(s *grpc.Server, srv BackupServer) {
 	s.RegisterService(&_Backup_serviceDesc, srv)
 }
 
-func _Backup_StartFullBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StartFullBackupRequest)
+func _Backup_Backup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BackupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BackupServer).StartFullBackup(ctx, in)
+		return srv.(BackupServer).Backup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/backup.Backup/StartFullBackup",
+		FullMethod: "/backup.Backup/Backup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BackupServer).StartFullBackup(ctx, req.(*StartFullBackupRequest))
+		return srv.(BackupServer).Backup(ctx, req.(*BackupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -661,39 +894,17 @@ func _Backup_BackupRegion_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Backup_FinishFullBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FinishFullBackupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BackupServer).FinishFullBackup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/backup.Backup/FinishFullBackup",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BackupServer).FinishFullBackup(ctx, req.(*FinishFullBackupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _Backup_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "backup.Backup",
 	HandlerType: (*BackupServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "start_full_backup",
-			Handler:    _Backup_StartFullBackup_Handler,
+			MethodName: "backup",
+			Handler:    _Backup_Backup_Handler,
 		},
 		{
 			MethodName: "backup_region",
 			Handler:    _Backup_BackupRegion_Handler,
-		},
-		{
-			MethodName: "finish_full_backup",
-			Handler:    _Backup_FinishFullBackup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -845,12 +1056,141 @@ func (m *BackupMeta) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintBackup(dAtA, i, uint64(j3))
 		i += copy(dAtA[i:], dAtA4[:j3])
 	}
+	if m.State != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.State))
+	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
 	}
 	return i, nil
 }
 
+func (m *StateStepError) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StateStepError) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Current != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.Current))
+	}
+	if m.Request != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.Request))
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *ClusterIDError) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ClusterIDError) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Current != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.Current))
+	}
+	if m.Request != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.Request))
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Error) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Error) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Msg) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(len(m.Msg)))
+		i += copy(dAtA[i:], m.Msg)
+	}
+	if m.Detail != nil {
+		nn5, err := m.Detail.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += nn5
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Error_StateStepError) MarshalTo(dAtA []byte) (int, error) {
+	i := 0
+	if m.StateStepError != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.StateStepError.Size()))
+		n6, err := m.StateStepError.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n6
+	}
+	return i, nil
+}
+func (m *Error_ClusterIdError) MarshalTo(dAtA []byte) (int, error) {
+	i := 0
+	if m.ClusterIdError != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.ClusterIdError.Size()))
+		n7, err := m.ClusterIdError.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n7
+	}
+	return i, nil
+}
 func (m *BackupRegionRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -870,11 +1210,11 @@ func (m *BackupRegionRequest) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintBackup(dAtA, i, uint64(m.Context.Size()))
-		n5, err := m.Context.MarshalTo(dAtA[i:])
+		n8, err := m.Context.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n5
+		i += n8
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -901,11 +1241,11 @@ func (m *BackupRegionResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintBackup(dAtA, i, uint64(m.RegionError.Size()))
-		n6, err := m.RegionError.MarshalTo(dAtA[i:])
+		n9, err := m.RegionError.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n6
+		i += n9
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -913,7 +1253,7 @@ func (m *BackupRegionResponse) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *StartFullBackupRequest) Marshal() (dAtA []byte, err error) {
+func (m *BackupRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -923,7 +1263,7 @@ func (m *StartFullBackupRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StartFullBackupRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *BackupRequest) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -933,13 +1273,18 @@ func (m *StartFullBackupRequest) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintBackup(dAtA, i, uint64(m.ClusterId))
 	}
+	if m.State != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintBackup(dAtA, i, uint64(m.State))
+	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
 	}
 	return i, nil
 }
 
-func (m *StartFullBackupResponse) Marshal() (dAtA []byte, err error) {
+func (m *BackupResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -949,67 +1294,30 @@ func (m *StartFullBackupResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StartFullBackupResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *BackupResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.StartDependency != 0 {
-		dAtA[i] = 0x8
+	if m.Error != nil {
+		dAtA[i] = 0xa
 		i++
-		i = encodeVarintBackup(dAtA, i, uint64(m.StartDependency))
+		i = encodeVarintBackup(dAtA, i, uint64(m.Error.Size()))
+		n10, err := m.Error.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n10
 	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
-func (m *FinishFullBackupRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *FinishFullBackupRequest) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if m.ClusterId != 0 {
-		dAtA[i] = 0x8
+	if m.CurrentDependency != 0 {
+		dAtA[i] = 0x10
 		i++
-		i = encodeVarintBackup(dAtA, i, uint64(m.ClusterId))
+		i = encodeVarintBackup(dAtA, i, uint64(m.CurrentDependency))
 	}
-	if m.XXX_unrecognized != nil {
-		i += copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return i, nil
-}
-
-func (m *FinishFullBackupResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *FinishFullBackupResponse) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if m.FinishDependency != 0 {
-		dAtA[i] = 0x8
+	if m.State != 0 {
+		dAtA[i] = 0x18
 		i++
-		i = encodeVarintBackup(dAtA, i, uint64(m.FinishDependency))
+		i = encodeVarintBackup(dAtA, i, uint64(m.State))
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1091,12 +1399,79 @@ func (m *BackupMeta) Size() (n int) {
 		}
 		n += 1 + sovBackup(uint64(l)) + l
 	}
+	if m.State != 0 {
+		n += 1 + sovBackup(uint64(m.State))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
 
+func (m *StateStepError) Size() (n int) {
+	var l int
+	_ = l
+	if m.Current != 0 {
+		n += 1 + sovBackup(uint64(m.Current))
+	}
+	if m.Request != 0 {
+		n += 1 + sovBackup(uint64(m.Request))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ClusterIDError) Size() (n int) {
+	var l int
+	_ = l
+	if m.Current != 0 {
+		n += 1 + sovBackup(uint64(m.Current))
+	}
+	if m.Request != 0 {
+		n += 1 + sovBackup(uint64(m.Request))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Error) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Msg)
+	if l > 0 {
+		n += 1 + l + sovBackup(uint64(l))
+	}
+	if m.Detail != nil {
+		n += m.Detail.Size()
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Error_StateStepError) Size() (n int) {
+	var l int
+	_ = l
+	if m.StateStepError != nil {
+		l = m.StateStepError.Size()
+		n += 1 + l + sovBackup(uint64(l))
+	}
+	return n
+}
+func (m *Error_ClusterIdError) Size() (n int) {
+	var l int
+	_ = l
+	if m.ClusterIdError != nil {
+		l = m.ClusterIdError.Size()
+		n += 1 + l + sovBackup(uint64(l))
+	}
+	return n
+}
 func (m *BackupRegionRequest) Size() (n int) {
 	var l int
 	_ = l
@@ -1123,23 +1498,14 @@ func (m *BackupRegionResponse) Size() (n int) {
 	return n
 }
 
-func (m *StartFullBackupRequest) Size() (n int) {
+func (m *BackupRequest) Size() (n int) {
 	var l int
 	_ = l
 	if m.ClusterId != 0 {
 		n += 1 + sovBackup(uint64(m.ClusterId))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
-func (m *StartFullBackupResponse) Size() (n int) {
-	var l int
-	_ = l
-	if m.StartDependency != 0 {
-		n += 1 + sovBackup(uint64(m.StartDependency))
+	if m.State != 0 {
+		n += 1 + sovBackup(uint64(m.State))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1147,23 +1513,18 @@ func (m *StartFullBackupResponse) Size() (n int) {
 	return n
 }
 
-func (m *FinishFullBackupRequest) Size() (n int) {
+func (m *BackupResponse) Size() (n int) {
 	var l int
 	_ = l
-	if m.ClusterId != 0 {
-		n += 1 + sovBackup(uint64(m.ClusterId))
+	if m.Error != nil {
+		l = m.Error.Size()
+		n += 1 + l + sovBackup(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
+	if m.CurrentDependency != 0 {
+		n += 1 + sovBackup(uint64(m.CurrentDependency))
 	}
-	return n
-}
-
-func (m *FinishFullBackupResponse) Size() (n int) {
-	var l int
-	_ = l
-	if m.FinishDependency != 0 {
-		n += 1 + sovBackup(uint64(m.FinishDependency))
+	if m.State != 0 {
+		n += 1 + sovBackup(uint64(m.State))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1615,6 +1976,347 @@ func (m *BackupMeta) Unmarshal(dAtA []byte) error {
 			} else {
 				return fmt.Errorf("proto: wrong wireType = %d for field IncBackupDependencies", wireType)
 			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= (BackupState(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBackup(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBackup
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StateStepError) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBackup
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StateStepError: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StateStepError: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Current", wireType)
+			}
+			m.Current = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Current |= (BackupState(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Request", wireType)
+			}
+			m.Request = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Request |= (BackupState(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBackup(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBackup
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ClusterIDError) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBackup
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ClusterIDError: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ClusterIDError: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Current", wireType)
+			}
+			m.Current = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Current |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Request", wireType)
+			}
+			m.Request = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Request |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBackup(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBackup
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Error) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBackup
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Error: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Error: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBackup
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Msg = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StateStepError", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBackup
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &StateStepError{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Detail = &Error_StateStepError{v}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClusterIdError", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthBackup
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ClusterIDError{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Detail = &Error_ClusterIdError{v}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBackup(dAtA[iNdEx:])
@@ -1805,7 +2507,7 @@ func (m *BackupRegionResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StartFullBackupRequest) Unmarshal(dAtA []byte) error {
+func (m *BackupRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1828,10 +2530,10 @@ func (m *StartFullBackupRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StartFullBackupRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: BackupRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StartFullBackupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: BackupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1853,62 +2555,11 @@ func (m *StartFullBackupRequest) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipBackup(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthBackup
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *StartFullBackupResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowBackup
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: StartFullBackupResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StartFullBackupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
+		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StartDependency", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
 			}
-			m.StartDependency = 0
+			m.State = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowBackup
@@ -1918,7 +2569,7 @@ func (m *StartFullBackupResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.StartDependency |= (uint64(b) & 0x7F) << shift
+				m.State |= (BackupState(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1945,7 +2596,7 @@ func (m *StartFullBackupResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *FinishFullBackupRequest) Unmarshal(dAtA []byte) error {
+func (m *BackupResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1968,17 +2619,17 @@ func (m *FinishFullBackupRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: FinishFullBackupRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: BackupResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FinishFullBackupRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: BackupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClusterId", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
 			}
-			m.ClusterId = 0
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowBackup
@@ -1988,67 +2639,30 @@ func (m *FinishFullBackupRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ClusterId |= (uint64(b) & 0x7F) << shift
+				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipBackup(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthBackup
 			}
-			if (iNdEx + skippy) > l {
+			postIndex := iNdEx + msglen
+			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *FinishFullBackupResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowBackup
+			if m.Error == nil {
+				m.Error = &Error{}
 			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
+			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: FinishFullBackupResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FinishFullBackupResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
+			iNdEx = postIndex
+		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FinishDependency", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentDependency", wireType)
 			}
-			m.FinishDependency = 0
+			m.CurrentDependency = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowBackup
@@ -2058,7 +2672,26 @@ func (m *FinishFullBackupResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.FinishDependency |= (uint64(b) & 0x7F) << shift
+				m.CurrentDependency |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBackup
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= (BackupState(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2190,50 +2823,60 @@ var (
 	ErrIntOverflowBackup   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("backup.proto", fileDescriptor_backup_0b73f309888fb835) }
+func init() { proto.RegisterFile("backup.proto", fileDescriptor_backup_eff3111f7b72e0ba) }
 
-var fileDescriptor_backup_0b73f309888fb835 = []byte{
-	// 663 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcb, 0x6e, 0xd3, 0x40,
-	0x14, 0xad, 0xf3, 0x6a, 0x7b, 0x93, 0xb4, 0xee, 0xb4, 0x50, 0x37, 0x6d, 0x43, 0xe4, 0x05, 0x0a,
-	0x14, 0xb9, 0x22, 0x48, 0x85, 0x1d, 0xea, 0x13, 0x55, 0xa2, 0x12, 0x72, 0x05, 0x12, 0xab, 0xc8,
-	0xb5, 0xa7, 0xa9, 0x15, 0x77, 0xc6, 0x8c, 0x27, 0xa1, 0xfd, 0x04, 0xfe, 0x80, 0x0f, 0x60, 0xc1,
-	0xa7, 0xb0, 0x64, 0xc9, 0x12, 0x95, 0x6f, 0x60, 0x8f, 0x3c, 0x77, 0x9c, 0x47, 0x93, 0x48, 0x6c,
-	0xe2, 0x99, 0x73, 0xef, 0x3d, 0x73, 0x7c, 0xe6, 0xc4, 0x50, 0xb9, 0xf0, 0xfc, 0x6e, 0x2f, 0x76,
-	0x62, 0xc1, 0x25, 0x27, 0x25, 0xdc, 0xd5, 0xaa, 0xdd, 0xbe, 0x88, 0xfd, 0xf8, 0x02, 0xe1, 0x5a,
-	0x95, 0x0a, 0xc1, 0xc5, 0xe8, 0xd6, 0xbb, 0x94, 0x83, 0xed, 0x5a, 0x87, 0x77, 0xb8, 0x5a, 0xee,
-	0xa6, 0x2b, 0x8d, 0x2e, 0x8b, 0x5e, 0x22, 0xd5, 0x12, 0x01, 0x7b, 0x0f, 0xe0, 0x98, 0x49, 0x71,
-	0x7b, 0xe0, 0x49, 0xff, 0x8a, 0x34, 0x61, 0x9e, 0x32, 0x29, 0x42, 0x9a, 0x58, 0x46, 0x23, 0xdf,
-	0x2c, 0xb7, 0x96, 0x9c, 0x8c, 0x55, 0x75, 0xb9, 0x59, 0xd9, 0xfe, 0x96, 0x83, 0xf2, 0x81, 0x92,
-	0x75, 0xdc, 0xa7, 0x4c, 0x92, 0x4d, 0x58, 0x14, 0xb4, 0x13, 0x72, 0xd6, 0x0e, 0x03, 0xcb, 0x68,
-	0x18, 0xcd, 0x82, 0xbb, 0x80, 0xc0, 0x69, 0x40, 0xd6, 0xa0, 0x18, 0xb2, 0x80, 0xde, 0x58, 0x39,
-	0x55, 0xc0, 0x0d, 0x79, 0x06, 0x44, 0xd0, 0xc8, 0x93, 0x34, 0x68, 0x0f, 0x46, 0x13, 0x2b, 0xdf,
-	0xc8, 0x37, 0x0b, 0xae, 0xa9, 0x2b, 0xae, 0xa6, 0x48, 0xc8, 0x2e, 0x14, 0x69, 0x7a, 0x92, 0x55,
-	0x68, 0x18, 0xcd, 0xa5, 0xd6, 0x86, 0xa3, 0x2d, 0x1a, 0x11, 0xe1, 0xa8, 0x5f, 0x17, 0xfb, 0x48,
-	0x1d, 0x20, 0xa0, 0x31, 0x65, 0x01, 0x65, 0xfe, 0xad, 0x55, 0x54, 0x27, 0x8f, 0x20, 0xb6, 0x0f,
-	0x45, 0x94, 0x5e, 0x86, 0xf9, 0xf7, 0xac, 0xcb, 0xf8, 0x67, 0x66, 0xce, 0x91, 0x0a, 0x2c, 0x9c,
-	0x33, 0x2f, 0x4e, 0xae, 0xb8, 0x34, 0x0d, 0xb2, 0x08, 0xc5, 0xf3, 0x38, 0x0a, 0xa5, 0x99, 0x23,
-	0x26, 0x54, 0xde, 0x09, 0x1a, 0x7b, 0x82, 0x9e, 0x51, 0xd1, 0xa1, 0x66, 0x9e, 0x2c, 0x43, 0xf9,
-	0x90, 0x5f, 0x5f, 0x87, 0x12, 0x81, 0x02, 0x59, 0x81, 0xaa, 0xcb, 0xa3, 0x28, 0x15, 0x86, 0x50,
-	0xd1, 0xfe, 0x6b, 0x00, 0xa0, 0xc2, 0x33, 0x2a, 0x3d, 0xb2, 0x03, 0x25, 0x25, 0x2e, 0xb3, 0x77,
-	0x75, 0xca, 0x5b, 0xb8, 0xba, 0x85, 0xbc, 0x86, 0xad, 0x44, 0x7a, 0x42, 0xb6, 0x2f, 0x7b, 0x51,
-	0xd4, 0xc6, 0xc6, 0xf6, 0xc8, 0x2b, 0xa1, 0x99, 0x1b, 0xaa, 0xe7, 0xa4, 0x17, 0x45, 0xc8, 0x71,
-	0x34, 0x68, 0x20, 0xfb, 0xb0, 0x7d, 0x19, 0xb2, 0x30, 0xb9, 0x9a, 0xc5, 0x90, 0x57, 0x0c, 0x35,
-	0x6c, 0x9a, 0x4a, 0xb1, 0x07, 0xeb, 0x21, 0xf3, 0x27, 0x46, 0xd3, 0x80, 0x14, 0xd4, 0x45, 0x3d,
-	0x08, 0x99, 0x7f, 0x6f, 0x2a, 0x8d, 0xc7, 0x3e, 0xac, 0x22, 0x8a, 0x17, 0xe8, 0xd2, 0x4f, 0x3d,
-	0x9a, 0x48, 0xf2, 0x14, 0xe6, 0x7d, 0xce, 0x24, 0xbd, 0x91, 0x2a, 0x23, 0xe5, 0x96, 0xe9, 0x64,
-	0x99, 0x3e, 0x44, 0xdc, 0xcd, 0x1a, 0xec, 0x53, 0x58, 0x1b, 0xa7, 0x48, 0x62, 0xce, 0x12, 0x4a,
-	0x9e, 0x43, 0x45, 0xc7, 0x45, 0xe5, 0x5f, 0x13, 0xa5, 0x41, 0xc5, 0x7f, 0xc3, 0x71, 0xfa, 0x74,
-	0xcb, 0xd8, 0xa3, 0x36, 0xf6, 0x4b, 0x78, 0x78, 0x3e, 0xee, 0x52, 0x26, 0x68, 0x1b, 0xc0, 0x8f,
-	0x7a, 0x89, 0xa4, 0x62, 0x98, 0xdb, 0x45, 0x8d, 0x9c, 0x06, 0xf6, 0x11, 0xac, 0x4f, 0x0c, 0x6a,
-	0x19, 0x4f, 0xc0, 0xc4, 0xdb, 0x19, 0xf1, 0x13, 0xe7, 0x97, 0x15, 0x3e, 0x34, 0xd1, 0x7e, 0x05,
-	0xeb, 0x27, 0xf7, 0x2c, 0xfe, 0xcf, 0xf3, 0xdf, 0x80, 0x35, 0x39, 0xa9, 0x05, 0xec, 0xc0, 0x8a,
-	0xbe, 0xdd, 0x09, 0x05, 0x26, 0x16, 0x86, 0x12, 0x5a, 0x5f, 0x72, 0x50, 0xc2, 0x79, 0xf2, 0x01,
-	0x56, 0x26, 0x62, 0x45, 0xea, 0x59, 0x10, 0xa7, 0xfb, 0x54, 0x7b, 0x34, 0xb3, 0x8e, 0x6a, 0xec,
-	0x39, 0xf2, 0x16, 0xaa, 0x3a, 0x26, 0x68, 0x3d, 0xd9, 0x1c, 0x0f, 0xf7, 0x58, 0x12, 0x6a, 0x5b,
-	0xd3, 0x8b, 0x03, 0xb6, 0x8f, 0x40, 0x26, 0xb3, 0x4b, 0x06, 0x32, 0x66, 0xf8, 0x59, 0x6b, 0xcc,
-	0x6e, 0xc8, 0xa8, 0x0f, 0x1e, 0xff, 0xfa, 0xbe, 0x60, 0xfc, 0xb8, 0xab, 0x1b, 0x3f, 0xef, 0xea,
-	0xc6, 0xef, 0xbb, 0xba, 0xf1, 0xf5, 0x4f, 0x7d, 0x0e, 0x4c, 0x2e, 0x3a, 0x8e, 0x0c, 0xbb, 0x7d,
-	0xa7, 0xdb, 0x57, 0x9f, 0xc6, 0x8b, 0x92, 0x7a, 0xbc, 0xf8, 0x17, 0x00, 0x00, 0xff, 0xff, 0x71,
-	0xaf, 0x8a, 0xd8, 0x8d, 0x05, 0x00, 0x00,
+var fileDescriptor_backup_eff3111f7b72e0ba = []byte{
+	// 827 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x55, 0x41, 0x6f, 0xe3, 0x44,
+	0x14, 0xae, 0x63, 0x3b, 0x4d, 0x5f, 0x9a, 0xd4, 0x9d, 0xa6, 0x8b, 0x37, 0xbb, 0x1b, 0x45, 0x46,
+	0x42, 0x61, 0x61, 0xb3, 0x22, 0x48, 0x2b, 0x71, 0x42, 0x9b, 0xb6, 0x2b, 0x22, 0xb1, 0x12, 0x72,
+	0xc4, 0x81, 0x93, 0xe5, 0xda, 0x93, 0xd4, 0x8a, 0x33, 0x36, 0x33, 0x93, 0xb0, 0xfb, 0x2b, 0x10,
+	0x37, 0x8e, 0x1c, 0x38, 0x20, 0xf1, 0x47, 0x38, 0x72, 0xe4, 0x88, 0xca, 0x1f, 0x41, 0x9e, 0x37,
+	0x4e, 0xe2, 0x6c, 0xab, 0x5e, 0x92, 0x79, 0xef, 0x7d, 0xef, 0x9b, 0xef, 0xbd, 0x99, 0x37, 0x86,
+	0xe3, 0xeb, 0x30, 0x5a, 0xac, 0xf2, 0x61, 0xce, 0x33, 0x99, 0x91, 0x3a, 0x5a, 0xdd, 0xd6, 0x62,
+	0xcd, 0xf3, 0x28, 0xbf, 0x46, 0x77, 0xb7, 0x45, 0x39, 0xcf, 0xf8, 0xae, 0x19, 0xce, 0xe4, 0xc6,
+	0xec, 0xcc, 0xb3, 0x79, 0xa6, 0x96, 0x2f, 0x8b, 0x95, 0xf6, 0x9e, 0xf0, 0x95, 0x90, 0x6a, 0x89,
+	0x0e, 0xef, 0x15, 0xc0, 0x15, 0x93, 0xfc, 0xfd, 0x38, 0x94, 0xd1, 0x0d, 0x19, 0xc0, 0x21, 0x65,
+	0x92, 0x27, 0x54, 0xb8, 0x46, 0xdf, 0x1c, 0x34, 0x47, 0xed, 0x61, 0xc9, 0xaa, 0x50, 0x7e, 0x19,
+	0xf6, 0x7e, 0xaf, 0x41, 0x73, 0xac, 0x64, 0x5d, 0xad, 0x29, 0x93, 0xe4, 0x09, 0x1c, 0x71, 0x3a,
+	0x4f, 0x32, 0x16, 0x24, 0xb1, 0x6b, 0xf4, 0x8d, 0x81, 0xe5, 0x37, 0xd0, 0x31, 0x89, 0x49, 0x07,
+	0xec, 0x84, 0xc5, 0xf4, 0x9d, 0x5b, 0x53, 0x01, 0x34, 0xc8, 0xe7, 0x40, 0x38, 0x4d, 0x43, 0x49,
+	0xe3, 0x60, 0x93, 0x2a, 0x5c, 0xb3, 0x6f, 0x0e, 0x2c, 0xdf, 0xd1, 0x11, 0x5f, 0x53, 0x08, 0xf2,
+	0x12, 0x6c, 0x5a, 0xec, 0xe4, 0x5a, 0x7d, 0x63, 0xd0, 0x1e, 0x3d, 0x1e, 0xea, 0x16, 0xed, 0x88,
+	0x18, 0xaa, 0x5f, 0x1f, 0x71, 0xa4, 0x07, 0x10, 0xd3, 0x9c, 0xb2, 0x98, 0xb2, 0xe8, 0xbd, 0x6b,
+	0xab, 0x9d, 0x77, 0x3c, 0x5e, 0x04, 0x36, 0x4a, 0x6f, 0xc2, 0xe1, 0xf7, 0x6c, 0xc1, 0xb2, 0x9f,
+	0x98, 0x73, 0x40, 0x8e, 0xa1, 0x31, 0x65, 0x61, 0x2e, 0x6e, 0x32, 0xe9, 0x18, 0xe4, 0x08, 0xec,
+	0x69, 0x9e, 0x26, 0xd2, 0xa9, 0x11, 0x07, 0x8e, 0xbf, 0xe3, 0x34, 0x0f, 0x39, 0x7d, 0x4b, 0xf9,
+	0x9c, 0x3a, 0x26, 0x39, 0x81, 0xe6, 0x45, 0xb6, 0x5c, 0x26, 0x12, 0x1d, 0x16, 0x39, 0x85, 0x96,
+	0x9f, 0xa5, 0x69, 0x21, 0x0c, 0x5d, 0xb6, 0xf7, 0x5b, 0x0d, 0x00, 0x15, 0xbe, 0xa5, 0x32, 0x24,
+	0x9f, 0x41, 0x5d, 0x89, 0x2b, 0xdb, 0x7b, 0x76, 0x47, 0x15, 0xbe, 0x86, 0x90, 0xaf, 0xe1, 0xa9,
+	0x90, 0x21, 0x97, 0xc1, 0x6c, 0x95, 0xa6, 0x01, 0x02, 0x83, 0x9d, 0x92, 0xb0, 0x99, 0x8f, 0x15,
+	0xe6, 0xcd, 0x2a, 0x4d, 0x91, 0xe3, 0x72, 0x03, 0x20, 0xaf, 0xe1, 0xd9, 0x2c, 0x61, 0x89, 0xb8,
+	0xb9, 0x8f, 0xc1, 0x54, 0x0c, 0x5d, 0x04, 0xdd, 0x49, 0xf1, 0x0a, 0x3e, 0x4a, 0x58, 0xf4, 0x41,
+	0x6a, 0x71, 0x41, 0x2c, 0x75, 0x50, 0xe7, 0x09, 0x8b, 0xf6, 0xb2, 0x12, 0x2a, 0xc8, 0xa7, 0x60,
+	0x0b, 0x19, 0x4a, 0xaa, 0xfa, 0xde, 0xde, 0xaf, 0x73, 0x5a, 0x84, 0x7c, 0x44, 0x78, 0x0c, 0xda,
+	0xca, 0x9e, 0x4a, 0x9a, 0x5f, 0x15, 0x37, 0x9a, 0xbc, 0x80, 0xc3, 0x68, 0xc5, 0x79, 0x71, 0xd8,
+	0xc6, 0xfd, 0xe9, 0x25, 0xa6, 0x80, 0x73, 0xfa, 0xe3, 0x8a, 0x0a, 0xa9, 0x5a, 0x72, 0x1f, 0x5c,
+	0x63, 0xbc, 0x4b, 0x68, 0x5f, 0xa4, 0x2b, 0x21, 0x29, 0x9f, 0x5c, 0xe2, 0x7e, 0x6e, 0x75, 0x3f,
+	0x6b, 0x4b, 0xed, 0x56, 0xa9, 0xad, 0x2d, 0xcb, 0x9f, 0x06, 0xd8, 0x98, 0xed, 0x80, 0xb9, 0x14,
+	0x73, 0x95, 0x79, 0xe4, 0x17, 0x4b, 0x32, 0x06, 0x47, 0x95, 0x16, 0x08, 0x49, 0xf3, 0x40, 0x4d,
+	0xa9, 0x4a, 0x6f, 0x8e, 0x1e, 0x95, 0xca, 0xaa, 0x15, 0x7f, 0x73, 0xe0, 0xb7, 0x45, 0xb5, 0x07,
+	0x63, 0x70, 0x22, 0x54, 0x19, 0x24, 0xb1, 0xe6, 0x30, 0xab, 0x1c, 0xd5, 0x2a, 0x0a, 0x0e, 0x9d,
+	0x31, 0x89, 0x95, 0x67, 0xdc, 0x80, 0x7a, 0x4c, 0x65, 0x98, 0xa4, 0xde, 0x6b, 0x38, 0xc3, 0x5e,
+	0xe0, 0x3c, 0xf9, 0x58, 0x04, 0x79, 0x0e, 0x87, 0x51, 0xc6, 0x24, 0x7d, 0x87, 0x85, 0x37, 0x47,
+	0xce, 0xb0, 0x7c, 0x62, 0x2e, 0xd0, 0xef, 0x97, 0x00, 0x6f, 0x02, 0x9d, 0x2a, 0x85, 0xc8, 0x33,
+	0x26, 0x28, 0xf9, 0x02, 0x8e, 0xf5, 0xf4, 0xa2, 0x48, 0x24, 0x2a, 0xde, 0x0d, 0x7c, 0x9c, 0x94,
+	0x14, 0xbf, 0x89, 0x18, 0x65, 0x78, 0x3f, 0x40, 0xab, 0xa4, 0x42, 0x1d, 0xcf, 0x00, 0xb6, 0xc5,
+	0xea, 0x33, 0x38, 0xda, 0x14, 0xb3, 0xbd, 0x4c, 0xb5, 0x07, 0x2f, 0xd3, 0xcf, 0x06, 0xb4, 0x4b,
+	0x6e, 0x2d, 0xf0, 0x63, 0xb0, 0x77, 0x95, 0xb5, 0xca, 0x6c, 0x14, 0x86, 0x31, 0xf2, 0x02, 0x88,
+	0x3e, 0xf3, 0x0f, 0x27, 0xec, 0x54, 0x47, 0x76, 0xc6, 0x62, 0xa3, 0xc8, 0x7c, 0x48, 0xd1, 0xf3,
+	0x59, 0xf9, 0x4e, 0x2a, 0x6f, 0xf5, 0xb1, 0x69, 0x80, 0x35, 0x95, 0x59, 0xee, 0x18, 0xe4, 0x0c,
+	0x4e, 0xa6, 0xd5, 0x39, 0x76, 0x6a, 0xa4, 0x03, 0xce, 0x9b, 0xbd, 0xd1, 0x74, 0x4c, 0x72, 0x0e,
+	0xa7, 0x13, 0x16, 0x71, 0xba, 0xa4, 0x4c, 0x86, 0xa5, 0xdb, 0x1a, 0xfd, 0x62, 0x40, 0x1d, 0x0d,
+	0xf2, 0x15, 0xe8, 0x2f, 0x06, 0x39, 0xaf, 0x0a, 0xd3, 0xfd, 0xee, 0x3e, 0xda, 0x77, 0x63, 0xab,
+	0xbc, 0x03, 0xf2, 0x2d, 0xb4, 0xf4, 0xac, 0xe3, 0x81, 0x91, 0x27, 0xfb, 0xd0, 0x9d, 0xfb, 0xd3,
+	0x7d, 0x7a, 0x77, 0xb0, 0x64, 0x1b, 0x7f, 0xf2, 0xcf, 0x1f, 0x0d, 0xe3, 0xaf, 0xdb, 0x9e, 0xf1,
+	0xf7, 0x6d, 0xcf, 0xf8, 0xf7, 0xb6, 0x67, 0xfc, 0xfa, 0x5f, 0xef, 0x00, 0x9c, 0x8c, 0xcf, 0x87,
+	0x32, 0x59, 0xac, 0x87, 0x8b, 0xb5, 0xfa, 0x08, 0x5d, 0xd7, 0xd5, 0xdf, 0x97, 0xff, 0x07, 0x00,
+	0x00, 0xff, 0xff, 0xba, 0xd8, 0x16, 0x0d, 0xf7, 0x06, 0x00, 0x00,
 }

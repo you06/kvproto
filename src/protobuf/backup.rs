@@ -536,6 +536,7 @@ pub struct BackupMeta {
     pub start_full_backup_dependency: u64,
     pub finish_full_backup_dependency: u64,
     pub inc_backup_dependencies: ::std::vec::Vec<u64>,
+    pub state: BackupState,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -625,6 +626,21 @@ impl BackupMeta {
     pub fn get_inc_backup_dependencies(&self) -> &[u64] {
         &self.inc_backup_dependencies
     }
+
+    // .backup.BackupState state = 5;
+
+    pub fn clear_state(&mut self) {
+        self.state = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_state(&mut self, v: BackupState) {
+        self.state = v;
+    }
+
+    pub fn get_state(&self) -> BackupState {
+        self.state
+    }
 }
 
 impl ::protobuf::Message for BackupMeta {
@@ -661,6 +677,9 @@ impl ::protobuf::Message for BackupMeta {
                 4 => {
                     ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.inc_backup_dependencies)?;
                 },
+                5 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -686,6 +705,9 @@ impl ::protobuf::Message for BackupMeta {
         for value in &self.inc_backup_dependencies {
             my_size += ::protobuf::rt::value_size(4, *value, ::protobuf::wire_format::WireTypeVarint);
         };
+        if self.state != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(5, self.state);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -706,6 +728,9 @@ impl ::protobuf::Message for BackupMeta {
         for v in &self.inc_backup_dependencies {
             os.write_uint64(4, *v)?;
         };
+        if self.state != BackupState::Unknown {
+            os.write_enum(5, self.state.value())?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -757,6 +782,7 @@ impl ::protobuf::Clear for BackupMeta {
         self.clear_start_full_backup_dependency();
         self.clear_finish_full_backup_dependency();
         self.clear_inc_backup_dependencies();
+        self.clear_state();
         self.unknown_fields.clear();
     }
 }
@@ -770,6 +796,7 @@ impl crate::text::PbPrint for BackupMeta {
         crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", buf);
         crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", buf);
         crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", buf);
+        crate::text::PbPrint::fmt(&self.state, "state", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -784,11 +811,689 @@ impl ::std::fmt::Debug for BackupMeta {
         crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", &mut s);
         crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", &mut s);
         crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", &mut s);
+        crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         write!(f, "{}", s)
     }
 }
 
 impl ::protobuf::reflect::ProtobufValue for BackupMeta {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct StateStepError {
+    // message fields
+    pub current: BackupState,
+    pub request: BackupState,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl StateStepError {
+    pub fn new() -> StateStepError {
+        ::std::default::Default::default()
+    }
+
+    // .backup.BackupState current = 1;
+
+    pub fn clear_current(&mut self) {
+        self.current = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current(&mut self, v: BackupState) {
+        self.current = v;
+    }
+
+    pub fn get_current(&self) -> BackupState {
+        self.current
+    }
+
+    // .backup.BackupState request = 2;
+
+    pub fn clear_request(&mut self) {
+        self.request = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_request(&mut self, v: BackupState) {
+        self.request = v;
+    }
+
+    pub fn get_request(&self) -> BackupState {
+        self.request
+    }
+}
+
+impl ::protobuf::Message for StateStepError {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.current = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                2 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.request = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.current != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(1, self.current);
+        }
+        if self.request != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(2, self.request);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.current != BackupState::Unknown {
+            os.write_enum(1, self.current.value())?;
+        }
+        if self.request != BackupState::Unknown {
+            os.write_enum(2, self.request.value())?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> StateStepError {
+        StateStepError::new()
+    }
+
+    fn default_instance() -> &'static StateStepError {
+        static mut instance: ::protobuf::lazy::Lazy<StateStepError> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const StateStepError,
+        };
+        unsafe {
+            instance.get(StateStepError::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for StateStepError {
+    fn clear(&mut self) {
+        self.clear_current();
+        self.clear_request();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for StateStepError {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.current, "current", buf);
+        crate::text::PbPrint::fmt(&self.request, "request", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for StateStepError {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.current, "current", &mut s);
+        crate::text::PbPrint::fmt(&self.request, "request", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for StateStepError {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct ClusterIDError {
+    // message fields
+    pub current: u64,
+    pub request: u64,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl ClusterIDError {
+    pub fn new() -> ClusterIDError {
+        ::std::default::Default::default()
+    }
+
+    // uint64 current = 1;
+
+    pub fn clear_current(&mut self) {
+        self.current = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current(&mut self, v: u64) {
+        self.current = v;
+    }
+
+    pub fn get_current(&self) -> u64 {
+        self.current
+    }
+
+    // uint64 request = 2;
+
+    pub fn clear_request(&mut self) {
+        self.request = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_request(&mut self, v: u64) {
+        self.request = v;
+    }
+
+    pub fn get_request(&self) -> u64 {
+        self.request
+    }
+}
+
+impl ::protobuf::Message for ClusterIDError {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.current = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.request = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.current != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.current, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.request != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.request, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.current != 0 {
+            os.write_uint64(1, self.current)?;
+        }
+        if self.request != 0 {
+            os.write_uint64(2, self.request)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> ClusterIDError {
+        ClusterIDError::new()
+    }
+
+    fn default_instance() -> &'static ClusterIDError {
+        static mut instance: ::protobuf::lazy::Lazy<ClusterIDError> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ClusterIDError,
+        };
+        unsafe {
+            instance.get(ClusterIDError::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for ClusterIDError {
+    fn clear(&mut self) {
+        self.clear_current();
+        self.clear_request();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for ClusterIDError {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.current, "current", buf);
+        crate::text::PbPrint::fmt(&self.request, "request", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for ClusterIDError {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.current, "current", &mut s);
+        crate::text::PbPrint::fmt(&self.request, "request", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ClusterIDError {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct Error {
+    // message fields
+    pub msg: ::std::string::String,
+    // message oneof groups
+    pub detail: ::std::option::Option<Error_oneof_detail>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+#[derive(Clone,PartialEq)]
+pub enum Error_oneof_detail {
+    state_step_error(StateStepError),
+    cluster_id_error(ClusterIDError),
+}
+
+impl crate::text::PbPrint for Error_oneof_detail {
+    fn fmt(&self, name: &str, buf: &mut String) {
+        match self {
+            Error_oneof_detail::state_step_error(v) => crate::text::PbPrint::fmt(v, name, buf),
+            Error_oneof_detail::cluster_id_error(v) => crate::text::PbPrint::fmt(v, name, buf),
+        }
+    }
+}
+
+impl Error {
+    pub fn new() -> Error {
+        ::std::default::Default::default()
+    }
+
+    // string msg = 1;
+
+    pub fn clear_msg(&mut self) {
+        self.msg.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_msg(&mut self, v: ::std::string::String) {
+        self.msg = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_msg(&mut self) -> &mut ::std::string::String {
+        &mut self.msg
+    }
+
+    // Take field
+    pub fn take_msg(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.msg, ::std::string::String::new())
+    }
+
+    pub fn get_msg(&self) -> &str {
+        &self.msg
+    }
+
+    // .backup.StateStepError state_step_error = 2;
+
+    pub fn clear_state_step_error(&mut self) {
+        self.detail = ::std::option::Option::None;
+    }
+
+    pub fn has_state_step_error(&self) -> bool {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::state_step_error(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_state_step_error(&mut self, v: StateStepError) {
+        self.detail = ::std::option::Option::Some(Error_oneof_detail::state_step_error(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_state_step_error(&mut self) -> &mut StateStepError {
+        if let ::std::option::Option::Some(Error_oneof_detail::state_step_error(_)) = self.detail {
+        } else {
+            self.detail = ::std::option::Option::Some(Error_oneof_detail::state_step_error(StateStepError::new()));
+        }
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::state_step_error(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_state_step_error(&mut self) -> StateStepError {
+        if self.has_state_step_error() {
+            match self.detail.take() {
+                ::std::option::Option::Some(Error_oneof_detail::state_step_error(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            StateStepError::new()
+        }
+    }
+
+    pub fn get_state_step_error(&self) -> &StateStepError {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::state_step_error(ref v)) => v,
+            _ => StateStepError::default_instance(),
+        }
+    }
+
+    // .backup.ClusterIDError cluster_id_error = 3;
+
+    pub fn clear_cluster_id_error(&mut self) {
+        self.detail = ::std::option::Option::None;
+    }
+
+    pub fn has_cluster_id_error(&self) -> bool {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cluster_id_error(&mut self, v: ClusterIDError) {
+        self.detail = ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_cluster_id_error(&mut self) -> &mut ClusterIDError {
+        if let ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(_)) = self.detail {
+        } else {
+            self.detail = ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(ClusterIDError::new()));
+        }
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_cluster_id_error(&mut self) -> ClusterIDError {
+        if self.has_cluster_id_error() {
+            match self.detail.take() {
+                ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ClusterIDError::new()
+        }
+    }
+
+    pub fn get_cluster_id_error(&self) -> &ClusterIDError {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(ref v)) => v,
+            _ => ClusterIDError::default_instance(),
+        }
+    }
+}
+
+impl ::protobuf::Message for Error {
+    fn is_initialized(&self) -> bool {
+        if let Some(Error_oneof_detail::state_step_error(ref v)) = self.detail {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(Error_oneof_detail::cluster_id_error(ref v)) = self.detail {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.msg)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.detail = ::std::option::Option::Some(Error_oneof_detail::state_step_error(is.read_message()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.detail = ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(is.read_message()?));
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.msg.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.msg);
+        }
+        if let ::std::option::Option::Some(ref v) = self.detail {
+            match v {
+                &Error_oneof_detail::state_step_error(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &Error_oneof_detail::cluster_id_error(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.msg.is_empty() {
+            os.write_string(1, &self.msg)?;
+        }
+        if let ::std::option::Option::Some(ref v) = self.detail {
+            match v {
+                &Error_oneof_detail::state_step_error(ref v) => {
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &Error_oneof_detail::cluster_id_error(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> Error {
+        Error::new()
+    }
+
+    fn default_instance() -> &'static Error {
+        static mut instance: ::protobuf::lazy::Lazy<Error> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const Error,
+        };
+        unsafe {
+            instance.get(Error::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for Error {
+    fn clear(&mut self) {
+        self.clear_msg();
+        self.clear_state_step_error();
+        self.clear_cluster_id_error();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for Error {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.msg, "msg", buf);
+        crate::text::PbPrint::fmt(&self.detail, "detail", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for Error {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.msg, "msg", &mut s);
+        crate::text::PbPrint::fmt(&self.detail, "detail", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Error {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
@@ -1137,16 +1842,17 @@ impl ::protobuf::reflect::ProtobufValue for BackupRegionResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct StartFullBackupRequest {
+pub struct BackupRequest {
     // message fields
     pub cluster_id: u64,
+    pub state: BackupState,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
 }
 
-impl StartFullBackupRequest {
-    pub fn new() -> StartFullBackupRequest {
+impl BackupRequest {
+    pub fn new() -> BackupRequest {
         ::std::default::Default::default()
     }
 
@@ -1164,9 +1870,24 @@ impl StartFullBackupRequest {
     pub fn get_cluster_id(&self) -> u64 {
         self.cluster_id
     }
+
+    // .backup.BackupState state = 2;
+
+    pub fn clear_state(&mut self) {
+        self.state = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_state(&mut self, v: BackupState) {
+        self.state = v;
+    }
+
+    pub fn get_state(&self) -> BackupState {
+        self.state
+    }
 }
 
-impl ::protobuf::Message for StartFullBackupRequest {
+impl ::protobuf::Message for BackupRequest {
     fn is_initialized(&self) -> bool {
         true
     }
@@ -1181,6 +1902,9 @@ impl ::protobuf::Message for StartFullBackupRequest {
                     }
                     let tmp = is.read_uint64()?;
                     self.cluster_id = tmp;
+                },
+                2 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1197,303 +1921,8 @@ impl ::protobuf::Message for StartFullBackupRequest {
         if self.cluster_id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.cluster_id, ::protobuf::wire_format::WireTypeVarint);
         }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if self.cluster_id != 0 {
-            os.write_uint64(1, self.cluster_id)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &::std::any::Any {
-        self as &::std::any::Any
-    }
-    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
-        self as &mut ::std::any::Any
-    }
-    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> StartFullBackupRequest {
-        StartFullBackupRequest::new()
-    }
-
-    fn default_instance() -> &'static StartFullBackupRequest {
-        static mut instance: ::protobuf::lazy::Lazy<StartFullBackupRequest> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const StartFullBackupRequest,
-        };
-        unsafe {
-            instance.get(StartFullBackupRequest::new)
-        }
-    }
-}
-
-impl ::protobuf::Clear for StartFullBackupRequest {
-    fn clear(&mut self) {
-        self.clear_cluster_id();
-        self.unknown_fields.clear();
-    }
-}
-
-impl crate::text::PbPrint for StartFullBackupRequest {
-    #[allow(unused_variables)]
-    fn fmt(&self, name: &str, buf: &mut String) {
-        crate::text::push_message_start(name, buf);
-        let old_len = buf.len();
-        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
-        if old_len < buf.len() {
-          buf.push(' ');
-        }
-        buf.push('}');
-    }
-}
-impl ::std::fmt::Debug for StartFullBackupRequest {
-    #[allow(unused_variables)]
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        let mut s = String::new();
-        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
-        write!(f, "{}", s)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for StartFullBackupRequest {
-    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
-        ::protobuf::reflect::ProtobufValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
-pub struct StartFullBackupResponse {
-    // message fields
-    pub start_dependency: u64,
-    // special fields
-    unknown_fields: ::protobuf::UnknownFields,
-    cached_size: ::protobuf::CachedSize,
-}
-
-impl StartFullBackupResponse {
-    pub fn new() -> StartFullBackupResponse {
-        ::std::default::Default::default()
-    }
-
-    // uint64 start_dependency = 1;
-
-    pub fn clear_start_dependency(&mut self) {
-        self.start_dependency = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_start_dependency(&mut self, v: u64) {
-        self.start_dependency = v;
-    }
-
-    pub fn get_start_dependency(&self) -> u64 {
-        self.start_dependency
-    }
-}
-
-impl ::protobuf::Message for StartFullBackupResponse {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint64()?;
-                    self.start_dependency = tmp;
-                },
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.start_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.start_dependency, ::protobuf::wire_format::WireTypeVarint);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if self.start_dependency != 0 {
-            os.write_uint64(1, self.start_dependency)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &::std::any::Any {
-        self as &::std::any::Any
-    }
-    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
-        self as &mut ::std::any::Any
-    }
-    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> StartFullBackupResponse {
-        StartFullBackupResponse::new()
-    }
-
-    fn default_instance() -> &'static StartFullBackupResponse {
-        static mut instance: ::protobuf::lazy::Lazy<StartFullBackupResponse> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const StartFullBackupResponse,
-        };
-        unsafe {
-            instance.get(StartFullBackupResponse::new)
-        }
-    }
-}
-
-impl ::protobuf::Clear for StartFullBackupResponse {
-    fn clear(&mut self) {
-        self.clear_start_dependency();
-        self.unknown_fields.clear();
-    }
-}
-
-impl crate::text::PbPrint for StartFullBackupResponse {
-    #[allow(unused_variables)]
-    fn fmt(&self, name: &str, buf: &mut String) {
-        crate::text::push_message_start(name, buf);
-        let old_len = buf.len();
-        crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", buf);
-        if old_len < buf.len() {
-          buf.push(' ');
-        }
-        buf.push('}');
-    }
-}
-impl ::std::fmt::Debug for StartFullBackupResponse {
-    #[allow(unused_variables)]
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        let mut s = String::new();
-        crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", &mut s);
-        write!(f, "{}", s)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for StartFullBackupResponse {
-    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
-        ::protobuf::reflect::ProtobufValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
-pub struct FinishFullBackupRequest {
-    // message fields
-    pub cluster_id: u64,
-    // special fields
-    unknown_fields: ::protobuf::UnknownFields,
-    cached_size: ::protobuf::CachedSize,
-}
-
-impl FinishFullBackupRequest {
-    pub fn new() -> FinishFullBackupRequest {
-        ::std::default::Default::default()
-    }
-
-    // uint64 cluster_id = 1;
-
-    pub fn clear_cluster_id(&mut self) {
-        self.cluster_id = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_cluster_id(&mut self, v: u64) {
-        self.cluster_id = v;
-    }
-
-    pub fn get_cluster_id(&self) -> u64 {
-        self.cluster_id
-    }
-}
-
-impl ::protobuf::Message for FinishFullBackupRequest {
-    fn is_initialized(&self) -> bool {
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint64()?;
-                    self.cluster_id = tmp;
-                },
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        if self.cluster_id != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.cluster_id, ::protobuf::wire_format::WireTypeVarint);
+        if self.state != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(2, self.state);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -1504,6 +1933,9 @@ impl ::protobuf::Message for FinishFullBackupRequest {
         if self.cluster_id != 0 {
             os.write_uint64(1, self.cluster_id)?;
         }
+        if self.state != BackupState::Unknown {
+            os.write_enum(2, self.state.value())?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -1534,87 +1966,145 @@ impl ::protobuf::Message for FinishFullBackupRequest {
         Self::descriptor_static()
     }
 
-    fn new() -> FinishFullBackupRequest {
-        FinishFullBackupRequest::new()
+    fn new() -> BackupRequest {
+        BackupRequest::new()
     }
 
-    fn default_instance() -> &'static FinishFullBackupRequest {
-        static mut instance: ::protobuf::lazy::Lazy<FinishFullBackupRequest> = ::protobuf::lazy::Lazy {
+    fn default_instance() -> &'static BackupRequest {
+        static mut instance: ::protobuf::lazy::Lazy<BackupRequest> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const FinishFullBackupRequest,
+            ptr: 0 as *const BackupRequest,
         };
         unsafe {
-            instance.get(FinishFullBackupRequest::new)
+            instance.get(BackupRequest::new)
         }
     }
 }
 
-impl ::protobuf::Clear for FinishFullBackupRequest {
+impl ::protobuf::Clear for BackupRequest {
     fn clear(&mut self) {
         self.clear_cluster_id();
+        self.clear_state();
         self.unknown_fields.clear();
     }
 }
 
-impl crate::text::PbPrint for FinishFullBackupRequest {
+impl crate::text::PbPrint for BackupRequest {
     #[allow(unused_variables)]
     fn fmt(&self, name: &str, buf: &mut String) {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
+        crate::text::PbPrint::fmt(&self.state, "state", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
         buf.push('}');
     }
 }
-impl ::std::fmt::Debug for FinishFullBackupRequest {
+impl ::std::fmt::Debug for BackupRequest {
     #[allow(unused_variables)]
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
+        crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         write!(f, "{}", s)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for FinishFullBackupRequest {
+impl ::protobuf::reflect::ProtobufValue for BackupRequest {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct FinishFullBackupResponse {
+pub struct BackupResponse {
     // message fields
-    pub finish_dependency: u64,
+    pub error: ::protobuf::SingularPtrField<Error>,
+    pub current_dependency: u64,
+    pub state: BackupState,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
 }
 
-impl FinishFullBackupResponse {
-    pub fn new() -> FinishFullBackupResponse {
+impl BackupResponse {
+    pub fn new() -> BackupResponse {
         ::std::default::Default::default()
     }
 
-    // uint64 finish_dependency = 1;
+    // .backup.Error error = 1;
 
-    pub fn clear_finish_dependency(&mut self) {
-        self.finish_dependency = 0;
+    pub fn clear_error(&mut self) {
+        self.error.clear();
+    }
+
+    pub fn has_error(&self) -> bool {
+        self.error.is_some()
     }
 
     // Param is passed by value, moved
-    pub fn set_finish_dependency(&mut self, v: u64) {
-        self.finish_dependency = v;
+    pub fn set_error(&mut self, v: Error) {
+        self.error = ::protobuf::SingularPtrField::some(v);
     }
 
-    pub fn get_finish_dependency(&self) -> u64 {
-        self.finish_dependency
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_error(&mut self) -> &mut Error {
+        if self.error.is_none() {
+            self.error.set_default();
+        }
+        self.error.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_error(&mut self) -> Error {
+        self.error.take().unwrap_or_else(|| Error::new())
+    }
+
+    pub fn get_error(&self) -> &Error {
+        self.error.as_ref().unwrap_or_else(|| Error::default_instance())
+    }
+
+    // uint64 current_dependency = 2;
+
+    pub fn clear_current_dependency(&mut self) {
+        self.current_dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_current_dependency(&mut self, v: u64) {
+        self.current_dependency = v;
+    }
+
+    pub fn get_current_dependency(&self) -> u64 {
+        self.current_dependency
+    }
+
+    // .backup.BackupState state = 3;
+
+    pub fn clear_state(&mut self) {
+        self.state = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_state(&mut self, v: BackupState) {
+        self.state = v;
+    }
+
+    pub fn get_state(&self) -> BackupState {
+        self.state
     }
 }
 
-impl ::protobuf::Message for FinishFullBackupResponse {
+impl ::protobuf::Message for BackupResponse {
     fn is_initialized(&self) -> bool {
+        for v in &self.error {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -1623,11 +2113,17 @@ impl ::protobuf::Message for FinishFullBackupResponse {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.error)?;
+                },
+                2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
-                    self.finish_dependency = tmp;
+                    self.current_dependency = tmp;
+                },
+                3 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1641,8 +2137,15 @@ impl ::protobuf::Message for FinishFullBackupResponse {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if self.finish_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.finish_dependency, ::protobuf::wire_format::WireTypeVarint);
+        if let Some(ref v) = self.error.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if self.current_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.current_dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.state != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(3, self.state);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -1650,8 +2153,16 @@ impl ::protobuf::Message for FinishFullBackupResponse {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if self.finish_dependency != 0 {
-            os.write_uint64(1, self.finish_dependency)?;
+        if let Some(ref v) = self.error.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if self.current_dependency != 0 {
+            os.write_uint64(2, self.current_dependency)?;
+        }
+        if self.state != BackupState::Unknown {
+            os.write_enum(3, self.state.value())?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -1683,51 +2194,120 @@ impl ::protobuf::Message for FinishFullBackupResponse {
         Self::descriptor_static()
     }
 
-    fn new() -> FinishFullBackupResponse {
-        FinishFullBackupResponse::new()
+    fn new() -> BackupResponse {
+        BackupResponse::new()
     }
 
-    fn default_instance() -> &'static FinishFullBackupResponse {
-        static mut instance: ::protobuf::lazy::Lazy<FinishFullBackupResponse> = ::protobuf::lazy::Lazy {
+    fn default_instance() -> &'static BackupResponse {
+        static mut instance: ::protobuf::lazy::Lazy<BackupResponse> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const FinishFullBackupResponse,
+            ptr: 0 as *const BackupResponse,
         };
         unsafe {
-            instance.get(FinishFullBackupResponse::new)
+            instance.get(BackupResponse::new)
         }
     }
 }
 
-impl ::protobuf::Clear for FinishFullBackupResponse {
+impl ::protobuf::Clear for BackupResponse {
     fn clear(&mut self) {
-        self.clear_finish_dependency();
+        self.clear_error();
+        self.clear_current_dependency();
+        self.clear_state();
         self.unknown_fields.clear();
     }
 }
 
-impl crate::text::PbPrint for FinishFullBackupResponse {
+impl crate::text::PbPrint for BackupResponse {
     #[allow(unused_variables)]
     fn fmt(&self, name: &str, buf: &mut String) {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
-        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", buf);
+        crate::text::PbPrint::fmt(&self.error, "error", buf);
+        crate::text::PbPrint::fmt(&self.current_dependency, "current_dependency", buf);
+        crate::text::PbPrint::fmt(&self.state, "state", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
         buf.push('}');
     }
 }
-impl ::std::fmt::Debug for FinishFullBackupResponse {
+impl ::std::fmt::Debug for BackupResponse {
     #[allow(unused_variables)]
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
-        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.error, "error", &mut s);
+        crate::text::PbPrint::fmt(&self.current_dependency, "current_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         write!(f, "{}", s)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for FinishFullBackupResponse {
+impl ::protobuf::reflect::ProtobufValue for BackupResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(Clone,PartialEq,Eq,Debug,Hash)]
+pub enum BackupState {
+    Unknown = 0,
+    Stop = 1,
+    StartFullBackup = 2,
+    FinishFullBackup = 3,
+    IncrementalBackup = 4,
+}
+
+impl ::protobuf::ProtobufEnum for BackupState {
+    fn value(&self) -> i32 {
+        *self as i32
+    }
+
+    fn from_i32(value: i32) -> ::std::option::Option<BackupState> {
+        match value {
+            0 => ::std::option::Option::Some(BackupState::Unknown),
+            1 => ::std::option::Option::Some(BackupState::Stop),
+            2 => ::std::option::Option::Some(BackupState::StartFullBackup),
+            3 => ::std::option::Option::Some(BackupState::FinishFullBackup),
+            4 => ::std::option::Option::Some(BackupState::IncrementalBackup),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    fn values() -> &'static [Self] {
+        static values: &'static [BackupState] = &[
+            BackupState::Unknown,
+            BackupState::Stop,
+            BackupState::StartFullBackup,
+            BackupState::FinishFullBackup,
+            BackupState::IncrementalBackup,
+        ];
+        values
+    }
+}
+
+impl ::std::marker::Copy for BackupState {
+}
+
+impl crate::text::PbPrint for BackupState {
+    fn fmt(&self, name: &str, buf: &mut String) {
+        use std::fmt::Write;
+        if *self == BackupState::default() {
+            return;
+        }
+        crate::text::push_field_start(name, buf);
+        write!(buf, "{:?}", self).unwrap();
+    }
+}
+
+impl ::std::default::Default for BackupState {
+    fn default() -> Self {
+        BackupState::Unknown
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for BackupState {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Enum(self.descriptor())
     }
 }
