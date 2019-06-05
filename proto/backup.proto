@@ -39,19 +39,37 @@ message BackupEvent {
 
 message BackupMeta {
     repeated BackupEvent events = 1;
-    uint64 start_backup_dependency = 2;
-    uint64 full_backup_dependency = 3;
+    uint64 start_full_backup_dependency = 2;
+    uint64 finish_full_backup_dependency = 3;
     repeated uint64 inc_backup_dependencies = 4;
 }
 
-message BackupRequest {
+message BackupRegionRequest {
     kvrpcpb.Context context = 1;
 }
 
-message BackupResponse {
+message BackupRegionResponse {
     errorpb.Error region_error = 1;
 }
 
+message StartFullBackupRequest {
+    uint64 cluster_id = 1;
+}
+
+message StartFullBackupResponse {
+    uint64 start_dependency = 1;
+}
+
+message FinishFullBackupRequest {
+    uint64 cluster_id = 1;
+}
+
+message FinishFullBackupResponse {
+    uint64 finish_dependency = 1;
+}
+
 service Backup {
-    rpc backup(BackupRequest) returns (BackupResponse) {}
+    rpc start_full_backup(StartFullBackupRequest) returns (StartFullBackupResponse) {}
+    rpc backup_region(BackupRegionRequest) returns (BackupRegionResponse) {}
+    rpc finish_full_backup(FinishFullBackupRequest) returns (FinishFullBackupResponse) {}
 }
