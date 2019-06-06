@@ -38,11 +38,14 @@ message BackupEvent {
 }
 
 message BackupMeta {
-    repeated BackupEvent events = 1;
-    uint64 start_full_backup_dependency = 2;
-    uint64 finish_full_backup_dependency = 3;
-    repeated uint64 inc_backup_dependencies = 4;
-    BackupState state = 5;
+    uint64 cluster_id = 1;
+    string cluster_version = 2;
+
+    BackupState state = 3;
+    repeated BackupEvent events = 4;
+    uint64 start_full_backup_dependency = 5;
+    uint64 finish_full_backup_dependency = 6;
+    repeated uint64 inc_backup_dependencies = 7;
 }
 
 enum BackupState {
@@ -68,6 +71,7 @@ message Error {
     oneof detail {
         StateStepError state_step_error = 2;
         ClusterIDError cluster_id_error = 3;
+        errorpb.Error region_error = 4;
     }
 }
 
@@ -76,7 +80,7 @@ message BackupRegionRequest {
 }
 
 message BackupRegionResponse {
-    errorpb.Error region_error = 1;
+    Error error = 1;
 }
 
 message BackupRequest {
