@@ -532,11 +532,13 @@ impl ::protobuf::reflect::ProtobufValue for BackupEvent_Event {
 #[derive(PartialEq,Clone,Default)]
 pub struct BackupMeta {
     // message fields
+    pub cluster_id: u64,
+    pub cluster_version: ::std::string::String,
+    pub state: BackupState,
     pub events: ::protobuf::RepeatedField<BackupEvent>,
     pub start_full_backup_dependency: u64,
     pub finish_full_backup_dependency: u64,
     pub inc_backup_dependencies: ::std::vec::Vec<u64>,
-    pub state: BackupState,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -547,7 +549,63 @@ impl BackupMeta {
         ::std::default::Default::default()
     }
 
-    // repeated .backup.BackupEvent events = 1;
+    // uint64 cluster_id = 1;
+
+    pub fn clear_cluster_id(&mut self) {
+        self.cluster_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cluster_id(&mut self, v: u64) {
+        self.cluster_id = v;
+    }
+
+    pub fn get_cluster_id(&self) -> u64 {
+        self.cluster_id
+    }
+
+    // string cluster_version = 2;
+
+    pub fn clear_cluster_version(&mut self) {
+        self.cluster_version.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cluster_version(&mut self, v: ::std::string::String) {
+        self.cluster_version = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_cluster_version(&mut self) -> &mut ::std::string::String {
+        &mut self.cluster_version
+    }
+
+    // Take field
+    pub fn take_cluster_version(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.cluster_version, ::std::string::String::new())
+    }
+
+    pub fn get_cluster_version(&self) -> &str {
+        &self.cluster_version
+    }
+
+    // .backup.BackupState state = 3;
+
+    pub fn clear_state(&mut self) {
+        self.state = BackupState::Unknown;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_state(&mut self, v: BackupState) {
+        self.state = v;
+    }
+
+    pub fn get_state(&self) -> BackupState {
+        self.state
+    }
+
+    // repeated .backup.BackupEvent events = 4;
 
     pub fn clear_events(&mut self) {
         self.events.clear();
@@ -572,7 +630,7 @@ impl BackupMeta {
         &self.events
     }
 
-    // uint64 start_full_backup_dependency = 2;
+    // uint64 start_full_backup_dependency = 5;
 
     pub fn clear_start_full_backup_dependency(&mut self) {
         self.start_full_backup_dependency = 0;
@@ -587,7 +645,7 @@ impl BackupMeta {
         self.start_full_backup_dependency
     }
 
-    // uint64 finish_full_backup_dependency = 3;
+    // uint64 finish_full_backup_dependency = 6;
 
     pub fn clear_finish_full_backup_dependency(&mut self) {
         self.finish_full_backup_dependency = 0;
@@ -602,7 +660,7 @@ impl BackupMeta {
         self.finish_full_backup_dependency
     }
 
-    // repeated uint64 inc_backup_dependencies = 4;
+    // repeated uint64 inc_backup_dependencies = 7;
 
     pub fn clear_inc_backup_dependencies(&mut self) {
         self.inc_backup_dependencies.clear();
@@ -626,21 +684,6 @@ impl BackupMeta {
     pub fn get_inc_backup_dependencies(&self) -> &[u64] {
         &self.inc_backup_dependencies
     }
-
-    // .backup.BackupState state = 5;
-
-    pub fn clear_state(&mut self) {
-        self.state = BackupState::Unknown;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_state(&mut self, v: BackupState) {
-        self.state = v;
-    }
-
-    pub fn get_state(&self) -> BackupState {
-        self.state
-    }
 }
 
 impl ::protobuf::Message for BackupMeta {
@@ -658,27 +701,37 @@ impl ::protobuf::Message for BackupMeta {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.cluster_id = tmp;
                 },
                 2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.cluster_version)?;
+                },
+                3 => {
+                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
+                },
+                4 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
+                },
+                5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
                     self.start_full_backup_dependency = tmp;
                 },
-                3 => {
+                6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
                     self.finish_full_backup_dependency = tmp;
                 },
-                4 => {
+                7 => {
                     ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.inc_backup_dependencies)?;
-                },
-                5 => {
-                    if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -692,45 +745,57 @@ impl ::protobuf::Message for BackupMeta {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.cluster_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.cluster_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.cluster_version.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.cluster_version);
+        }
+        if self.state != BackupState::Unknown {
+            my_size += ::protobuf::rt::enum_size(3, self.state);
+        }
         for value in &self.events {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
         if self.start_full_backup_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.start_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(5, self.start_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
         }
         if self.finish_full_backup_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(3, self.finish_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(6, self.finish_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
         }
         for value in &self.inc_backup_dependencies {
-            my_size += ::protobuf::rt::value_size(4, *value, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(7, *value, ::protobuf::wire_format::WireTypeVarint);
         };
-        if self.state != BackupState::Unknown {
-            my_size += ::protobuf::rt::enum_size(5, self.state);
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.cluster_id != 0 {
+            os.write_uint64(1, self.cluster_id)?;
+        }
+        if !self.cluster_version.is_empty() {
+            os.write_string(2, &self.cluster_version)?;
+        }
+        if self.state != BackupState::Unknown {
+            os.write_enum(3, self.state.value())?;
+        }
         for v in &self.events {
-            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
         if self.start_full_backup_dependency != 0 {
-            os.write_uint64(2, self.start_full_backup_dependency)?;
+            os.write_uint64(5, self.start_full_backup_dependency)?;
         }
         if self.finish_full_backup_dependency != 0 {
-            os.write_uint64(3, self.finish_full_backup_dependency)?;
+            os.write_uint64(6, self.finish_full_backup_dependency)?;
         }
         for v in &self.inc_backup_dependencies {
-            os.write_uint64(4, *v)?;
+            os.write_uint64(7, *v)?;
         };
-        if self.state != BackupState::Unknown {
-            os.write_enum(5, self.state.value())?;
-        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -778,11 +843,13 @@ impl ::protobuf::Message for BackupMeta {
 
 impl ::protobuf::Clear for BackupMeta {
     fn clear(&mut self) {
+        self.clear_cluster_id();
+        self.clear_cluster_version();
+        self.clear_state();
         self.clear_events();
         self.clear_start_full_backup_dependency();
         self.clear_finish_full_backup_dependency();
         self.clear_inc_backup_dependencies();
-        self.clear_state();
         self.unknown_fields.clear();
     }
 }
@@ -792,11 +859,13 @@ impl crate::text::PbPrint for BackupMeta {
     fn fmt(&self, name: &str, buf: &mut String) {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
+        crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", buf);
+        crate::text::PbPrint::fmt(&self.state, "state", buf);
         crate::text::PbPrint::fmt(&self.events, "events", buf);
         crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", buf);
         crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", buf);
         crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", buf);
-        crate::text::PbPrint::fmt(&self.state, "state", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -807,11 +876,13 @@ impl ::std::fmt::Debug for BackupMeta {
     #[allow(unused_variables)]
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
+        crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", &mut s);
+        crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         crate::text::PbPrint::fmt(&self.events, "events", &mut s);
         crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", &mut s);
         crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", &mut s);
         crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", &mut s);
-        crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -1191,6 +1262,7 @@ pub struct Error {
 pub enum Error_oneof_detail {
     state_step_error(StateStepError),
     cluster_id_error(ClusterIDError),
+    region_error(super::errorpb::Error),
 }
 
 impl crate::text::PbPrint for Error_oneof_detail {
@@ -1198,6 +1270,7 @@ impl crate::text::PbPrint for Error_oneof_detail {
         match self {
             Error_oneof_detail::state_step_error(v) => crate::text::PbPrint::fmt(v, name, buf),
             Error_oneof_detail::cluster_id_error(v) => crate::text::PbPrint::fmt(v, name, buf),
+            Error_oneof_detail::region_error(v) => crate::text::PbPrint::fmt(v, name, buf),
         }
     }
 }
@@ -1330,6 +1403,55 @@ impl Error {
             _ => ClusterIDError::default_instance(),
         }
     }
+
+    // .errorpb.Error region_error = 4;
+
+    pub fn clear_region_error(&mut self) {
+        self.detail = ::std::option::Option::None;
+    }
+
+    pub fn has_region_error(&self) -> bool {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::region_error(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_region_error(&mut self, v: super::errorpb::Error) {
+        self.detail = ::std::option::Option::Some(Error_oneof_detail::region_error(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_region_error(&mut self) -> &mut super::errorpb::Error {
+        if let ::std::option::Option::Some(Error_oneof_detail::region_error(_)) = self.detail {
+        } else {
+            self.detail = ::std::option::Option::Some(Error_oneof_detail::region_error(super::errorpb::Error::new()));
+        }
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::region_error(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_region_error(&mut self) -> super::errorpb::Error {
+        if self.has_region_error() {
+            match self.detail.take() {
+                ::std::option::Option::Some(Error_oneof_detail::region_error(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            super::errorpb::Error::new()
+        }
+    }
+
+    pub fn get_region_error(&self) -> &super::errorpb::Error {
+        match self.detail {
+            ::std::option::Option::Some(Error_oneof_detail::region_error(ref v)) => v,
+            _ => super::errorpb::Error::default_instance(),
+        }
+    }
 }
 
 impl ::protobuf::Message for Error {
@@ -1340,6 +1462,11 @@ impl ::protobuf::Message for Error {
             }
         }
         if let Some(Error_oneof_detail::cluster_id_error(ref v)) = self.detail {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(Error_oneof_detail::region_error(ref v)) = self.detail {
             if !v.is_initialized() {
                 return false;
             }
@@ -1366,6 +1493,12 @@ impl ::protobuf::Message for Error {
                     }
                     self.detail = ::std::option::Option::Some(Error_oneof_detail::cluster_id_error(is.read_message()?));
                 },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.detail = ::std::option::Option::Some(Error_oneof_detail::region_error(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -1391,6 +1524,10 @@ impl ::protobuf::Message for Error {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &Error_oneof_detail::region_error(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -1411,6 +1548,11 @@ impl ::protobuf::Message for Error {
                 },
                 &Error_oneof_detail::cluster_id_error(ref v) => {
                     os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &Error_oneof_detail::region_error(ref v) => {
+                    os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -1466,6 +1608,7 @@ impl ::protobuf::Clear for Error {
         self.clear_msg();
         self.clear_state_step_error();
         self.clear_cluster_id_error();
+        self.clear_region_error();
         self.unknown_fields.clear();
     }
 }
@@ -1673,7 +1816,7 @@ impl ::protobuf::reflect::ProtobufValue for BackupRegionRequest {
 #[derive(PartialEq,Clone,Default)]
 pub struct BackupRegionResponse {
     // message fields
-    pub region_error: ::protobuf::SingularPtrField<super::errorpb::Error>,
+    pub error: ::protobuf::SingularPtrField<Error>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -1684,43 +1827,43 @@ impl BackupRegionResponse {
         ::std::default::Default::default()
     }
 
-    // .errorpb.Error region_error = 1;
+    // .backup.Error error = 1;
 
-    pub fn clear_region_error(&mut self) {
-        self.region_error.clear();
+    pub fn clear_error(&mut self) {
+        self.error.clear();
     }
 
-    pub fn has_region_error(&self) -> bool {
-        self.region_error.is_some()
+    pub fn has_error(&self) -> bool {
+        self.error.is_some()
     }
 
     // Param is passed by value, moved
-    pub fn set_region_error(&mut self, v: super::errorpb::Error) {
-        self.region_error = ::protobuf::SingularPtrField::some(v);
+    pub fn set_error(&mut self, v: Error) {
+        self.error = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_region_error(&mut self) -> &mut super::errorpb::Error {
-        if self.region_error.is_none() {
-            self.region_error.set_default();
+    pub fn mut_error(&mut self) -> &mut Error {
+        if self.error.is_none() {
+            self.error.set_default();
         }
-        self.region_error.as_mut().unwrap()
+        self.error.as_mut().unwrap()
     }
 
     // Take field
-    pub fn take_region_error(&mut self) -> super::errorpb::Error {
-        self.region_error.take().unwrap_or_else(|| super::errorpb::Error::new())
+    pub fn take_error(&mut self) -> Error {
+        self.error.take().unwrap_or_else(|| Error::new())
     }
 
-    pub fn get_region_error(&self) -> &super::errorpb::Error {
-        self.region_error.as_ref().unwrap_or_else(|| super::errorpb::Error::default_instance())
+    pub fn get_error(&self) -> &Error {
+        self.error.as_ref().unwrap_or_else(|| Error::default_instance())
     }
 }
 
 impl ::protobuf::Message for BackupRegionResponse {
     fn is_initialized(&self) -> bool {
-        for v in &self.region_error {
+        for v in &self.error {
             if !v.is_initialized() {
                 return false;
             }
@@ -1733,7 +1876,7 @@ impl ::protobuf::Message for BackupRegionResponse {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.region_error)?;
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.error)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1747,7 +1890,7 @@ impl ::protobuf::Message for BackupRegionResponse {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if let Some(ref v) = self.region_error.as_ref() {
+        if let Some(ref v) = self.error.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
@@ -1757,7 +1900,7 @@ impl ::protobuf::Message for BackupRegionResponse {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if let Some(ref v) = self.region_error.as_ref() {
+        if let Some(ref v) = self.error.as_ref() {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -1809,7 +1952,7 @@ impl ::protobuf::Message for BackupRegionResponse {
 
 impl ::protobuf::Clear for BackupRegionResponse {
     fn clear(&mut self) {
-        self.clear_region_error();
+        self.clear_error();
         self.unknown_fields.clear();
     }
 }
@@ -1819,7 +1962,7 @@ impl crate::text::PbPrint for BackupRegionResponse {
     fn fmt(&self, name: &str, buf: &mut String) {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
-        crate::text::PbPrint::fmt(&self.region_error, "region_error", buf);
+        crate::text::PbPrint::fmt(&self.error, "error", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -1830,7 +1973,7 @@ impl ::std::fmt::Debug for BackupRegionResponse {
     #[allow(unused_variables)]
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
-        crate::text::PbPrint::fmt(&self.region_error, "region_error", &mut s);
+        crate::text::PbPrint::fmt(&self.error, "error", &mut s);
         write!(f, "{}", s)
     }
 }
