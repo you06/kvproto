@@ -97,3 +97,55 @@ pub fn create_backup<S: Backup + Send + Clone + 'static>(s: S) -> ::grpcio::Serv
     });
     builder.build()
 }
+
+const METHOD_RESTORE_RESTORE: ::grpcio::Method<super::backup::RestoreRequest, super::backup::RestoreResponse> = ::grpcio::Method {
+    ty: ::grpcio::MethodType::Unary,
+    name: "/backup.Restore/restore",
+    req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+    resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
+};
+
+#[derive(Clone)]
+pub struct RestoreClient {
+    client: ::grpcio::Client,
+}
+
+impl RestoreClient {
+    pub fn new(channel: ::grpcio::Channel) -> Self {
+        RestoreClient {
+            client: ::grpcio::Client::new(channel),
+        }
+    }
+
+    pub fn restore_opt(&self, req: &super::backup::RestoreRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::backup::RestoreResponse> {
+        self.client.unary_call(&METHOD_RESTORE_RESTORE, req, opt)
+    }
+
+    pub fn restore(&self, req: &super::backup::RestoreRequest) -> ::grpcio::Result<super::backup::RestoreResponse> {
+        self.restore_opt(req, ::grpcio::CallOption::default())
+    }
+
+    pub fn restore_async_opt(&self, req: &super::backup::RestoreRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::backup::RestoreResponse>> {
+        self.client.unary_call_async(&METHOD_RESTORE_RESTORE, req, opt)
+    }
+
+    pub fn restore_async(&self, req: &super::backup::RestoreRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::backup::RestoreResponse>> {
+        self.restore_async_opt(req, ::grpcio::CallOption::default())
+    }
+    pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Item = (), Error = ()> + Send + 'static {
+        self.client.spawn(f)
+    }
+}
+
+pub trait Restore {
+    fn restore(&mut self, ctx: ::grpcio::RpcContext, req: super::backup::RestoreRequest, sink: ::grpcio::UnarySink<super::backup::RestoreResponse>);
+}
+
+pub fn create_restore<S: Restore + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
+    let mut builder = ::grpcio::ServiceBuilder::new();
+    let mut instance = s.clone();
+    builder = builder.add_unary_handler(&METHOD_RESTORE_RESTORE, move |ctx, req, resp| {
+        instance.restore(ctx, req, resp)
+    });
+    builder.build()
+}

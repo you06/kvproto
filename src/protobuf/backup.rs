@@ -530,15 +530,242 @@ impl ::protobuf::reflect::ProtobufValue for BackupEvent_Event {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct File {
+    // message fields
+    pub path: ::std::string::String,
+    pub crc32: u32,
+    pub region_ids: ::std::vec::Vec<u64>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl File {
+    pub fn new() -> File {
+        ::std::default::Default::default()
+    }
+
+    // string path = 1;
+
+    pub fn clear_path(&mut self) {
+        self.path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_path(&mut self, v: ::std::string::String) {
+        self.path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_path(&mut self) -> &mut ::std::string::String {
+        &mut self.path
+    }
+
+    // Take field
+    pub fn take_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.path, ::std::string::String::new())
+    }
+
+    pub fn get_path(&self) -> &str {
+        &self.path
+    }
+
+    // uint32 crc32 = 2;
+
+    pub fn clear_crc32(&mut self) {
+        self.crc32 = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_crc32(&mut self, v: u32) {
+        self.crc32 = v;
+    }
+
+    pub fn get_crc32(&self) -> u32 {
+        self.crc32
+    }
+
+    // repeated uint64 region_ids = 3;
+
+    pub fn clear_region_ids(&mut self) {
+        self.region_ids.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_region_ids(&mut self, v: ::std::vec::Vec<u64>) {
+        self.region_ids = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_region_ids(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.region_ids
+    }
+
+    // Take field
+    pub fn take_region_ids(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.region_ids, ::std::vec::Vec::new())
+    }
+
+    pub fn get_region_ids(&self) -> &[u64] {
+        &self.region_ids
+    }
+}
+
+impl ::protobuf::Message for File {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.path)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.crc32 = tmp;
+                },
+                3 => {
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.region_ids)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.path.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.path);
+        }
+        if self.crc32 != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.crc32, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.region_ids {
+            my_size += ::protobuf::rt::value_size(3, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.path.is_empty() {
+            os.write_string(1, &self.path)?;
+        }
+        if self.crc32 != 0 {
+            os.write_uint32(2, self.crc32)?;
+        }
+        for v in &self.region_ids {
+            os.write_uint64(3, *v)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> File {
+        File::new()
+    }
+
+    fn default_instance() -> &'static File {
+        static mut instance: ::protobuf::lazy::Lazy<File> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const File,
+        };
+        unsafe {
+            instance.get(File::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for File {
+    fn clear(&mut self) {
+        self.clear_path();
+        self.clear_crc32();
+        self.clear_region_ids();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for File {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.path, "path", buf);
+        crate::text::PbPrint::fmt(&self.crc32, "crc32", buf);
+        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for File {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.path, "path", &mut s);
+        crate::text::PbPrint::fmt(&self.crc32, "crc32", &mut s);
+        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for File {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct BackupMeta {
     // message fields
     pub cluster_id: u64,
     pub cluster_version: ::std::string::String,
     pub state: BackupState,
+    pub start_dependency: u64,
+    pub finish_dependency: u64,
+    pub incremental_dependencies: ::std::vec::Vec<u64>,
     pub events: ::protobuf::RepeatedField<BackupEvent>,
-    pub start_full_backup_dependency: u64,
-    pub finish_full_backup_dependency: u64,
-    pub inc_backup_dependencies: ::std::vec::Vec<u64>,
+    pub files: ::protobuf::RepeatedField<File>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -605,6 +832,61 @@ impl BackupMeta {
         self.state
     }
 
+    // uint64 start_dependency = 5;
+
+    pub fn clear_start_dependency(&mut self) {
+        self.start_dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_start_dependency(&mut self, v: u64) {
+        self.start_dependency = v;
+    }
+
+    pub fn get_start_dependency(&self) -> u64 {
+        self.start_dependency
+    }
+
+    // uint64 finish_dependency = 6;
+
+    pub fn clear_finish_dependency(&mut self) {
+        self.finish_dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_finish_dependency(&mut self, v: u64) {
+        self.finish_dependency = v;
+    }
+
+    pub fn get_finish_dependency(&self) -> u64 {
+        self.finish_dependency
+    }
+
+    // repeated uint64 incremental_dependencies = 7;
+
+    pub fn clear_incremental_dependencies(&mut self) {
+        self.incremental_dependencies.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_incremental_dependencies(&mut self, v: ::std::vec::Vec<u64>) {
+        self.incremental_dependencies = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_incremental_dependencies(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.incremental_dependencies
+    }
+
+    // Take field
+    pub fn take_incremental_dependencies(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.incremental_dependencies, ::std::vec::Vec::new())
+    }
+
+    pub fn get_incremental_dependencies(&self) -> &[u64] {
+        &self.incremental_dependencies
+    }
+
     // repeated .backup.BackupEvent events = 4;
 
     pub fn clear_events(&mut self) {
@@ -630,65 +912,40 @@ impl BackupMeta {
         &self.events
     }
 
-    // uint64 start_full_backup_dependency = 5;
+    // repeated .backup.File files = 8;
 
-    pub fn clear_start_full_backup_dependency(&mut self) {
-        self.start_full_backup_dependency = 0;
+    pub fn clear_files(&mut self) {
+        self.files.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_start_full_backup_dependency(&mut self, v: u64) {
-        self.start_full_backup_dependency = v;
-    }
-
-    pub fn get_start_full_backup_dependency(&self) -> u64 {
-        self.start_full_backup_dependency
-    }
-
-    // uint64 finish_full_backup_dependency = 6;
-
-    pub fn clear_finish_full_backup_dependency(&mut self) {
-        self.finish_full_backup_dependency = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_finish_full_backup_dependency(&mut self, v: u64) {
-        self.finish_full_backup_dependency = v;
-    }
-
-    pub fn get_finish_full_backup_dependency(&self) -> u64 {
-        self.finish_full_backup_dependency
-    }
-
-    // repeated uint64 inc_backup_dependencies = 7;
-
-    pub fn clear_inc_backup_dependencies(&mut self) {
-        self.inc_backup_dependencies.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_inc_backup_dependencies(&mut self, v: ::std::vec::Vec<u64>) {
-        self.inc_backup_dependencies = v;
+    pub fn set_files(&mut self, v: ::protobuf::RepeatedField<File>) {
+        self.files = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_inc_backup_dependencies(&mut self) -> &mut ::std::vec::Vec<u64> {
-        &mut self.inc_backup_dependencies
+    pub fn mut_files(&mut self) -> &mut ::protobuf::RepeatedField<File> {
+        &mut self.files
     }
 
     // Take field
-    pub fn take_inc_backup_dependencies(&mut self) -> ::std::vec::Vec<u64> {
-        ::std::mem::replace(&mut self.inc_backup_dependencies, ::std::vec::Vec::new())
+    pub fn take_files(&mut self) -> ::protobuf::RepeatedField<File> {
+        ::std::mem::replace(&mut self.files, ::protobuf::RepeatedField::new())
     }
 
-    pub fn get_inc_backup_dependencies(&self) -> &[u64] {
-        &self.inc_backup_dependencies
+    pub fn get_files(&self) -> &[File] {
+        &self.files
     }
 }
 
 impl ::protobuf::Message for BackupMeta {
     fn is_initialized(&self) -> bool {
         for v in &self.events {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.files {
             if !v.is_initialized() {
                 return false;
             }
@@ -713,25 +970,28 @@ impl ::protobuf::Message for BackupMeta {
                 3 => {
                     if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
                 },
-                4 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
-                },
                 5 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
-                    self.start_full_backup_dependency = tmp;
+                    self.start_dependency = tmp;
                 },
                 6 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
-                    self.finish_full_backup_dependency = tmp;
+                    self.finish_dependency = tmp;
                 },
                 7 => {
-                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.inc_backup_dependencies)?;
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.incremental_dependencies)?;
+                },
+                4 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
+                },
+                8 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.files)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -754,18 +1014,22 @@ impl ::protobuf::Message for BackupMeta {
         if self.state != BackupState::Unknown {
             my_size += ::protobuf::rt::enum_size(3, self.state);
         }
+        if self.start_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(5, self.start_dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.finish_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(6, self.finish_dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.incremental_dependencies {
+            my_size += ::protobuf::rt::value_size(7, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
         for value in &self.events {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
-        if self.start_full_backup_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(5, self.start_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.finish_full_backup_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(6, self.finish_full_backup_dependency, ::protobuf::wire_format::WireTypeVarint);
-        }
-        for value in &self.inc_backup_dependencies {
-            my_size += ::protobuf::rt::value_size(7, *value, ::protobuf::wire_format::WireTypeVarint);
+        for value in &self.files {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -782,19 +1046,24 @@ impl ::protobuf::Message for BackupMeta {
         if self.state != BackupState::Unknown {
             os.write_enum(3, self.state.value())?;
         }
+        if self.start_dependency != 0 {
+            os.write_uint64(5, self.start_dependency)?;
+        }
+        if self.finish_dependency != 0 {
+            os.write_uint64(6, self.finish_dependency)?;
+        }
+        for v in &self.incremental_dependencies {
+            os.write_uint64(7, *v)?;
+        };
         for v in &self.events {
             os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
-        if self.start_full_backup_dependency != 0 {
-            os.write_uint64(5, self.start_full_backup_dependency)?;
-        }
-        if self.finish_full_backup_dependency != 0 {
-            os.write_uint64(6, self.finish_full_backup_dependency)?;
-        }
-        for v in &self.inc_backup_dependencies {
-            os.write_uint64(7, *v)?;
+        for v in &self.files {
+            os.write_tag(8, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -846,10 +1115,11 @@ impl ::protobuf::Clear for BackupMeta {
         self.clear_cluster_id();
         self.clear_cluster_version();
         self.clear_state();
+        self.clear_start_dependency();
+        self.clear_finish_dependency();
+        self.clear_incremental_dependencies();
         self.clear_events();
-        self.clear_start_full_backup_dependency();
-        self.clear_finish_full_backup_dependency();
-        self.clear_inc_backup_dependencies();
+        self.clear_files();
         self.unknown_fields.clear();
     }
 }
@@ -862,10 +1132,11 @@ impl crate::text::PbPrint for BackupMeta {
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
         crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", buf);
         crate::text::PbPrint::fmt(&self.state, "state", buf);
+        crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", buf);
+        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", buf);
+        crate::text::PbPrint::fmt(&self.incremental_dependencies, "incremental_dependencies", buf);
         crate::text::PbPrint::fmt(&self.events, "events", buf);
-        crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", buf);
-        crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", buf);
-        crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", buf);
+        crate::text::PbPrint::fmt(&self.files, "files", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -879,10 +1150,11 @@ impl ::std::fmt::Debug for BackupMeta {
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
         crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", &mut s);
         crate::text::PbPrint::fmt(&self.state, "state", &mut s);
+        crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.incremental_dependencies, "incremental_dependencies", &mut s);
         crate::text::PbPrint::fmt(&self.events, "events", &mut s);
-        crate::text::PbPrint::fmt(&self.start_full_backup_dependency, "start_full_backup_dependency", &mut s);
-        crate::text::PbPrint::fmt(&self.finish_full_backup_dependency, "finish_full_backup_dependency", &mut s);
-        crate::text::PbPrint::fmt(&self.inc_backup_dependencies, "inc_backup_dependencies", &mut s);
+        crate::text::PbPrint::fmt(&self.files, "files", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -1989,6 +2261,7 @@ pub struct BackupRequest {
     // message fields
     pub cluster_id: u64,
     pub state: BackupState,
+    pub path: ::std::string::String,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -2028,6 +2301,32 @@ impl BackupRequest {
     pub fn get_state(&self) -> BackupState {
         self.state
     }
+
+    // string path = 3;
+
+    pub fn clear_path(&mut self) {
+        self.path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_path(&mut self, v: ::std::string::String) {
+        self.path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_path(&mut self) -> &mut ::std::string::String {
+        &mut self.path
+    }
+
+    // Take field
+    pub fn take_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.path, ::std::string::String::new())
+    }
+
+    pub fn get_path(&self) -> &str {
+        &self.path
+    }
 }
 
 impl ::protobuf::Message for BackupRequest {
@@ -2049,6 +2348,9 @@ impl ::protobuf::Message for BackupRequest {
                 2 => {
                     if wire_type == ::protobuf::wire_format::WireTypeVarint {self.state = is.read_enum()?;} else {return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));}
                 },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.path)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -2067,6 +2369,9 @@ impl ::protobuf::Message for BackupRequest {
         if self.state != BackupState::Unknown {
             my_size += ::protobuf::rt::enum_size(2, self.state);
         }
+        if !self.path.is_empty() {
+            my_size += ::protobuf::rt::string_size(3, &self.path);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -2078,6 +2383,9 @@ impl ::protobuf::Message for BackupRequest {
         }
         if self.state != BackupState::Unknown {
             os.write_enum(2, self.state.value())?;
+        }
+        if !self.path.is_empty() {
+            os.write_string(3, &self.path)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2128,6 +2436,7 @@ impl ::protobuf::Clear for BackupRequest {
     fn clear(&mut self) {
         self.clear_cluster_id();
         self.clear_state();
+        self.clear_path();
         self.unknown_fields.clear();
     }
 }
@@ -2139,6 +2448,7 @@ impl crate::text::PbPrint for BackupRequest {
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
         crate::text::PbPrint::fmt(&self.state, "state", buf);
+        crate::text::PbPrint::fmt(&self.path, "path", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -2151,6 +2461,7 @@ impl ::std::fmt::Debug for BackupRequest {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
         crate::text::PbPrint::fmt(&self.state, "state", &mut s);
+        crate::text::PbPrint::fmt(&self.path, "path", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -2392,13 +2703,404 @@ impl ::protobuf::reflect::ProtobufValue for BackupResponse {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+pub struct RestoreRequest {
+    // message fields
+    pub cluster_id: u64,
+    pub dependency: u64,
+    pub path: ::std::string::String,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl RestoreRequest {
+    pub fn new() -> RestoreRequest {
+        ::std::default::Default::default()
+    }
+
+    // uint64 cluster_id = 1;
+
+    pub fn clear_cluster_id(&mut self) {
+        self.cluster_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_cluster_id(&mut self, v: u64) {
+        self.cluster_id = v;
+    }
+
+    pub fn get_cluster_id(&self) -> u64 {
+        self.cluster_id
+    }
+
+    // uint64 dependency = 2;
+
+    pub fn clear_dependency(&mut self) {
+        self.dependency = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_dependency(&mut self, v: u64) {
+        self.dependency = v;
+    }
+
+    pub fn get_dependency(&self) -> u64 {
+        self.dependency
+    }
+
+    // string path = 3;
+
+    pub fn clear_path(&mut self) {
+        self.path.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_path(&mut self, v: ::std::string::String) {
+        self.path = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_path(&mut self) -> &mut ::std::string::String {
+        &mut self.path
+    }
+
+    // Take field
+    pub fn take_path(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.path, ::std::string::String::new())
+    }
+
+    pub fn get_path(&self) -> &str {
+        &self.path
+    }
+}
+
+impl ::protobuf::Message for RestoreRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.cluster_id = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.dependency = tmp;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.path)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.cluster_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.cluster_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.dependency != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.dependency, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.path.is_empty() {
+            my_size += ::protobuf::rt::string_size(3, &self.path);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.cluster_id != 0 {
+            os.write_uint64(1, self.cluster_id)?;
+        }
+        if self.dependency != 0 {
+            os.write_uint64(2, self.dependency)?;
+        }
+        if !self.path.is_empty() {
+            os.write_string(3, &self.path)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> RestoreRequest {
+        RestoreRequest::new()
+    }
+
+    fn default_instance() -> &'static RestoreRequest {
+        static mut instance: ::protobuf::lazy::Lazy<RestoreRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const RestoreRequest,
+        };
+        unsafe {
+            instance.get(RestoreRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for RestoreRequest {
+    fn clear(&mut self) {
+        self.clear_cluster_id();
+        self.clear_dependency();
+        self.clear_path();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for RestoreRequest {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
+        crate::text::PbPrint::fmt(&self.dependency, "dependency", buf);
+        crate::text::PbPrint::fmt(&self.path, "path", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for RestoreRequest {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
+        crate::text::PbPrint::fmt(&self.dependency, "dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.path, "path", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for RestoreRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct RestoreResponse {
+    // message fields
+    pub error: ::protobuf::SingularPtrField<Error>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl RestoreResponse {
+    pub fn new() -> RestoreResponse {
+        ::std::default::Default::default()
+    }
+
+    // .backup.Error error = 1;
+
+    pub fn clear_error(&mut self) {
+        self.error.clear();
+    }
+
+    pub fn has_error(&self) -> bool {
+        self.error.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_error(&mut self, v: Error) {
+        self.error = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_error(&mut self) -> &mut Error {
+        if self.error.is_none() {
+            self.error.set_default();
+        }
+        self.error.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_error(&mut self) -> Error {
+        self.error.take().unwrap_or_else(|| Error::new())
+    }
+
+    pub fn get_error(&self) -> &Error {
+        self.error.as_ref().unwrap_or_else(|| Error::default_instance())
+    }
+}
+
+impl ::protobuf::Message for RestoreResponse {
+    fn is_initialized(&self) -> bool {
+        for v in &self.error {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.error)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.error.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.error.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> RestoreResponse {
+        RestoreResponse::new()
+    }
+
+    fn default_instance() -> &'static RestoreResponse {
+        static mut instance: ::protobuf::lazy::Lazy<RestoreResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const RestoreResponse,
+        };
+        unsafe {
+            instance.get(RestoreResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for RestoreResponse {
+    fn clear(&mut self) {
+        self.clear_error();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for RestoreResponse {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.error, "error", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for RestoreResponse {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.error, "error", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for RestoreResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
 #[derive(Clone,PartialEq,Eq,Debug,Hash)]
 pub enum BackupState {
     Unknown = 0,
     Stop = 1,
-    StartFullBackup = 2,
-    FinishFullBackup = 3,
-    IncrementalBackup = 4,
+    Start = 2,
+    Finish = 3,
+    Incremental = 4,
 }
 
 impl ::protobuf::ProtobufEnum for BackupState {
@@ -2410,9 +3112,9 @@ impl ::protobuf::ProtobufEnum for BackupState {
         match value {
             0 => ::std::option::Option::Some(BackupState::Unknown),
             1 => ::std::option::Option::Some(BackupState::Stop),
-            2 => ::std::option::Option::Some(BackupState::StartFullBackup),
-            3 => ::std::option::Option::Some(BackupState::FinishFullBackup),
-            4 => ::std::option::Option::Some(BackupState::IncrementalBackup),
+            2 => ::std::option::Option::Some(BackupState::Start),
+            3 => ::std::option::Option::Some(BackupState::Finish),
+            4 => ::std::option::Option::Some(BackupState::Incremental),
             _ => ::std::option::Option::None
         }
     }
@@ -2421,9 +3123,9 @@ impl ::protobuf::ProtobufEnum for BackupState {
         static values: &'static [BackupState] = &[
             BackupState::Unknown,
             BackupState::Stop,
-            BackupState::StartFullBackup,
-            BackupState::FinishFullBackup,
-            BackupState::IncrementalBackup,
+            BackupState::Start,
+            BackupState::Finish,
+            BackupState::Incremental,
         ];
         values
     }
