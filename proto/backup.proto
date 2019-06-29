@@ -37,23 +37,30 @@ message BackupEvent {
     uint64 dependency = 5;
 }
 
+message File {
+    string path = 1;
+    uint32 crc32 = 2;
+    repeated uint64 region_ids = 3;
+}
+
 message BackupMeta {
     uint64 cluster_id = 1;
     string cluster_version = 2;
 
     BackupState state = 3;
+    uint64 start_dependency = 5;
+    uint64 finish_dependency = 6;
+    repeated uint64 incremental_dependencies = 7;
     repeated BackupEvent events = 4;
-    uint64 start_full_backup_dependency = 5;
-    uint64 finish_full_backup_dependency = 6;
-    repeated uint64 inc_backup_dependencies = 7;
+    repeated File files = 8;
 }
 
 enum BackupState {
     Unknown = 0;
     Stop = 1;
-    StartFullBackup = 2;
-    FinishFullBackup= 3;
-    IncrementalBackup = 4;
+    Start = 2;
+    Finish= 3;
+    Incremental = 4;
 }
 
 message StateStepError {
@@ -86,6 +93,7 @@ message BackupRegionResponse {
 message BackupRequest {
     uint64 cluster_id = 1;
     BackupState state = 2;
+    string path = 3;
 }
 
 message BackupResponse {
@@ -97,4 +105,18 @@ message BackupResponse {
 service Backup {
     rpc backup(BackupRequest) returns (BackupResponse) {}
     rpc backup_region(BackupRegionRequest) returns (BackupRegionResponse) {}
+}
+
+message RestoreRequest {
+    uint64 cluster_id = 1;
+    uint64 dependency = 2;
+    string path = 3;
+}
+
+message RestoreResponse {
+    Error error = 1;
+}
+
+service Restore {
+    rpc restore(RestoreRequest) returns (RestoreResponse) {}
 }
