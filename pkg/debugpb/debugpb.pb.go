@@ -3,19 +3,25 @@
 
 package debugpb
 
-import proto "github.com/golang/protobuf/proto"
+import (
+	"fmt"
+	"io"
+	"math"
 
+	proto "github.com/golang/protobuf/proto"
 
-import _ "github.com/gogo/protobuf/gogoproto"
-import eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
-import kvrpcpb "github.com/pingcap/kvproto/pkg/kvrpcpb"
-import raft_serverpb "github.com/pingcap/kvproto/pkg/raft_serverpb"
-import _ "github.com/pingcap/kvproto/pkg/rustproto"
+	_ "github.com/gogo/protobuf/gogoproto"
 
-import context "golang.org/x/net/context"
-import grpc "google.golang.org/grpc"
+	eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
 
+	kvrpcpb "github.com/pingcap/kvproto/pkg/kvrpcpb"
 
+	raft_serverpb "github.com/pingcap/kvproto/pkg/raft_serverpb"
+
+	context "golang.org/x/net/context"
+
+	grpc "google.golang.org/grpc"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

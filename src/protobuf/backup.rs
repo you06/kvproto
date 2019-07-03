@@ -762,7 +762,7 @@ pub struct BackupMeta {
     pub cluster_version: ::std::string::String,
     pub state: BackupState,
     pub start_dependency: u64,
-    pub finish_dependency: u64,
+    pub complete_dependency: u64,
     pub incremental_dependencies: ::std::vec::Vec<u64>,
     pub events: ::protobuf::RepeatedField<BackupEvent>,
     pub files: ::protobuf::RepeatedField<File>,
@@ -847,19 +847,19 @@ impl BackupMeta {
         self.start_dependency
     }
 
-    // uint64 finish_dependency = 6;
+    // uint64 complete_dependency = 6;
 
-    pub fn clear_finish_dependency(&mut self) {
-        self.finish_dependency = 0;
+    pub fn clear_complete_dependency(&mut self) {
+        self.complete_dependency = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_finish_dependency(&mut self, v: u64) {
-        self.finish_dependency = v;
+    pub fn set_complete_dependency(&mut self, v: u64) {
+        self.complete_dependency = v;
     }
 
-    pub fn get_finish_dependency(&self) -> u64 {
-        self.finish_dependency
+    pub fn get_complete_dependency(&self) -> u64 {
+        self.complete_dependency
     }
 
     // repeated uint64 incremental_dependencies = 7;
@@ -982,7 +982,7 @@ impl ::protobuf::Message for BackupMeta {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
-                    self.finish_dependency = tmp;
+                    self.complete_dependency = tmp;
                 },
                 7 => {
                     ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.incremental_dependencies)?;
@@ -1017,8 +1017,8 @@ impl ::protobuf::Message for BackupMeta {
         if self.start_dependency != 0 {
             my_size += ::protobuf::rt::value_size(5, self.start_dependency, ::protobuf::wire_format::WireTypeVarint);
         }
-        if self.finish_dependency != 0 {
-            my_size += ::protobuf::rt::value_size(6, self.finish_dependency, ::protobuf::wire_format::WireTypeVarint);
+        if self.complete_dependency != 0 {
+            my_size += ::protobuf::rt::value_size(6, self.complete_dependency, ::protobuf::wire_format::WireTypeVarint);
         }
         for value in &self.incremental_dependencies {
             my_size += ::protobuf::rt::value_size(7, *value, ::protobuf::wire_format::WireTypeVarint);
@@ -1049,8 +1049,8 @@ impl ::protobuf::Message for BackupMeta {
         if self.start_dependency != 0 {
             os.write_uint64(5, self.start_dependency)?;
         }
-        if self.finish_dependency != 0 {
-            os.write_uint64(6, self.finish_dependency)?;
+        if self.complete_dependency != 0 {
+            os.write_uint64(6, self.complete_dependency)?;
         }
         for v in &self.incremental_dependencies {
             os.write_uint64(7, *v)?;
@@ -1116,7 +1116,7 @@ impl ::protobuf::Clear for BackupMeta {
         self.clear_cluster_version();
         self.clear_state();
         self.clear_start_dependency();
-        self.clear_finish_dependency();
+        self.clear_complete_dependency();
         self.clear_incremental_dependencies();
         self.clear_events();
         self.clear_files();
@@ -1133,7 +1133,7 @@ impl crate::text::PbPrint for BackupMeta {
         crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", buf);
         crate::text::PbPrint::fmt(&self.state, "state", buf);
         crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", buf);
-        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", buf);
+        crate::text::PbPrint::fmt(&self.complete_dependency, "complete_dependency", buf);
         crate::text::PbPrint::fmt(&self.incremental_dependencies, "incremental_dependencies", buf);
         crate::text::PbPrint::fmt(&self.events, "events", buf);
         crate::text::PbPrint::fmt(&self.files, "files", buf);
@@ -1151,7 +1151,7 @@ impl ::std::fmt::Debug for BackupMeta {
         crate::text::PbPrint::fmt(&self.cluster_version, "cluster_version", &mut s);
         crate::text::PbPrint::fmt(&self.state, "state", &mut s);
         crate::text::PbPrint::fmt(&self.start_dependency, "start_dependency", &mut s);
-        crate::text::PbPrint::fmt(&self.finish_dependency, "finish_dependency", &mut s);
+        crate::text::PbPrint::fmt(&self.complete_dependency, "complete_dependency", &mut s);
         crate::text::PbPrint::fmt(&self.incremental_dependencies, "incremental_dependencies", &mut s);
         crate::text::PbPrint::fmt(&self.events, "events", &mut s);
         crate::text::PbPrint::fmt(&self.files, "files", &mut s);
@@ -2709,6 +2709,7 @@ pub struct RestoreRequest {
     pub cluster_id: u64,
     pub dependency: u64,
     pub path: ::std::string::String,
+    pub region_ids: ::std::vec::Vec<u64>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -2774,6 +2775,31 @@ impl RestoreRequest {
     pub fn get_path(&self) -> &str {
         &self.path
     }
+
+    // repeated uint64 region_ids = 4;
+
+    pub fn clear_region_ids(&mut self) {
+        self.region_ids.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_region_ids(&mut self, v: ::std::vec::Vec<u64>) {
+        self.region_ids = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_region_ids(&mut self) -> &mut ::std::vec::Vec<u64> {
+        &mut self.region_ids
+    }
+
+    // Take field
+    pub fn take_region_ids(&mut self) -> ::std::vec::Vec<u64> {
+        ::std::mem::replace(&mut self.region_ids, ::std::vec::Vec::new())
+    }
+
+    pub fn get_region_ids(&self) -> &[u64] {
+        &self.region_ids
+    }
 }
 
 impl ::protobuf::Message for RestoreRequest {
@@ -2802,6 +2828,9 @@ impl ::protobuf::Message for RestoreRequest {
                 3 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.path)?;
                 },
+                4 => {
+                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.region_ids)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -2823,6 +2852,9 @@ impl ::protobuf::Message for RestoreRequest {
         if !self.path.is_empty() {
             my_size += ::protobuf::rt::string_size(3, &self.path);
         }
+        for value in &self.region_ids {
+            my_size += ::protobuf::rt::value_size(4, *value, ::protobuf::wire_format::WireTypeVarint);
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -2838,6 +2870,9 @@ impl ::protobuf::Message for RestoreRequest {
         if !self.path.is_empty() {
             os.write_string(3, &self.path)?;
         }
+        for v in &self.region_ids {
+            os.write_uint64(4, *v)?;
+        };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -2888,6 +2923,7 @@ impl ::protobuf::Clear for RestoreRequest {
         self.clear_cluster_id();
         self.clear_dependency();
         self.clear_path();
+        self.clear_region_ids();
         self.unknown_fields.clear();
     }
 }
@@ -2900,6 +2936,7 @@ impl crate::text::PbPrint for RestoreRequest {
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", buf);
         crate::text::PbPrint::fmt(&self.dependency, "dependency", buf);
         crate::text::PbPrint::fmt(&self.path, "path", buf);
+        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -2913,6 +2950,7 @@ impl ::std::fmt::Debug for RestoreRequest {
         crate::text::PbPrint::fmt(&self.cluster_id, "cluster_id", &mut s);
         crate::text::PbPrint::fmt(&self.dependency, "dependency", &mut s);
         crate::text::PbPrint::fmt(&self.path, "path", &mut s);
+        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -3099,7 +3137,7 @@ pub enum BackupState {
     Unknown = 0,
     Stop = 1,
     Start = 2,
-    Finish = 3,
+    Complete = 3,
     Incremental = 4,
 }
 
@@ -3113,7 +3151,7 @@ impl ::protobuf::ProtobufEnum for BackupState {
             0 => ::std::option::Option::Some(BackupState::Unknown),
             1 => ::std::option::Option::Some(BackupState::Stop),
             2 => ::std::option::Option::Some(BackupState::Start),
-            3 => ::std::option::Option::Some(BackupState::Finish),
+            3 => ::std::option::Option::Some(BackupState::Complete),
             4 => ::std::option::Option::Some(BackupState::Incremental),
             _ => ::std::option::Option::None
         }
@@ -3124,7 +3162,7 @@ impl ::protobuf::ProtobufEnum for BackupState {
             BackupState::Unknown,
             BackupState::Stop,
             BackupState::Start,
-            BackupState::Finish,
+            BackupState::Complete,
             BackupState::Incremental,
         ];
         values
