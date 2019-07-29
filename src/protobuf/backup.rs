@@ -25,6 +25,7 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 pub struct EntryBatch {
     // message fields
     pub entries: ::protobuf::RepeatedField<super::eraftpb::Entry>,
+    pub region_id: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -59,6 +60,21 @@ impl EntryBatch {
     pub fn get_entries(&self) -> &[super::eraftpb::Entry] {
         &self.entries
     }
+
+    // uint64 region_id = 2;
+
+    pub fn clear_region_id(&mut self) {
+        self.region_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_region_id(&mut self, v: u64) {
+        self.region_id = v;
+    }
+
+    pub fn get_region_id(&self) -> u64 {
+        self.region_id
+    }
 }
 
 impl ::protobuf::Message for EntryBatch {
@@ -78,6 +94,13 @@ impl ::protobuf::Message for EntryBatch {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.entries)?;
                 },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.region_id = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -94,6 +117,9 @@ impl ::protobuf::Message for EntryBatch {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
+        if self.region_id != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.region_id, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -105,6 +131,9 @@ impl ::protobuf::Message for EntryBatch {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
+        if self.region_id != 0 {
+            os.write_uint64(2, self.region_id)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -153,6 +182,7 @@ impl ::protobuf::Message for EntryBatch {
 impl ::protobuf::Clear for EntryBatch {
     fn clear(&mut self) {
         self.clear_entries();
+        self.clear_region_id();
         self.unknown_fields.clear();
     }
 }
@@ -163,6 +193,7 @@ impl crate::text::PbPrint for EntryBatch {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.entries, "entries", buf);
+        crate::text::PbPrint::fmt(&self.region_id, "region_id", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
@@ -174,6 +205,7 @@ impl ::std::fmt::Debug for EntryBatch {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.entries, "entries", &mut s);
+        crate::text::PbPrint::fmt(&self.region_id, "region_id", &mut s);
         write!(f, "{}", s)
     }
 }
@@ -530,18 +562,232 @@ impl ::protobuf::reflect::ProtobufValue for BackupEvent_Event {
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct File {
+pub struct RegionMeta {
     // message fields
-    pub path: ::std::string::String,
-    pub crc32: u32,
-    pub region_ids: ::std::vec::Vec<u64>,
+    pub region_id: u64,
+    pub start_index: u64,
+    pub end_index: u64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
 }
 
-impl File {
-    pub fn new() -> File {
+impl RegionMeta {
+    pub fn new() -> RegionMeta {
+        ::std::default::Default::default()
+    }
+
+    // uint64 region_id = 1;
+
+    pub fn clear_region_id(&mut self) {
+        self.region_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_region_id(&mut self, v: u64) {
+        self.region_id = v;
+    }
+
+    pub fn get_region_id(&self) -> u64 {
+        self.region_id
+    }
+
+    // uint64 start_index = 2;
+
+    pub fn clear_start_index(&mut self) {
+        self.start_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_start_index(&mut self, v: u64) {
+        self.start_index = v;
+    }
+
+    pub fn get_start_index(&self) -> u64 {
+        self.start_index
+    }
+
+    // uint64 end_index = 3;
+
+    pub fn clear_end_index(&mut self) {
+        self.end_index = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_end_index(&mut self, v: u64) {
+        self.end_index = v;
+    }
+
+    pub fn get_end_index(&self) -> u64 {
+        self.end_index
+    }
+}
+
+impl ::protobuf::Message for RegionMeta {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.region_id = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.start_index = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.end_index = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.region_id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.region_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.start_index != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.start_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.end_index != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.end_index, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.region_id != 0 {
+            os.write_uint64(1, self.region_id)?;
+        }
+        if self.start_index != 0 {
+            os.write_uint64(2, self.start_index)?;
+        }
+        if self.end_index != 0 {
+            os.write_uint64(3, self.end_index)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &::std::any::Any {
+        self as &::std::any::Any
+    }
+    fn as_any_mut(&mut self) -> &mut ::std::any::Any {
+        self as &mut ::std::any::Any
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<::std::any::Any> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> RegionMeta {
+        RegionMeta::new()
+    }
+
+    fn default_instance() -> &'static RegionMeta {
+        static mut instance: ::protobuf::lazy::Lazy<RegionMeta> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const RegionMeta,
+        };
+        unsafe {
+            instance.get(RegionMeta::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for RegionMeta {
+    fn clear(&mut self) {
+        self.clear_region_id();
+        self.clear_start_index();
+        self.clear_end_index();
+        self.unknown_fields.clear();
+    }
+}
+
+impl crate::text::PbPrint for RegionMeta {
+    #[allow(unused_variables)]
+    fn fmt(&self, name: &str, buf: &mut String) {
+        crate::text::push_message_start(name, buf);
+        let old_len = buf.len();
+        crate::text::PbPrint::fmt(&self.region_id, "region_id", buf);
+        crate::text::PbPrint::fmt(&self.start_index, "start_index", buf);
+        crate::text::PbPrint::fmt(&self.end_index, "end_index", buf);
+        if old_len < buf.len() {
+          buf.push(' ');
+        }
+        buf.push('}');
+    }
+}
+impl ::std::fmt::Debug for RegionMeta {
+    #[allow(unused_variables)]
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        let mut s = String::new();
+        crate::text::PbPrint::fmt(&self.region_id, "region_id", &mut s);
+        crate::text::PbPrint::fmt(&self.start_index, "start_index", &mut s);
+        crate::text::PbPrint::fmt(&self.end_index, "end_index", &mut s);
+        write!(f, "{}", s)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for RegionMeta {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct FileMeta {
+    // message fields
+    pub path: ::std::string::String,
+    pub crc32: u32,
+    pub content_size: u64,
+    pub meta: ::protobuf::RepeatedField<RegionMeta>,
+    // special fields
+    unknown_fields: ::protobuf::UnknownFields,
+    cached_size: ::protobuf::CachedSize,
+}
+
+impl FileMeta {
+    pub fn new() -> FileMeta {
         ::std::default::Default::default()
     }
 
@@ -586,34 +832,54 @@ impl File {
         self.crc32
     }
 
-    // repeated uint64 region_ids = 3;
+    // uint64 content_size = 3;
 
-    pub fn clear_region_ids(&mut self) {
-        self.region_ids.clear();
+    pub fn clear_content_size(&mut self) {
+        self.content_size = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_region_ids(&mut self, v: ::std::vec::Vec<u64>) {
-        self.region_ids = v;
+    pub fn set_content_size(&mut self, v: u64) {
+        self.content_size = v;
+    }
+
+    pub fn get_content_size(&self) -> u64 {
+        self.content_size
+    }
+
+    // repeated .backup.RegionMeta meta = 4;
+
+    pub fn clear_meta(&mut self) {
+        self.meta.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_meta(&mut self, v: ::protobuf::RepeatedField<RegionMeta>) {
+        self.meta = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_region_ids(&mut self) -> &mut ::std::vec::Vec<u64> {
-        &mut self.region_ids
+    pub fn mut_meta(&mut self) -> &mut ::protobuf::RepeatedField<RegionMeta> {
+        &mut self.meta
     }
 
     // Take field
-    pub fn take_region_ids(&mut self) -> ::std::vec::Vec<u64> {
-        ::std::mem::replace(&mut self.region_ids, ::std::vec::Vec::new())
+    pub fn take_meta(&mut self) -> ::protobuf::RepeatedField<RegionMeta> {
+        ::std::mem::replace(&mut self.meta, ::protobuf::RepeatedField::new())
     }
 
-    pub fn get_region_ids(&self) -> &[u64] {
-        &self.region_ids
+    pub fn get_meta(&self) -> &[RegionMeta] {
+        &self.meta
     }
 }
 
-impl ::protobuf::Message for File {
+impl ::protobuf::Message for FileMeta {
     fn is_initialized(&self) -> bool {
+        for v in &self.meta {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -632,7 +898,14 @@ impl ::protobuf::Message for File {
                     self.crc32 = tmp;
                 },
                 3 => {
-                    ::protobuf::rt::read_repeated_uint64_into(wire_type, is, &mut self.region_ids)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.content_size = tmp;
+                },
+                4 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.meta)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -652,8 +925,12 @@ impl ::protobuf::Message for File {
         if self.crc32 != 0 {
             my_size += ::protobuf::rt::value_size(2, self.crc32, ::protobuf::wire_format::WireTypeVarint);
         }
-        for value in &self.region_ids {
-            my_size += ::protobuf::rt::value_size(3, *value, ::protobuf::wire_format::WireTypeVarint);
+        if self.content_size != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.content_size, ::protobuf::wire_format::WireTypeVarint);
+        }
+        for value in &self.meta {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -667,8 +944,13 @@ impl ::protobuf::Message for File {
         if self.crc32 != 0 {
             os.write_uint32(2, self.crc32)?;
         }
-        for v in &self.region_ids {
-            os.write_uint64(3, *v)?;
+        if self.content_size != 0 {
+            os.write_uint64(3, self.content_size)?;
+        }
+        for v in &self.meta {
+            os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -700,56 +982,59 @@ impl ::protobuf::Message for File {
         Self::descriptor_static()
     }
 
-    fn new() -> File {
-        File::new()
+    fn new() -> FileMeta {
+        FileMeta::new()
     }
 
-    fn default_instance() -> &'static File {
-        static mut instance: ::protobuf::lazy::Lazy<File> = ::protobuf::lazy::Lazy {
+    fn default_instance() -> &'static FileMeta {
+        static mut instance: ::protobuf::lazy::Lazy<FileMeta> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const File,
+            ptr: 0 as *const FileMeta,
         };
         unsafe {
-            instance.get(File::new)
+            instance.get(FileMeta::new)
         }
     }
 }
 
-impl ::protobuf::Clear for File {
+impl ::protobuf::Clear for FileMeta {
     fn clear(&mut self) {
         self.clear_path();
         self.clear_crc32();
-        self.clear_region_ids();
+        self.clear_content_size();
+        self.clear_meta();
         self.unknown_fields.clear();
     }
 }
 
-impl crate::text::PbPrint for File {
+impl crate::text::PbPrint for FileMeta {
     #[allow(unused_variables)]
     fn fmt(&self, name: &str, buf: &mut String) {
         crate::text::push_message_start(name, buf);
         let old_len = buf.len();
         crate::text::PbPrint::fmt(&self.path, "path", buf);
         crate::text::PbPrint::fmt(&self.crc32, "crc32", buf);
-        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", buf);
+        crate::text::PbPrint::fmt(&self.content_size, "content_size", buf);
+        crate::text::PbPrint::fmt(&self.meta, "meta", buf);
         if old_len < buf.len() {
           buf.push(' ');
         }
         buf.push('}');
     }
 }
-impl ::std::fmt::Debug for File {
+impl ::std::fmt::Debug for FileMeta {
     #[allow(unused_variables)]
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         let mut s = String::new();
         crate::text::PbPrint::fmt(&self.path, "path", &mut s);
         crate::text::PbPrint::fmt(&self.crc32, "crc32", &mut s);
-        crate::text::PbPrint::fmt(&self.region_ids, "region_ids", &mut s);
+        crate::text::PbPrint::fmt(&self.content_size, "content_size", &mut s);
+        crate::text::PbPrint::fmt(&self.meta, "meta", &mut s);
         write!(f, "{}", s)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for File {
+impl ::protobuf::reflect::ProtobufValue for FileMeta {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
@@ -765,7 +1050,7 @@ pub struct BackupMeta {
     pub complete_dependency: u64,
     pub incremental_dependencies: ::std::vec::Vec<u64>,
     pub events: ::protobuf::RepeatedField<BackupEvent>,
-    pub files: ::protobuf::RepeatedField<File>,
+    pub files: ::protobuf::RepeatedField<FileMeta>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -912,28 +1197,28 @@ impl BackupMeta {
         &self.events
     }
 
-    // repeated .backup.File files = 8;
+    // repeated .backup.FileMeta files = 8;
 
     pub fn clear_files(&mut self) {
         self.files.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_files(&mut self, v: ::protobuf::RepeatedField<File>) {
+    pub fn set_files(&mut self, v: ::protobuf::RepeatedField<FileMeta>) {
         self.files = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_files(&mut self) -> &mut ::protobuf::RepeatedField<File> {
+    pub fn mut_files(&mut self) -> &mut ::protobuf::RepeatedField<FileMeta> {
         &mut self.files
     }
 
     // Take field
-    pub fn take_files(&mut self) -> ::protobuf::RepeatedField<File> {
+    pub fn take_files(&mut self) -> ::protobuf::RepeatedField<FileMeta> {
         ::std::mem::replace(&mut self.files, ::protobuf::RepeatedField::new())
     }
 
-    pub fn get_files(&self) -> &[File] {
+    pub fn get_files(&self) -> &[FileMeta] {
         &self.files
     }
 }
