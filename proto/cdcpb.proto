@@ -1,0 +1,85 @@
+syntax = "proto3";
+package cbcpb;
+
+import "raft_cmdpb.proto";
+
+import "gogoproto/gogo.proto";
+import "rustproto.proto";
+
+option(gogoproto.sizer_all) = true;
+option(gogoproto.marshaler_all) = true;
+option(gogoproto.unmarshaler_all) = true;
+option(rustproto.lite_runtime_all) = true;
+
+option java_package = "org.tikv.kvproto";
+
+message Header {
+    uint64 cluster_id = 1;
+}
+
+message Event {
+    enum LogType {
+        UNKNOWN = 0;
+        PREWRITE = 1;
+        COMMIT = 2;
+        ROLLBACK = 3;
+        // More types ...
+    }
+
+    // start_ts，commit ts, type 是 capture 数据排理（包括排序）的必要信息，
+    // 因为 tikv 这边有多处逻辑对应 prewrite + commit log，所以建议 tikv 统一逻辑输出
+    message Entry {
+        // row prewrite 的 start ts
+        int64 start_ts = 1;
+        // row commit 的 commit ts
+        int64 commit_ts = 2;
+        // row prewrite/commit/abort 或者其他类型 log
+        LogType type = 3;
+        // payload 可以自定义,比如 tidb 下传的 kv pair
+        bytes payload = 4;
+        // More fields ...
+    }
+
+    message Entries {
+        repeated Entry entries = 1;
+    }
+
+    message Admin {
+        raft_cmdpb.AdminRequest admin_request = 1;
+        raft_cmdpb.AdminResponse admin_response = 2;
+    }
+
+    message Error {
+        // More fields ...
+    }
+
+    uint64 region_id = 1;
+    uint64 index = 2;
+    oneof event {
+        Entries entries = 3;
+        Admin admin = 4;
+        Error error = 5;
+        // More region level events ...
+    }
+}
+
+message ChangeDataEvent {
+    repeated Event events = 1;
+    // More store level events ...
+}
+
+message ChangeDataRequest {
+    Header header = 1;
+
+    // 需要确保大于 GC safepoint.
+    int64 checkpoint_version = 2;
+    // 暂不确实是否需要，大概率不需要。
+    int64 local_version = 3;
+
+    bytes start_key = 4;
+    bytes end_key = 5;
+}
+
+service ChangeData {
+    rpc EventFeed(stream ChangeDataRequest) returns(stream ChangeDataEvent);
+}
