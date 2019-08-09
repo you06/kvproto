@@ -12,6 +12,8 @@ import (
 
 	_ "github.com/gogo/protobuf/gogoproto"
 
+	metapb "github.com/pingcap/kvproto/pkg/metapb"
+
 	raft_cmdpb "github.com/pingcap/kvproto/pkg/raft_cmdpb"
 
 	context "golang.org/x/net/context"
@@ -56,7 +58,33 @@ func (x Event_LogType) String() string {
 	return proto.EnumName(Event_LogType_name, int32(x))
 }
 func (Event_LogType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1, 0}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 0}
+}
+
+type Event_Row_OpType int32
+
+const (
+	Event_Row_UNKNOWN Event_Row_OpType = 0
+	Event_Row_PUT     Event_Row_OpType = 1
+	Event_Row_DELETE  Event_Row_OpType = 2
+)
+
+var Event_Row_OpType_name = map[int32]string{
+	0: "UNKNOWN",
+	1: "PUT",
+	2: "DELETE",
+}
+var Event_Row_OpType_value = map[string]int32{
+	"UNKNOWN": 0,
+	"PUT":     1,
+	"DELETE":  2,
+}
+
+func (x Event_Row_OpType) String() string {
+	return proto.EnumName(Event_Row_OpType_name, int32(x))
+}
+func (Event_Row_OpType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 0, 0}
 }
 
 type Header struct {
@@ -70,7 +98,7 @@ func (m *Header) Reset()         { *m = Header{} }
 func (m *Header) String() string { return proto.CompactTextString(m) }
 func (*Header) ProtoMessage()    {}
 func (*Header) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{0}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{0}
 }
 func (m *Header) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -113,6 +141,7 @@ type Event struct {
 	//	*Event_Entries_
 	//	*Event_Admin_
 	//	*Event_Error_
+	//	*Event_HearbeatTs
 	Event                isEvent_Event `protobuf_oneof:"event"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
@@ -123,7 +152,7 @@ func (m *Event) Reset()         { *m = Event{} }
 func (m *Event) String() string { return proto.CompactTextString(m) }
 func (*Event) ProtoMessage()    {}
 func (*Event) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1}
 }
 func (m *Event) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -167,10 +196,14 @@ type Event_Admin_ struct {
 type Event_Error_ struct {
 	Error *Event_Error `protobuf:"bytes,5,opt,name=error,oneof"`
 }
+type Event_HearbeatTs struct {
+	HearbeatTs uint64 `protobuf:"varint,6,opt,name=hearbeat_ts,json=hearbeatTs,proto3,oneof"`
+}
 
-func (*Event_Entries_) isEvent_Event() {}
-func (*Event_Admin_) isEvent_Event()   {}
-func (*Event_Error_) isEvent_Event()   {}
+func (*Event_Entries_) isEvent_Event()   {}
+func (*Event_Admin_) isEvent_Event()     {}
+func (*Event_Error_) isEvent_Event()     {}
+func (*Event_HearbeatTs) isEvent_Event() {}
 
 func (m *Event) GetEvent() isEvent_Event {
 	if m != nil {
@@ -214,12 +247,20 @@ func (m *Event) GetError() *Event_Error {
 	return nil
 }
 
+func (m *Event) GetHearbeatTs() uint64 {
+	if x, ok := m.GetEvent().(*Event_HearbeatTs); ok {
+		return x.HearbeatTs
+	}
+	return 0
+}
+
 // XXX_OneofFuncs is for the internal use of the proto package.
 func (*Event) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
 	return _Event_OneofMarshaler, _Event_OneofUnmarshaler, _Event_OneofSizer, []interface{}{
 		(*Event_Entries_)(nil),
 		(*Event_Admin_)(nil),
 		(*Event_Error_)(nil),
+		(*Event_HearbeatTs)(nil),
 	}
 }
 
@@ -242,6 +283,9 @@ func _Event_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
 		if err := b.EncodeMessage(x.Error); err != nil {
 			return err
 		}
+	case *Event_HearbeatTs:
+		_ = b.EncodeVarint(6<<3 | proto.WireVarint)
+		_ = b.EncodeVarint(uint64(x.HearbeatTs))
 	case nil:
 	default:
 		return fmt.Errorf("Event.Event has unexpected type %T", x)
@@ -276,6 +320,13 @@ func _Event_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) 
 		err := b.DecodeMessage(msg)
 		m.Event = &Event_Error_{msg}
 		return true, err
+	case 6: // event.hearbeat_ts
+		if wire != proto.WireVarint {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeVarint()
+		m.Event = &Event_HearbeatTs{x}
+		return true, err
 	default:
 		return false, nil
 	}
@@ -300,6 +351,9 @@ func _Event_OneofSizer(msg proto.Message) (n int) {
 		n += 1 // tag and wire
 		n += proto.SizeVarint(uint64(s))
 		n += s
+	case *Event_HearbeatTs:
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(x.HearbeatTs))
 	case nil:
 	default:
 		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
@@ -307,34 +361,31 @@ func _Event_OneofSizer(msg proto.Message) (n int) {
 	return n
 }
 
-// start_ts，commit ts, type 是 capture 数据排理（包括排序）的必要信息，
-// 因为 tikv 这边有多处逻辑对应 prewrite + commit log，所以建议 tikv 统一逻辑输出
-type Event_Entry struct {
-	// row prewrite 的 start ts
-	StartTs int64 `protobuf:"varint,1,opt,name=start_ts,json=startTs,proto3" json:"start_ts,omitempty"`
-	// row commit 的 commit ts
-	CommitTs int64 `protobuf:"varint,2,opt,name=commit_ts,json=commitTs,proto3" json:"commit_ts,omitempty"`
-	// row prewrite/commit/abort 或者其他类型 log
-	Type Event_LogType `protobuf:"varint,3,opt,name=type,proto3,enum=cbcpb.Event_LogType" json:"type,omitempty"`
-	// payload 可以自定义,比如 tidb 下传的 kv pair
-	Payload              []byte   `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
+type Event_Row struct {
+	StartTs  int64            `protobuf:"varint,1,opt,name=start_ts,json=startTs,proto3" json:"start_ts,omitempty"`
+	CommitTs int64            `protobuf:"varint,2,opt,name=commit_ts,json=commitTs,proto3" json:"commit_ts,omitempty"`
+	Type     Event_LogType    `protobuf:"varint,3,opt,name=type,proto3,enum=cbcpb.Event_LogType" json:"type,omitempty"`
+	OpType   Event_Row_OpType `protobuf:"varint,4,opt,name=op_type,json=opType,proto3,enum=cbcpb.Event_Row_OpType" json:"op_type,omitempty"`
+	Key      []byte           `protobuf:"bytes,5,opt,name=key,proto3" json:"key,omitempty"`
+	// set when log_type is COMMIT
+	Value                []byte   `protobuf:"bytes,6,opt,name=value,proto3" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Event_Entry) Reset()         { *m = Event_Entry{} }
-func (m *Event_Entry) String() string { return proto.CompactTextString(m) }
-func (*Event_Entry) ProtoMessage()    {}
-func (*Event_Entry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1, 0}
+func (m *Event_Row) Reset()         { *m = Event_Row{} }
+func (m *Event_Row) String() string { return proto.CompactTextString(m) }
+func (*Event_Row) ProtoMessage()    {}
+func (*Event_Row) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 0}
 }
-func (m *Event_Entry) XXX_Unmarshal(b []byte) error {
+func (m *Event_Row) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Event_Entry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Event_Row) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Event_Entry.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Event_Row.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -344,58 +395,72 @@ func (m *Event_Entry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (dst *Event_Entry) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Event_Entry.Merge(dst, src)
+func (dst *Event_Row) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Event_Row.Merge(dst, src)
 }
-func (m *Event_Entry) XXX_Size() int {
+func (m *Event_Row) XXX_Size() int {
 	return m.Size()
 }
-func (m *Event_Entry) XXX_DiscardUnknown() {
-	xxx_messageInfo_Event_Entry.DiscardUnknown(m)
+func (m *Event_Row) XXX_DiscardUnknown() {
+	xxx_messageInfo_Event_Row.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Event_Entry proto.InternalMessageInfo
+var xxx_messageInfo_Event_Row proto.InternalMessageInfo
 
-func (m *Event_Entry) GetStartTs() int64 {
+func (m *Event_Row) GetStartTs() int64 {
 	if m != nil {
 		return m.StartTs
 	}
 	return 0
 }
 
-func (m *Event_Entry) GetCommitTs() int64 {
+func (m *Event_Row) GetCommitTs() int64 {
 	if m != nil {
 		return m.CommitTs
 	}
 	return 0
 }
 
-func (m *Event_Entry) GetType() Event_LogType {
+func (m *Event_Row) GetType() Event_LogType {
 	if m != nil {
 		return m.Type
 	}
 	return Event_UNKNOWN
 }
 
-func (m *Event_Entry) GetPayload() []byte {
+func (m *Event_Row) GetOpType() Event_Row_OpType {
 	if m != nil {
-		return m.Payload
+		return m.OpType
+	}
+	return Event_Row_UNKNOWN
+}
+
+func (m *Event_Row) GetKey() []byte {
+	if m != nil {
+		return m.Key
+	}
+	return nil
+}
+
+func (m *Event_Row) GetValue() []byte {
+	if m != nil {
+		return m.Value
 	}
 	return nil
 }
 
 type Event_Entries struct {
-	Entries              []*Event_Entry `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	Entries              []*Event_Row `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *Event_Entries) Reset()         { *m = Event_Entries{} }
 func (m *Event_Entries) String() string { return proto.CompactTextString(m) }
 func (*Event_Entries) ProtoMessage()    {}
 func (*Event_Entries) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1, 1}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 1}
 }
 func (m *Event_Entries) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -424,7 +489,7 @@ func (m *Event_Entries) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Event_Entries proto.InternalMessageInfo
 
-func (m *Event_Entries) GetEntries() []*Event_Entry {
+func (m *Event_Entries) GetEntries() []*Event_Row {
 	if m != nil {
 		return m.Entries
 	}
@@ -443,7 +508,7 @@ func (m *Event_Admin) Reset()         { *m = Event_Admin{} }
 func (m *Event_Admin) String() string { return proto.CompactTextString(m) }
 func (*Event_Admin) ProtoMessage()    {}
 func (*Event_Admin) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1, 2}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 2}
 }
 func (m *Event_Admin) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -496,7 +561,7 @@ func (m *Event_Error) Reset()         { *m = Event_Error{} }
 func (m *Event_Error) String() string { return proto.CompactTextString(m) }
 func (*Event_Error) ProtoMessage()    {}
 func (*Event_Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{1, 3}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{1, 3}
 }
 func (m *Event_Error) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -536,7 +601,7 @@ func (m *ChangeDataEvent) Reset()         { *m = ChangeDataEvent{} }
 func (m *ChangeDataEvent) String() string { return proto.CompactTextString(m) }
 func (*ChangeDataEvent) ProtoMessage()    {}
 func (*ChangeDataEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{2}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{2}
 }
 func (m *ChangeDataEvent) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -573,23 +638,22 @@ func (m *ChangeDataEvent) GetEvents() []*Event {
 }
 
 type ChangeDataRequest struct {
-	Header *Header `protobuf:"bytes,1,opt,name=header" json:"header,omitempty"`
-	// 需要确保大于 GC safepoint.
-	CheckpointVersion int64 `protobuf:"varint,2,opt,name=checkpoint_version,json=checkpointVersion,proto3" json:"checkpoint_version,omitempty"`
-	// 暂不确实是否需要，大概率不需要。
-	LocalVersion         int64    `protobuf:"varint,3,opt,name=local_version,json=localVersion,proto3" json:"local_version,omitempty"`
-	StartKey             []byte   `protobuf:"bytes,4,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
-	EndKey               []byte   `protobuf:"bytes,5,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Header               *Header             `protobuf:"bytes,1,opt,name=header" json:"header,omitempty"`
+	RegionId             uint64              `protobuf:"varint,2,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	RegionEpoch          *metapb.RegionEpoch `protobuf:"bytes,3,opt,name=region_epoch,json=regionEpoch" json:"region_epoch,omitempty"`
+	CheckpointTs         int64               `protobuf:"varint,4,opt,name=checkpoint_ts,json=checkpointTs,proto3" json:"checkpoint_ts,omitempty"`
+	StartKey             []byte              `protobuf:"bytes,5,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
+	EndKey               []byte              `protobuf:"bytes,6,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
 func (m *ChangeDataRequest) Reset()         { *m = ChangeDataRequest{} }
 func (m *ChangeDataRequest) String() string { return proto.CompactTextString(m) }
 func (*ChangeDataRequest) ProtoMessage()    {}
 func (*ChangeDataRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cdcpb_48f9e1a1dc933b95, []int{3}
+	return fileDescriptor_cdcpb_e57e6ff6519a337b, []int{3}
 }
 func (m *ChangeDataRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -625,16 +689,23 @@ func (m *ChangeDataRequest) GetHeader() *Header {
 	return nil
 }
 
-func (m *ChangeDataRequest) GetCheckpointVersion() int64 {
+func (m *ChangeDataRequest) GetRegionId() uint64 {
 	if m != nil {
-		return m.CheckpointVersion
+		return m.RegionId
 	}
 	return 0
 }
 
-func (m *ChangeDataRequest) GetLocalVersion() int64 {
+func (m *ChangeDataRequest) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
-		return m.LocalVersion
+		return m.RegionEpoch
+	}
+	return nil
+}
+
+func (m *ChangeDataRequest) GetCheckpointTs() int64 {
+	if m != nil {
+		return m.CheckpointTs
 	}
 	return 0
 }
@@ -656,13 +727,14 @@ func (m *ChangeDataRequest) GetEndKey() []byte {
 func init() {
 	proto.RegisterType((*Header)(nil), "cbcpb.Header")
 	proto.RegisterType((*Event)(nil), "cbcpb.Event")
-	proto.RegisterType((*Event_Entry)(nil), "cbcpb.Event.Entry")
+	proto.RegisterType((*Event_Row)(nil), "cbcpb.Event.Row")
 	proto.RegisterType((*Event_Entries)(nil), "cbcpb.Event.Entries")
 	proto.RegisterType((*Event_Admin)(nil), "cbcpb.Event.Admin")
 	proto.RegisterType((*Event_Error)(nil), "cbcpb.Event.Error")
 	proto.RegisterType((*ChangeDataEvent)(nil), "cbcpb.ChangeDataEvent")
 	proto.RegisterType((*ChangeDataRequest)(nil), "cbcpb.ChangeDataRequest")
 	proto.RegisterEnum("cbcpb.Event_LogType", Event_LogType_name, Event_LogType_value)
+	proto.RegisterEnum("cbcpb.Event_Row_OpType", Event_Row_OpType_name, Event_Row_OpType_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -676,7 +748,7 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for ChangeData service
 
 type ChangeDataClient interface {
-	EventFeed(ctx context.Context, opts ...grpc.CallOption) (ChangeData_EventFeedClient, error)
+	EventFeed(ctx context.Context, in *ChangeDataRequest, opts ...grpc.CallOption) (ChangeData_EventFeedClient, error)
 }
 
 type changeDataClient struct {
@@ -687,27 +759,28 @@ func NewChangeDataClient(cc *grpc.ClientConn) ChangeDataClient {
 	return &changeDataClient{cc}
 }
 
-func (c *changeDataClient) EventFeed(ctx context.Context, opts ...grpc.CallOption) (ChangeData_EventFeedClient, error) {
+func (c *changeDataClient) EventFeed(ctx context.Context, in *ChangeDataRequest, opts ...grpc.CallOption) (ChangeData_EventFeedClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_ChangeData_serviceDesc.Streams[0], "/cbcpb.ChangeData/EventFeed", opts...)
 	if err != nil {
 		return nil, err
 	}
 	x := &changeDataEventFeedClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
 	return x, nil
 }
 
 type ChangeData_EventFeedClient interface {
-	Send(*ChangeDataRequest) error
 	Recv() (*ChangeDataEvent, error)
 	grpc.ClientStream
 }
 
 type changeDataEventFeedClient struct {
 	grpc.ClientStream
-}
-
-func (x *changeDataEventFeedClient) Send(m *ChangeDataRequest) error {
-	return x.ClientStream.SendMsg(m)
 }
 
 func (x *changeDataEventFeedClient) Recv() (*ChangeDataEvent, error) {
@@ -721,7 +794,7 @@ func (x *changeDataEventFeedClient) Recv() (*ChangeDataEvent, error) {
 // Server API for ChangeData service
 
 type ChangeDataServer interface {
-	EventFeed(ChangeData_EventFeedServer) error
+	EventFeed(*ChangeDataRequest, ChangeData_EventFeedServer) error
 }
 
 func RegisterChangeDataServer(s *grpc.Server, srv ChangeDataServer) {
@@ -729,12 +802,15 @@ func RegisterChangeDataServer(s *grpc.Server, srv ChangeDataServer) {
 }
 
 func _ChangeData_EventFeed_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ChangeDataServer).EventFeed(&changeDataEventFeedServer{stream})
+	m := new(ChangeDataRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChangeDataServer).EventFeed(m, &changeDataEventFeedServer{stream})
 }
 
 type ChangeData_EventFeedServer interface {
 	Send(*ChangeDataEvent) error
-	Recv() (*ChangeDataRequest, error)
 	grpc.ServerStream
 }
 
@@ -746,14 +822,6 @@ func (x *changeDataEventFeedServer) Send(m *ChangeDataEvent) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *changeDataEventFeedServer) Recv() (*ChangeDataRequest, error) {
-	m := new(ChangeDataRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 var _ChangeData_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cbcpb.ChangeData",
 	HandlerType: (*ChangeDataServer)(nil),
@@ -763,7 +831,6 @@ var _ChangeData_serviceDesc = grpc.ServiceDesc{
 			StreamName:    "EventFeed",
 			Handler:       _ChangeData_EventFeed_Handler,
 			ServerStreams: true,
-			ClientStreams: true,
 		},
 	},
 	Metadata: "cdcpb.proto",
@@ -875,7 +942,14 @@ func (m *Event_Error_) MarshalTo(dAtA []byte) (int, error) {
 	}
 	return i, nil
 }
-func (m *Event_Entry) Marshal() (dAtA []byte, err error) {
+func (m *Event_HearbeatTs) MarshalTo(dAtA []byte) (int, error) {
+	i := 0
+	dAtA[i] = 0x30
+	i++
+	i = encodeVarintCdcpb(dAtA, i, uint64(m.HearbeatTs))
+	return i, nil
+}
+func (m *Event_Row) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -885,7 +959,7 @@ func (m *Event_Entry) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Event_Entry) MarshalTo(dAtA []byte) (int, error) {
+func (m *Event_Row) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -905,11 +979,22 @@ func (m *Event_Entry) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintCdcpb(dAtA, i, uint64(m.Type))
 	}
-	if len(m.Payload) > 0 {
-		dAtA[i] = 0x22
+	if m.OpType != 0 {
+		dAtA[i] = 0x20
 		i++
-		i = encodeVarintCdcpb(dAtA, i, uint64(len(m.Payload)))
-		i += copy(dAtA[i:], m.Payload)
+		i = encodeVarintCdcpb(dAtA, i, uint64(m.OpType))
+	}
+	if len(m.Key) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintCdcpb(dAtA, i, uint64(len(m.Key)))
+		i += copy(dAtA[i:], m.Key)
+	}
+	if len(m.Value) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintCdcpb(dAtA, i, uint64(len(m.Value)))
+		i += copy(dAtA[i:], m.Value)
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1070,24 +1155,34 @@ func (m *ChangeDataRequest) MarshalTo(dAtA []byte) (int, error) {
 		}
 		i += n7
 	}
-	if m.CheckpointVersion != 0 {
+	if m.RegionId != 0 {
 		dAtA[i] = 0x10
 		i++
-		i = encodeVarintCdcpb(dAtA, i, uint64(m.CheckpointVersion))
+		i = encodeVarintCdcpb(dAtA, i, uint64(m.RegionId))
 	}
-	if m.LocalVersion != 0 {
-		dAtA[i] = 0x18
+	if m.RegionEpoch != nil {
+		dAtA[i] = 0x1a
 		i++
-		i = encodeVarintCdcpb(dAtA, i, uint64(m.LocalVersion))
+		i = encodeVarintCdcpb(dAtA, i, uint64(m.RegionEpoch.Size()))
+		n8, err := m.RegionEpoch.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n8
+	}
+	if m.CheckpointTs != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintCdcpb(dAtA, i, uint64(m.CheckpointTs))
 	}
 	if len(m.StartKey) > 0 {
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
 		i++
 		i = encodeVarintCdcpb(dAtA, i, uint64(len(m.StartKey)))
 		i += copy(dAtA[i:], m.StartKey)
 	}
 	if len(m.EndKey) > 0 {
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 		i++
 		i = encodeVarintCdcpb(dAtA, i, uint64(len(m.EndKey)))
 		i += copy(dAtA[i:], m.EndKey)
@@ -1164,7 +1259,13 @@ func (m *Event_Error_) Size() (n int) {
 	}
 	return n
 }
-func (m *Event_Entry) Size() (n int) {
+func (m *Event_HearbeatTs) Size() (n int) {
+	var l int
+	_ = l
+	n += 1 + sovCdcpb(uint64(m.HearbeatTs))
+	return n
+}
+func (m *Event_Row) Size() (n int) {
 	var l int
 	_ = l
 	if m.StartTs != 0 {
@@ -1176,7 +1277,14 @@ func (m *Event_Entry) Size() (n int) {
 	if m.Type != 0 {
 		n += 1 + sovCdcpb(uint64(m.Type))
 	}
-	l = len(m.Payload)
+	if m.OpType != 0 {
+		n += 1 + sovCdcpb(uint64(m.OpType))
+	}
+	l = len(m.Key)
+	if l > 0 {
+		n += 1 + l + sovCdcpb(uint64(l))
+	}
+	l = len(m.Value)
 	if l > 0 {
 		n += 1 + l + sovCdcpb(uint64(l))
 	}
@@ -1249,11 +1357,15 @@ func (m *ChangeDataRequest) Size() (n int) {
 		l = m.Header.Size()
 		n += 1 + l + sovCdcpb(uint64(l))
 	}
-	if m.CheckpointVersion != 0 {
-		n += 1 + sovCdcpb(uint64(m.CheckpointVersion))
+	if m.RegionId != 0 {
+		n += 1 + sovCdcpb(uint64(m.RegionId))
 	}
-	if m.LocalVersion != 0 {
-		n += 1 + sovCdcpb(uint64(m.LocalVersion))
+	if m.RegionEpoch != nil {
+		l = m.RegionEpoch.Size()
+		n += 1 + l + sovCdcpb(uint64(l))
+	}
+	if m.CheckpointTs != 0 {
+		n += 1 + sovCdcpb(uint64(m.CheckpointTs))
 	}
 	l = len(m.StartKey)
 	if l > 0 {
@@ -1515,6 +1627,26 @@ func (m *Event) Unmarshal(dAtA []byte) error {
 			}
 			m.Event = &Event_Error_{v}
 			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HearbeatTs", wireType)
+			}
+			var v uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCdcpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Event = &Event_HearbeatTs{v}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCdcpb(dAtA[iNdEx:])
@@ -1537,7 +1669,7 @@ func (m *Event) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Event_Entry) Unmarshal(dAtA []byte) error {
+func (m *Event_Row) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1560,10 +1692,10 @@ func (m *Event_Entry) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Entry: wiretype end group for non-group")
+			return fmt.Errorf("proto: Row: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Entry: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Row: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1624,8 +1756,27 @@ func (m *Event_Entry) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OpType", wireType)
+			}
+			m.OpType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCdcpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OpType |= (Event_Row_OpType(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Payload", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -1649,9 +1800,40 @@ func (m *Event_Entry) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = append(m.Payload[:0], dAtA[iNdEx:postIndex]...)
-			if m.Payload == nil {
-				m.Payload = []byte{}
+			m.Key = append(m.Key[:0], dAtA[iNdEx:postIndex]...)
+			if m.Key == nil {
+				m.Key = []byte{}
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCdcpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthCdcpb
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Value = append(m.Value[:0], dAtA[iNdEx:postIndex]...)
+			if m.Value == nil {
+				m.Value = []byte{}
 			}
 			iNdEx = postIndex
 		default:
@@ -1731,7 +1913,7 @@ func (m *Event_Entries) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Entries = append(m.Entries, &Event_Entry{})
+			m.Entries = append(m.Entries, &Event_Row{})
 			if err := m.Entries[len(m.Entries)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2072,9 +2254,9 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CheckpointVersion", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RegionId", wireType)
 			}
-			m.CheckpointVersion = 0
+			m.RegionId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowCdcpb
@@ -2084,16 +2266,16 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CheckpointVersion |= (int64(b) & 0x7F) << shift
+				m.RegionId |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LocalVersion", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RegionEpoch", wireType)
 			}
-			m.LocalVersion = 0
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowCdcpb
@@ -2103,12 +2285,45 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.LocalVersion |= (int64(b) & 0x7F) << shift
+				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if msglen < 0 {
+				return ErrInvalidLengthCdcpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.RegionEpoch == nil {
+				m.RegionEpoch = &metapb.RegionEpoch{}
+			}
+			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CheckpointTs", wireType)
+			}
+			m.CheckpointTs = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCdcpb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CheckpointTs |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StartKey", wireType)
 			}
@@ -2139,7 +2354,7 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 				m.StartKey = []byte{}
 			}
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field EndKey", wireType)
 			}
@@ -2297,48 +2512,53 @@ var (
 	ErrIntOverflowCdcpb   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("cdcpb.proto", fileDescriptor_cdcpb_48f9e1a1dc933b95) }
+func init() { proto.RegisterFile("cdcpb.proto", fileDescriptor_cdcpb_e57e6ff6519a337b) }
 
-var fileDescriptor_cdcpb_48f9e1a1dc933b95 = []byte{
-	// 633 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x94, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xb3, 0x4d, 0x1c, 0x27, 0x93, 0xa4, 0x4d, 0x57, 0x15, 0xb8, 0xae, 0x88, 0xaa, 0xf0,
-	0x2f, 0x42, 0x60, 0xaa, 0x70, 0xe8, 0x09, 0x44, 0x5b, 0x82, 0x1a, 0xa5, 0x6d, 0xd0, 0x2a, 0xd0,
-	0x63, 0xe4, 0xd8, 0x4b, 0x6a, 0x25, 0xf1, 0x9a, 0xf5, 0x36, 0xc2, 0x67, 0x2e, 0x3c, 0x02, 0x8f,
-	0xc0, 0x83, 0x70, 0xe0, 0xc8, 0x91, 0x63, 0x55, 0x5e, 0x04, 0x79, 0x6c, 0x37, 0x81, 0xf4, 0xe4,
-	0x9d, 0xf9, 0x7d, 0x63, 0xcf, 0x37, 0x3b, 0x32, 0x54, 0x1c, 0xd7, 0x09, 0x46, 0x56, 0x20, 0x85,
-	0x12, 0x54, 0x73, 0x46, 0x4e, 0x30, 0x32, 0xeb, 0xd2, 0xfe, 0xa8, 0x86, 0xce, 0xcc, 0xcd, 0x80,
-	0xb9, 0x35, 0x16, 0x63, 0x81, 0xc7, 0xe7, 0xf1, 0x29, 0xcd, 0x6e, 0xc8, 0xcb, 0x50, 0xe1, 0x31,
-	0x49, 0x34, 0x1f, 0x43, 0xf1, 0x98, 0xdb, 0x2e, 0x97, 0xf4, 0x1e, 0x80, 0x33, 0xbd, 0x0c, 0x15,
-	0x97, 0x43, 0xcf, 0x35, 0xc8, 0x2e, 0x69, 0x15, 0x58, 0x39, 0xcd, 0x74, 0xdd, 0xe6, 0x55, 0x01,
-	0xb4, 0xce, 0x9c, 0xfb, 0x8a, 0xee, 0x40, 0x59, 0xf2, 0xb1, 0x27, 0xfc, 0x85, 0xae, 0x94, 0x24,
-	0xba, 0x2e, 0xdd, 0x02, 0xcd, 0xf3, 0x5d, 0xfe, 0xd9, 0x58, 0x43, 0x90, 0x04, 0x74, 0x0f, 0x74,
-	0xee, 0x2b, 0xe9, 0xf1, 0xd0, 0xc8, 0xef, 0x92, 0x56, 0xa5, 0xbd, 0x65, 0x61, 0xdf, 0x16, 0xbe,
-	0xd1, 0xea, 0x24, 0xec, 0x38, 0xc7, 0x32, 0x19, 0x7d, 0x02, 0x9a, 0xed, 0xce, 0x3c, 0xdf, 0x28,
-	0xa0, 0x9e, 0xfe, 0xa3, 0x3f, 0x88, 0xc9, 0x71, 0x8e, 0x25, 0x92, 0x58, 0xcb, 0xa5, 0x14, 0xd2,
-	0xd0, 0x6e, 0xd1, 0x76, 0x62, 0x12, 0x6b, 0x51, 0x62, 0x7e, 0x21, 0xa0, 0xc5, 0x9f, 0x8b, 0xe8,
-	0x36, 0x94, 0x42, 0x65, 0x4b, 0x35, 0x54, 0x21, 0xba, 0xc8, 0x33, 0x1d, 0xe3, 0x41, 0x18, 0x3b,
-	0x74, 0xc4, 0x6c, 0xe6, 0x21, 0x5b, 0x43, 0x56, 0x4a, 0x12, 0x83, 0x90, 0xb6, 0xa0, 0xa0, 0xa2,
-	0x80, 0xa3, 0x91, 0xf5, 0xff, 0x8c, 0x9c, 0x88, 0xf1, 0x20, 0x0a, 0x38, 0x43, 0x05, 0x35, 0x40,
-	0x0f, 0xec, 0x68, 0x2a, 0x6c, 0x17, 0x5d, 0x54, 0x59, 0x16, 0x9a, 0xfb, 0xa0, 0xa7, 0x9e, 0xe9,
-	0xd3, 0xc5, 0x68, 0xc8, 0x6e, 0x7e, 0xb5, 0xfd, 0xb8, 0xd7, 0x9b, 0xb1, 0x98, 0x5f, 0x09, 0x68,
-	0xe8, 0x9e, 0xbe, 0x84, 0x1a, 0xba, 0x1f, 0x4a, 0xfe, 0xe9, 0x92, 0x87, 0x0a, 0x3d, 0x54, 0xda,
-	0x86, 0xb5, 0xb4, 0x09, 0xa8, 0x64, 0x09, 0x67, 0x55, 0x7b, 0x29, 0xa2, 0xaf, 0x61, 0x3d, 0x2b,
-	0x0f, 0x03, 0xe1, 0x87, 0x1c, 0x7d, 0x56, 0xda, 0xdb, 0xb7, 0xd4, 0x27, 0x02, 0x56, 0xb3, 0x97,
-	0x43, 0x53, 0x07, 0x0d, 0x67, 0xdb, 0x7c, 0x05, 0x7a, 0xea, 0x9b, 0x56, 0x40, 0x7f, 0x7f, 0xd6,
-	0x3b, 0xeb, 0x9f, 0x9f, 0xd5, 0x73, 0xb4, 0x0a, 0xa5, 0x77, 0xac, 0x73, 0xce, 0xba, 0x83, 0x4e,
-	0x9d, 0x50, 0x80, 0xe2, 0x51, 0xff, 0xf4, 0xb4, 0x3b, 0xa8, 0xaf, 0xc5, 0x84, 0xf5, 0x4f, 0x4e,
-	0x0e, 0x0f, 0x8e, 0x7a, 0xf5, 0xfc, 0xa1, 0x0e, 0x1a, 0x8f, 0xbd, 0x36, 0xf7, 0x61, 0xe3, 0xe8,
-	0xc2, 0xf6, 0xc7, 0xfc, 0x8d, 0xad, 0xec, 0x64, 0xd7, 0x1e, 0x40, 0x11, 0x59, 0x36, 0x9c, 0xea,
-	0xf2, 0x70, 0x58, 0xca, 0x9a, 0x3f, 0x08, 0x6c, 0x2e, 0x2a, 0x33, 0x8b, 0x0f, 0xa1, 0x78, 0x81,
-	0xab, 0x9d, 0x8e, 0xa6, 0x96, 0xd6, 0x26, 0xfb, 0xce, 0x52, 0x48, 0x9f, 0x01, 0x75, 0x2e, 0xb8,
-	0x33, 0x09, 0x84, 0xe7, 0xab, 0xe1, 0x9c, 0xcb, 0xd0, 0x13, 0x7e, 0x7a, 0xeb, 0x9b, 0x0b, 0xf2,
-	0x21, 0x01, 0xf4, 0x3e, 0xd4, 0xa6, 0xc2, 0xb1, 0xa7, 0x37, 0xca, 0x3c, 0x2a, 0xab, 0x98, 0xcc,
-	0x44, 0x3b, 0x50, 0x4e, 0x76, 0x6b, 0xc2, 0xa3, 0xf4, 0xee, 0x93, 0x65, 0xeb, 0xf1, 0x88, 0xde,
-	0x8d, 0x6f, 0xdc, 0x45, 0xa4, 0x21, 0x2a, 0x72, 0xdf, 0xed, 0xf1, 0xa8, 0xdd, 0x07, 0x58, 0xb8,
-	0xa0, 0x07, 0x50, 0x46, 0x97, 0x6f, 0x39, 0x77, 0xa9, 0x91, 0xf6, 0xbe, 0xe2, 0xd2, 0xbc, 0xb3,
-	0x42, 0xb0, 0xaa, 0x45, 0xf6, 0xc8, 0xe1, 0xa3, 0xdf, 0xdf, 0x4b, 0xe4, 0xe7, 0x75, 0x83, 0xfc,
-	0xba, 0x6e, 0x90, 0xab, 0xeb, 0x06, 0xf9, 0xf6, 0xa7, 0x91, 0x83, 0xba, 0x90, 0x63, 0x4b, 0x79,
-	0x93, 0xb9, 0x35, 0x99, 0xe3, 0x4f, 0x60, 0x54, 0xc4, 0xc7, 0x8b, 0xbf, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0x7e, 0x44, 0x79, 0x4a, 0x5a, 0x04, 0x00, 0x00,
+var fileDescriptor_cdcpb_e57e6ff6519a337b = []byte{
+	// 716 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x54, 0xdb, 0x6e, 0xe2, 0x56,
+	0x14, 0xc5, 0x80, 0x6d, 0xb2, 0x6d, 0x12, 0xf7, 0x34, 0x6a, 0x1c, 0xaa, 0xa2, 0x94, 0xde, 0x50,
+	0x1e, 0xdc, 0x88, 0xaa, 0xed, 0x53, 0x2f, 0xb9, 0xb8, 0x02, 0x41, 0x42, 0x74, 0xe4, 0x28, 0x8f,
+	0xc8, 0xd8, 0xa7, 0x60, 0x11, 0x7c, 0x5c, 0xdb, 0x90, 0xf2, 0x07, 0xf3, 0x09, 0xf3, 0x09, 0xf3,
+	0x29, 0xf3, 0x38, 0x8f, 0xf3, 0x38, 0xca, 0xbc, 0xcd, 0x68, 0xfe, 0x61, 0xe4, 0x7d, 0xcc, 0x2d,
+	0xc9, 0x93, 0xcf, 0xde, 0x6b, 0x6d, 0x74, 0xd6, 0x3a, 0x6b, 0x03, 0x9a, 0xe7, 0x7b, 0xd1, 0xd0,
+	0x8a, 0x62, 0x9e, 0x72, 0x22, 0x7b, 0x43, 0x2f, 0x1a, 0xd6, 0x8c, 0xd8, 0xfd, 0x37, 0x1d, 0x78,
+	0x53, 0x7f, 0x09, 0xd4, 0xf4, 0x29, 0x4b, 0xdd, 0x55, 0xb5, 0x3f, 0xe2, 0x23, 0x8e, 0xc7, 0x9f,
+	0xb3, 0x53, 0xde, 0xdd, 0x8b, 0x67, 0x49, 0x8a, 0x47, 0xd1, 0x68, 0xfc, 0x04, 0x4a, 0x9b, 0xb9,
+	0x3e, 0x8b, 0xc9, 0x37, 0x00, 0xde, 0xdd, 0x2c, 0x49, 0x59, 0x3c, 0x08, 0x7c, 0x53, 0x3a, 0x92,
+	0x9a, 0x65, 0xba, 0x93, 0x77, 0x3a, 0x7e, 0xe3, 0xa3, 0x0c, 0xb2, 0x3d, 0x67, 0x61, 0x4a, 0xbe,
+	0x86, 0x9d, 0x98, 0x8d, 0x02, 0x1e, 0xae, 0x79, 0x15, 0xd1, 0xe8, 0xf8, 0x64, 0x1f, 0xe4, 0x20,
+	0xf4, 0xd9, 0xff, 0x66, 0x11, 0x01, 0x51, 0x90, 0x13, 0x50, 0x59, 0x98, 0xc6, 0x01, 0x4b, 0xcc,
+	0xd2, 0x91, 0xd4, 0xd4, 0x5a, 0xfb, 0x16, 0xaa, 0xb0, 0xf0, 0x17, 0x2d, 0x5b, 0x60, 0xed, 0x02,
+	0x5d, 0xd2, 0xc8, 0x31, 0xc8, 0xae, 0x3f, 0x0d, 0x42, 0xb3, 0x8c, 0x7c, 0xb2, 0xc5, 0x3f, 0xcd,
+	0x90, 0x76, 0x81, 0x0a, 0x4a, 0xc6, 0x65, 0x71, 0xcc, 0x63, 0x53, 0x7e, 0x86, 0x6b, 0x67, 0x48,
+	0xc6, 0x45, 0x0a, 0xf9, 0x16, 0xb4, 0x31, 0x73, 0xe3, 0x21, 0x73, 0xd3, 0x41, 0x9a, 0x98, 0x4a,
+	0x76, 0xcb, 0x76, 0x81, 0xc2, 0xb2, 0xe9, 0x24, 0xb5, 0x4f, 0x12, 0x94, 0x28, 0xbf, 0x27, 0x87,
+	0x50, 0x49, 0x52, 0x37, 0x46, 0x5e, 0x26, 0xb3, 0x44, 0x55, 0xac, 0x9d, 0x24, 0xb3, 0xc0, 0xe3,
+	0xd3, 0x69, 0x80, 0x58, 0x11, 0xb1, 0x8a, 0x68, 0x38, 0x09, 0x69, 0x42, 0x39, 0x5d, 0x44, 0x0c,
+	0x95, 0xee, 0x3e, 0x52, 0xda, 0xe3, 0x23, 0x67, 0x11, 0x31, 0x8a, 0x8c, 0xcc, 0x16, 0x1e, 0x0d,
+	0x90, 0x5c, 0x46, 0xf2, 0xc1, 0x16, 0x99, 0xf2, 0x7b, 0xab, 0x1f, 0x21, 0x5f, 0xe1, 0xf8, 0x25,
+	0x06, 0x94, 0x26, 0x6c, 0x81, 0x42, 0x75, 0x9a, 0x1d, 0x33, 0xc3, 0xe7, 0xee, 0xdd, 0x8c, 0xa1,
+	0x14, 0x9d, 0x8a, 0xa2, 0x71, 0x0c, 0x8a, 0x98, 0x24, 0x1a, 0xa8, 0x37, 0x57, 0xdd, 0xab, 0xfe,
+	0xed, 0x95, 0x51, 0x20, 0x2a, 0x94, 0xae, 0x6f, 0x1c, 0x43, 0x22, 0x00, 0xca, 0x85, 0xdd, 0xb3,
+	0x1d, 0xdb, 0x28, 0xd6, 0x7e, 0x05, 0xd5, 0x5e, 0xb9, 0xbe, 0x7a, 0x27, 0xe9, 0xa8, 0xd4, 0xd4,
+	0x5a, 0xc6, 0xe3, 0x0b, 0xad, 0x5e, 0xa8, 0xf6, 0x42, 0x02, 0x19, 0x1f, 0x82, 0xfc, 0x01, 0x55,
+	0x7c, 0x88, 0x41, 0xcc, 0xfe, 0x9b, 0xb1, 0x24, 0x45, 0xb7, 0xb4, 0x96, 0x69, 0x6d, 0x44, 0x14,
+	0x99, 0x54, 0xe0, 0x54, 0x77, 0x37, 0x2a, 0xf2, 0x37, 0xec, 0x2e, 0xc7, 0x93, 0x88, 0x87, 0x09,
+	0x43, 0x47, 0xb5, 0xd6, 0xe1, 0x33, 0xf3, 0x82, 0x40, 0xab, 0xee, 0x66, 0x59, 0x53, 0x41, 0xc6,
+	0x67, 0x6e, 0xfc, 0x09, 0x6a, 0xee, 0xf0, 0xb6, 0x6e, 0x1d, 0x2a, 0xd7, 0xd4, 0xbe, 0xa5, 0x1d,
+	0xc7, 0x16, 0xe2, 0xcf, 0xfb, 0x97, 0x97, 0x1d, 0xc7, 0x28, 0x66, 0x08, 0xed, 0xf7, 0x7a, 0x67,
+	0xa7, 0xe7, 0x5d, 0xa3, 0x74, 0xa6, 0x82, 0xcc, 0x32, 0xa5, 0x8d, 0xdf, 0x61, 0xef, 0x7c, 0xec,
+	0x86, 0x23, 0x76, 0xe1, 0xa6, 0xae, 0x88, 0xfd, 0xf7, 0xa0, 0x20, 0xb6, 0xb4, 0x46, 0xdf, 0xb4,
+	0x86, 0xe6, 0x58, 0xe3, 0x83, 0x04, 0x5f, 0xac, 0x27, 0x97, 0x12, 0x7f, 0x00, 0x65, 0x8c, 0x5b,
+	0x96, 0x5b, 0x53, 0xcd, 0x67, 0xc5, 0xea, 0xd1, 0x1c, 0xdc, 0xde, 0xac, 0xe2, 0xa3, 0xcd, 0xfa,
+	0x0d, 0xf4, 0x1c, 0x64, 0x11, 0xf7, 0xc6, 0xf9, 0x22, 0x7d, 0x69, 0xe5, 0x5b, 0x4f, 0x11, 0xb3,
+	0x33, 0x88, 0x6a, 0xf1, 0xba, 0x20, 0xdf, 0x41, 0xd5, 0x1b, 0x33, 0x6f, 0x12, 0xf1, 0x20, 0xc4,
+	0xbc, 0x96, 0x31, 0xaf, 0xfa, 0xba, 0x29, 0x02, 0x2d, 0xb2, 0xbe, 0x4e, 0x97, 0x08, 0x7f, 0x97,
+	0x2d, 0xc8, 0x41, 0x96, 0x0a, 0x1f, 0x21, 0x11, 0x32, 0x85, 0x85, 0x7e, 0x97, 0x2d, 0x5a, 0x97,
+	0x00, 0x6b, 0xad, 0xe4, 0x2f, 0xd8, 0x41, 0x2f, 0xfe, 0x61, 0xcc, 0x27, 0x66, 0xae, 0xf0, 0x89,
+	0x17, 0xb5, 0xaf, 0x9e, 0x20, 0x38, 0x75, 0x22, 0x9d, 0xfd, 0xf8, 0xf6, 0x55, 0x45, 0x7a, 0xfd,
+	0x50, 0x97, 0xde, 0x3c, 0xd4, 0xa5, 0x77, 0x0f, 0x75, 0xe9, 0xe5, 0xfb, 0x7a, 0x01, 0x0c, 0x1e,
+	0x8f, 0xac, 0x34, 0x98, 0xcc, 0xad, 0xc9, 0x1c, 0xff, 0xb3, 0x86, 0x0a, 0x7e, 0x7e, 0xf9, 0x1c,
+	0x00, 0x00, 0xff, 0xff, 0xfd, 0x01, 0x8f, 0x99, 0x17, 0x05, 0x00, 0x00,
 }

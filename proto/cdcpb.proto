@@ -2,6 +2,7 @@ syntax = "proto3";
 package cbcpb;
 
 import "raft_cmdpb.proto";
+import "metapb.proto";
 
 import "gogoproto/gogo.proto";
 import "rustproto.proto";
@@ -23,25 +24,26 @@ message Event {
         PREWRITE = 1;
         COMMIT = 2;
         ROLLBACK = 3;
-        // More types ...
     }
 
-    // start_ts，commit ts, type 是 capture 数据排理（包括排序）的必要信息，
-    // 因为 tikv 这边有多处逻辑对应 prewrite + commit log，所以建议 tikv 统一逻辑输出
-    message Entry {
-        // row prewrite 的 start ts
+    message Row {
         int64 start_ts = 1;
-        // row commit 的 commit ts
         int64 commit_ts = 2;
-        // row prewrite/commit/abort 或者其他类型 log
         LogType type = 3;
-        // payload 可以自定义,比如 tidb 下传的 kv pair
-        bytes payload = 4;
-        // More fields ...
+
+        enum OpType {
+            UNKNOWN = 0;
+            PUT = 1;
+            DELETE = 2;
+        }
+        OpType op_type = 4;
+        bytes key = 5;
+        // set when log_type is COMMIT
+        bytes value = 6;
     }
 
     message Entries {
-        repeated Entry entries = 1;
+        repeated Row entries = 1;
     }
 
     message Admin {
@@ -59,6 +61,7 @@ message Event {
         Entries entries = 3;
         Admin admin = 4;
         Error error = 5;
+        uint64 hearbeat_ts = 6;
         // More region level events ...
     }
 }
@@ -70,16 +73,14 @@ message ChangeDataEvent {
 
 message ChangeDataRequest {
     Header header = 1;
+    uint64 region_id = 2;
+    metapb.RegionEpoch region_epoch = 3;
 
-    // 需要确保大于 GC safepoint.
-    int64 checkpoint_version = 2;
-    // 暂不确实是否需要，大概率不需要。
-    int64 local_version = 3;
-
-    bytes start_key = 4;
-    bytes end_key = 5;
+    int64 checkpoint_ts = 4;
+    bytes start_key = 5;
+    bytes end_key = 6;
 }
 
 service ChangeData {
-    rpc EventFeed(stream ChangeDataRequest) returns(stream ChangeDataEvent);
+    rpc EventFeed(ChangeDataRequest) returns(stream ChangeDataEvent);
 }
