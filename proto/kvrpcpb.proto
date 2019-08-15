@@ -170,6 +170,20 @@ message PrewriteRequest {
     uint64 txn_size = 8;
     // Use for pessimistic transaction, used to check if a conflict lock is already committed.
     uint64 for_update_ts = 9;
+    // If min_commit_ts > 0, this is large transaction proto, the final commit_ts
+    // would be infered from min_commit_ts.
+    uint64 min_commit_ts = 10;
+}
+
+// Used to update the lock_ttl of a large transaction to prevent it from been killed.
+message LargeTxnHeartBeatRequest {
+    bytes primary_lock = 1;
+    uint64 advise_lock_ttl = 2;
+}
+
+message LargeTxnHeartBeatResponse {
+    errorpb.Error region_error = 1;
+    uint64 lock_ttl = 2;
 }
 
 message PrewriteResponse {
