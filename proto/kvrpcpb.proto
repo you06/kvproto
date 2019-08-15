@@ -255,6 +255,31 @@ message BatchRollbackResponse {
     KeyError error = 2;
 }
 
+// CheckTxnStatusRequest checks the status of a transaction.
+// If the TTL of the transaction is exhausted, abort that transaction.
+// Otherwise, returns the TTL information in addition to commit/rollback.
+// CheckTxnStatusRequest also pushes the minCommitTS forword for large transaction.
+//
+// In the future, TiDB may not store TTL in the secondary lock, and it calls this API to
+// get the TTL from the primary key.
+//
+message CheckTxnStatusRequest {
+    Context context = 1;
+    bytes primary_key = 2;
+    uint64 start_version = 3;
+}
+
+message CheckTxnStatusResponse {
+    errorpb.Error region_error = 1; 
+    KeyError error = 2;
+    // Three kinds of txn status:
+    // locked: lock_ttl > 0
+    // committed: commit_version > 0
+    // rollbacked: lock_ttl = 0 && commit_version = 0
+    uint64 lock_ttl = 3;
+    uint64 commit_version = 4;
+}
+
 message CleanupRequest {
     Context context = 1;
     bytes key = 2;
