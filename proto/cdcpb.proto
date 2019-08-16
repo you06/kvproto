@@ -1,5 +1,5 @@
 syntax = "proto3";
-package cbcpb;
+package cdcpb;
 
 import "raft_cmdpb.proto";
 import "metapb.proto";
