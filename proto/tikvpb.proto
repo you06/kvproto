@@ -102,6 +102,8 @@ message BatchCommandsRequest {
             kvrpcpb.PessimisticLockRequest PessimisticLock = 23;
             kvrpcpb.PessimisticRollbackRequest PessimisticRollback = 24;
 
+            kvrpcpb.CheckTxnStatusRequest CheckTxnStatus = 25;
+
             // For some test cases.
             BatchCommandsEmptyRequest Empty = 255;
         }
