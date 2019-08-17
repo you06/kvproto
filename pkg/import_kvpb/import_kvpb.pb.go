@@ -49,30 +49,7 @@ func (x Mutation_OP) String() string {
 	return proto.EnumName(Mutation_OP_name, int32(x))
 }
 func (Mutation_OP) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{5, 0}
-}
-
-type ImportFileRequest_Mode int32
-
-const (
-	ImportFileRequest_Raw ImportFileRequest_Mode = 0
-	ImportFileRequest_Txn ImportFileRequest_Mode = 1
-)
-
-var ImportFileRequest_Mode_name = map[int32]string{
-	0: "Raw",
-	1: "Txn",
-}
-var ImportFileRequest_Mode_value = map[string]int32{
-	"Raw": 0,
-	"Txn": 1,
-}
-
-func (x ImportFileRequest_Mode) String() string {
-	return proto.EnumName(ImportFileRequest_Mode_name, int32(x))
-}
-func (ImportFileRequest_Mode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{17, 0}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{5, 0}
 }
 
 type SwitchModeRequest struct {
@@ -87,7 +64,7 @@ func (m *SwitchModeRequest) Reset()         { *m = SwitchModeRequest{} }
 func (m *SwitchModeRequest) String() string { return proto.CompactTextString(m) }
 func (*SwitchModeRequest) ProtoMessage()    {}
 func (*SwitchModeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{0}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{0}
 }
 func (m *SwitchModeRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -140,7 +117,7 @@ func (m *SwitchModeResponse) Reset()         { *m = SwitchModeResponse{} }
 func (m *SwitchModeResponse) String() string { return proto.CompactTextString(m) }
 func (*SwitchModeResponse) ProtoMessage()    {}
 func (*SwitchModeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{1}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{1}
 }
 func (m *SwitchModeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -180,7 +157,7 @@ func (m *OpenEngineRequest) Reset()         { *m = OpenEngineRequest{} }
 func (m *OpenEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*OpenEngineRequest) ProtoMessage()    {}
 func (*OpenEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{2}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{2}
 }
 func (m *OpenEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -226,7 +203,7 @@ func (m *OpenEngineResponse) Reset()         { *m = OpenEngineResponse{} }
 func (m *OpenEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*OpenEngineResponse) ProtoMessage()    {}
 func (*OpenEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{3}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{3}
 }
 func (m *OpenEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -266,7 +243,7 @@ func (m *WriteHead) Reset()         { *m = WriteHead{} }
 func (m *WriteHead) String() string { return proto.CompactTextString(m) }
 func (*WriteHead) ProtoMessage()    {}
 func (*WriteHead) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{4}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{4}
 }
 func (m *WriteHead) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -315,7 +292,7 @@ func (m *Mutation) Reset()         { *m = Mutation{} }
 func (m *Mutation) String() string { return proto.CompactTextString(m) }
 func (*Mutation) ProtoMessage()    {}
 func (*Mutation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{5}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{5}
 }
 func (m *Mutation) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -377,7 +354,7 @@ func (m *WriteBatch) Reset()         { *m = WriteBatch{} }
 func (m *WriteBatch) String() string { return proto.CompactTextString(m) }
 func (*WriteBatch) ProtoMessage()    {}
 func (*WriteBatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{6}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{6}
 }
 func (m *WriteBatch) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -434,7 +411,7 @@ func (m *WriteEngineRequest) Reset()         { *m = WriteEngineRequest{} }
 func (m *WriteEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*WriteEngineRequest) ProtoMessage()    {}
 func (*WriteEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{7}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{7}
 }
 func (m *WriteEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -585,7 +562,7 @@ func (m *WriteEngineResponse) Reset()         { *m = WriteEngineResponse{} }
 func (m *WriteEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*WriteEngineResponse) ProtoMessage()    {}
 func (*WriteEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{8}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{8}
 }
 func (m *WriteEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -632,7 +609,7 @@ func (m *CloseEngineRequest) Reset()         { *m = CloseEngineRequest{} }
 func (m *CloseEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*CloseEngineRequest) ProtoMessage()    {}
 func (*CloseEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{9}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{9}
 }
 func (m *CloseEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -679,7 +656,7 @@ func (m *CloseEngineResponse) Reset()         { *m = CloseEngineResponse{} }
 func (m *CloseEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*CloseEngineResponse) ProtoMessage()    {}
 func (*CloseEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{10}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{10}
 }
 func (m *CloseEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -727,7 +704,7 @@ func (m *ImportEngineRequest) Reset()         { *m = ImportEngineRequest{} }
 func (m *ImportEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*ImportEngineRequest) ProtoMessage()    {}
 func (*ImportEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{11}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{11}
 }
 func (m *ImportEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -780,7 +757,7 @@ func (m *ImportEngineResponse) Reset()         { *m = ImportEngineResponse{} }
 func (m *ImportEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*ImportEngineResponse) ProtoMessage()    {}
 func (*ImportEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{12}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{12}
 }
 func (m *ImportEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -820,7 +797,7 @@ func (m *CleanupEngineRequest) Reset()         { *m = CleanupEngineRequest{} }
 func (m *CleanupEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*CleanupEngineRequest) ProtoMessage()    {}
 func (*CleanupEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{13}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{13}
 }
 func (m *CleanupEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -866,7 +843,7 @@ func (m *CleanupEngineResponse) Reset()         { *m = CleanupEngineResponse{} }
 func (m *CleanupEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*CleanupEngineResponse) ProtoMessage()    {}
 func (*CleanupEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{14}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{14}
 }
 func (m *CleanupEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -907,7 +884,7 @@ func (m *CompactClusterRequest) Reset()         { *m = CompactClusterRequest{} }
 func (m *CompactClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*CompactClusterRequest) ProtoMessage()    {}
 func (*CompactClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{15}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{15}
 }
 func (m *CompactClusterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -960,7 +937,7 @@ func (m *CompactClusterResponse) Reset()         { *m = CompactClusterResponse{}
 func (m *CompactClusterResponse) String() string { return proto.CompactTextString(m) }
 func (*CompactClusterResponse) ProtoMessage()    {}
 func (*CompactClusterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{16}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{16}
 }
 func (m *CompactClusterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -989,30 +966,30 @@ func (m *CompactClusterResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CompactClusterResponse proto.InternalMessageInfo
 
-type ImportFileRequest struct {
-	File                 *backup.File           `protobuf:"bytes,1,opt,name=file" json:"file,omitempty"`
-	Mode                 ImportFileRequest_Mode `protobuf:"varint,2,opt,name=mode,proto3,enum=import_kvpb.ImportFileRequest_Mode" json:"mode,omitempty"`
-	Path                 string                 `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
-	PdAddr               string                 `protobuf:"bytes,4,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
-	TableIds             []*IdPair              `protobuf:"bytes,5,rep,name=table_ids,json=tableIds" json:"table_ids,omitempty"`
-	IndexIds             []*IdPair              `protobuf:"bytes,6,rep,name=index_ids,json=indexIds" json:"index_ids,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
-	XXX_unrecognized     []byte                 `json:"-"`
-	XXX_sizecache        int32                  `json:"-"`
+type RestoreFileRequest struct {
+	Default              *backup.File `protobuf:"bytes,1,opt,name=default" json:"default,omitempty"`
+	Write                *backup.File `protobuf:"bytes,2,opt,name=write" json:"write,omitempty"`
+	Path                 string       `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
+	PdAddr               string       `protobuf:"bytes,4,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
+	TableIds             []*IdPair    `protobuf:"bytes,5,rep,name=table_ids,json=tableIds" json:"table_ids,omitempty"`
+	IndexIds             []*IdPair    `protobuf:"bytes,6,rep,name=index_ids,json=indexIds" json:"index_ids,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *ImportFileRequest) Reset()         { *m = ImportFileRequest{} }
-func (m *ImportFileRequest) String() string { return proto.CompactTextString(m) }
-func (*ImportFileRequest) ProtoMessage()    {}
-func (*ImportFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{17}
+func (m *RestoreFileRequest) Reset()         { *m = RestoreFileRequest{} }
+func (m *RestoreFileRequest) String() string { return proto.CompactTextString(m) }
+func (*RestoreFileRequest) ProtoMessage()    {}
+func (*RestoreFileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{17}
 }
-func (m *ImportFileRequest) XXX_Unmarshal(b []byte) error {
+func (m *RestoreFileRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ImportFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RestoreFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ImportFileRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RestoreFileRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -1022,79 +999,79 @@ func (m *ImportFileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (dst *ImportFileRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ImportFileRequest.Merge(dst, src)
+func (dst *RestoreFileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RestoreFileRequest.Merge(dst, src)
 }
-func (m *ImportFileRequest) XXX_Size() int {
+func (m *RestoreFileRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *ImportFileRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ImportFileRequest.DiscardUnknown(m)
+func (m *RestoreFileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RestoreFileRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ImportFileRequest proto.InternalMessageInfo
+var xxx_messageInfo_RestoreFileRequest proto.InternalMessageInfo
 
-func (m *ImportFileRequest) GetFile() *backup.File {
+func (m *RestoreFileRequest) GetDefault() *backup.File {
 	if m != nil {
-		return m.File
+		return m.Default
 	}
 	return nil
 }
 
-func (m *ImportFileRequest) GetMode() ImportFileRequest_Mode {
+func (m *RestoreFileRequest) GetWrite() *backup.File {
 	if m != nil {
-		return m.Mode
+		return m.Write
 	}
-	return ImportFileRequest_Raw
+	return nil
 }
 
-func (m *ImportFileRequest) GetPath() string {
+func (m *RestoreFileRequest) GetPath() string {
 	if m != nil {
 		return m.Path
 	}
 	return ""
 }
 
-func (m *ImportFileRequest) GetPdAddr() string {
+func (m *RestoreFileRequest) GetPdAddr() string {
 	if m != nil {
 		return m.PdAddr
 	}
 	return ""
 }
 
-func (m *ImportFileRequest) GetTableIds() []*IdPair {
+func (m *RestoreFileRequest) GetTableIds() []*IdPair {
 	if m != nil {
 		return m.TableIds
 	}
 	return nil
 }
 
-func (m *ImportFileRequest) GetIndexIds() []*IdPair {
+func (m *RestoreFileRequest) GetIndexIds() []*IdPair {
 	if m != nil {
 		return m.IndexIds
 	}
 	return nil
 }
 
-type ImportFileResponse struct {
+type RestoreFileResponse struct {
 	Error                *Error   `protobuf:"bytes,1,opt,name=error" json:"error,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ImportFileResponse) Reset()         { *m = ImportFileResponse{} }
-func (m *ImportFileResponse) String() string { return proto.CompactTextString(m) }
-func (*ImportFileResponse) ProtoMessage()    {}
-func (*ImportFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{18}
+func (m *RestoreFileResponse) Reset()         { *m = RestoreFileResponse{} }
+func (m *RestoreFileResponse) String() string { return proto.CompactTextString(m) }
+func (*RestoreFileResponse) ProtoMessage()    {}
+func (*RestoreFileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{18}
 }
-func (m *ImportFileResponse) XXX_Unmarshal(b []byte) error {
+func (m *RestoreFileResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ImportFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RestoreFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ImportFileResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RestoreFileResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -1104,19 +1081,19 @@ func (m *ImportFileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (dst *ImportFileResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ImportFileResponse.Merge(dst, src)
+func (dst *RestoreFileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RestoreFileResponse.Merge(dst, src)
 }
-func (m *ImportFileResponse) XXX_Size() int {
+func (m *RestoreFileResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *ImportFileResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ImportFileResponse.DiscardUnknown(m)
+func (m *RestoreFileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RestoreFileResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ImportFileResponse proto.InternalMessageInfo
+var xxx_messageInfo_RestoreFileResponse proto.InternalMessageInfo
 
-func (m *ImportFileResponse) GetError() *Error {
+func (m *RestoreFileResponse) GetError() *Error {
 	if m != nil {
 		return m.Error
 	}
@@ -1135,7 +1112,7 @@ func (m *IdPair) Reset()         { *m = IdPair{} }
 func (m *IdPair) String() string { return proto.CompactTextString(m) }
 func (*IdPair) ProtoMessage()    {}
 func (*IdPair) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{19}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{19}
 }
 func (m *IdPair) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1197,7 +1174,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{20}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{20}
 }
 func (m *Error) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1258,7 +1235,7 @@ func (m *Error_EngineNotFound) Reset()         { *m = Error_EngineNotFound{} }
 func (m *Error_EngineNotFound) String() string { return proto.CompactTextString(m) }
 func (*Error_EngineNotFound) ProtoMessage()    {}
 func (*Error_EngineNotFound) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{20, 0}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{20, 0}
 }
 func (m *Error_EngineNotFound) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1305,7 +1282,7 @@ func (m *Error_FileNotFound) Reset()         { *m = Error_FileNotFound{} }
 func (m *Error_FileNotFound) String() string { return proto.CompactTextString(m) }
 func (*Error_FileNotFound) ProtoMessage()    {}
 func (*Error_FileNotFound) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{20, 1}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{20, 1}
 }
 func (m *Error_FileNotFound) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1352,7 +1329,7 @@ func (m *Error_ParseSstFailed) Reset()         { *m = Error_ParseSstFailed{} }
 func (m *Error_ParseSstFailed) String() string { return proto.CompactTextString(m) }
 func (*Error_ParseSstFailed) ProtoMessage()    {}
 func (*Error_ParseSstFailed) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_f711ee01ca5cccd2, []int{20, 2}
+	return fileDescriptor_import_kvpb_599c86cf51039706, []int{20, 2}
 }
 func (m *Error_ParseSstFailed) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1406,15 +1383,14 @@ func init() {
 	proto.RegisterType((*CleanupEngineResponse)(nil), "import_kvpb.CleanupEngineResponse")
 	proto.RegisterType((*CompactClusterRequest)(nil), "import_kvpb.CompactClusterRequest")
 	proto.RegisterType((*CompactClusterResponse)(nil), "import_kvpb.CompactClusterResponse")
-	proto.RegisterType((*ImportFileRequest)(nil), "import_kvpb.ImportFileRequest")
-	proto.RegisterType((*ImportFileResponse)(nil), "import_kvpb.ImportFileResponse")
+	proto.RegisterType((*RestoreFileRequest)(nil), "import_kvpb.RestoreFileRequest")
+	proto.RegisterType((*RestoreFileResponse)(nil), "import_kvpb.RestoreFileResponse")
 	proto.RegisterType((*IdPair)(nil), "import_kvpb.IdPair")
 	proto.RegisterType((*Error)(nil), "import_kvpb.Error")
 	proto.RegisterType((*Error_EngineNotFound)(nil), "import_kvpb.Error.EngineNotFound")
 	proto.RegisterType((*Error_FileNotFound)(nil), "import_kvpb.Error.FileNotFound")
 	proto.RegisterType((*Error_ParseSstFailed)(nil), "import_kvpb.Error.ParseSstFailed")
 	proto.RegisterEnum("import_kvpb.Mutation_OP", Mutation_OP_name, Mutation_OP_value)
-	proto.RegisterEnum("import_kvpb.ImportFileRequest_Mode", ImportFileRequest_Mode_name, ImportFileRequest_Mode_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1442,7 +1418,7 @@ type ImportKVClient interface {
 	CleanupEngine(ctx context.Context, in *CleanupEngineRequest, opts ...grpc.CallOption) (*CleanupEngineResponse, error)
 	// Compact the target cluster for better performance.
 	CompactCluster(ctx context.Context, in *CompactClusterRequest, opts ...grpc.CallOption) (*CompactClusterResponse, error)
-	ImportFile(ctx context.Context, in *ImportFileRequest, opts ...grpc.CallOption) (*ImportFileResponse, error)
+	RestoreFile(ctx context.Context, in *RestoreFileRequest, opts ...grpc.CallOption) (*RestoreFileResponse, error)
 }
 
 type importKVClient struct {
@@ -1541,9 +1517,9 @@ func (c *importKVClient) CompactCluster(ctx context.Context, in *CompactClusterR
 	return out, nil
 }
 
-func (c *importKVClient) ImportFile(ctx context.Context, in *ImportFileRequest, opts ...grpc.CallOption) (*ImportFileResponse, error) {
-	out := new(ImportFileResponse)
-	err := c.cc.Invoke(ctx, "/import_kvpb.ImportKV/ImportFile", in, out, opts...)
+func (c *importKVClient) RestoreFile(ctx context.Context, in *RestoreFileRequest, opts ...grpc.CallOption) (*RestoreFileResponse, error) {
+	out := new(RestoreFileResponse)
+	err := c.cc.Invoke(ctx, "/import_kvpb.ImportKV/RestoreFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1567,7 +1543,7 @@ type ImportKVServer interface {
 	CleanupEngine(context.Context, *CleanupEngineRequest) (*CleanupEngineResponse, error)
 	// Compact the target cluster for better performance.
 	CompactCluster(context.Context, *CompactClusterRequest) (*CompactClusterResponse, error)
-	ImportFile(context.Context, *ImportFileRequest) (*ImportFileResponse, error)
+	RestoreFile(context.Context, *RestoreFileRequest) (*RestoreFileResponse, error)
 }
 
 func RegisterImportKVServer(s *grpc.Server, srv ImportKVServer) {
@@ -1708,20 +1684,20 @@ func _ImportKV_CompactCluster_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ImportKV_ImportFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImportFileRequest)
+func _ImportKV_RestoreFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreFileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ImportKVServer).ImportFile(ctx, in)
+		return srv.(ImportKVServer).RestoreFile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/import_kvpb.ImportKV/ImportFile",
+		FullMethod: "/import_kvpb.ImportKV/RestoreFile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ImportKVServer).ImportFile(ctx, req.(*ImportFileRequest))
+		return srv.(ImportKVServer).RestoreFile(ctx, req.(*RestoreFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1755,8 +1731,8 @@ var _ImportKV_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ImportKV_CompactCluster_Handler,
 		},
 		{
-			MethodName: "ImportFile",
-			Handler:    _ImportKV_ImportFile_Handler,
+			MethodName: "RestoreFile",
+			Handler:    _ImportKV_RestoreFile_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -2283,7 +2259,7 @@ func (m *CompactClusterResponse) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *ImportFileRequest) Marshal() (dAtA []byte, err error) {
+func (m *RestoreFileRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -2293,25 +2269,30 @@ func (m *ImportFileRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ImportFileRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *RestoreFileRequest) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.File != nil {
+	if m.Default != nil {
 		dAtA[i] = 0xa
 		i++
-		i = encodeVarintImportKvpb(dAtA, i, uint64(m.File.Size()))
-		n8, err := m.File.MarshalTo(dAtA[i:])
+		i = encodeVarintImportKvpb(dAtA, i, uint64(m.Default.Size()))
+		n8, err := m.Default.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n8
 	}
-	if m.Mode != 0 {
-		dAtA[i] = 0x10
+	if m.Write != nil {
+		dAtA[i] = 0x12
 		i++
-		i = encodeVarintImportKvpb(dAtA, i, uint64(m.Mode))
+		i = encodeVarintImportKvpb(dAtA, i, uint64(m.Write.Size()))
+		n9, err := m.Write.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n9
 	}
 	if len(m.Path) > 0 {
 		dAtA[i] = 0x1a
@@ -2355,7 +2336,7 @@ func (m *ImportFileRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *ImportFileResponse) Marshal() (dAtA []byte, err error) {
+func (m *RestoreFileResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -2365,7 +2346,7 @@ func (m *ImportFileResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ImportFileResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *RestoreFileResponse) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -2374,11 +2355,11 @@ func (m *ImportFileResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintImportKvpb(dAtA, i, uint64(m.Error.Size()))
-		n9, err := m.Error.MarshalTo(dAtA[i:])
+		n10, err := m.Error.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n9
+		i += n10
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -2436,31 +2417,31 @@ func (m *Error) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintImportKvpb(dAtA, i, uint64(m.EngineNotFound.Size()))
-		n10, err := m.EngineNotFound.MarshalTo(dAtA[i:])
-		if err != nil {
-			return 0, err
-		}
-		i += n10
-	}
-	if m.FileNotFound != nil {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintImportKvpb(dAtA, i, uint64(m.FileNotFound.Size()))
-		n11, err := m.FileNotFound.MarshalTo(dAtA[i:])
+		n11, err := m.EngineNotFound.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n11
 	}
-	if m.ParseSstFailed != nil {
-		dAtA[i] = 0x1a
+	if m.FileNotFound != nil {
+		dAtA[i] = 0x12
 		i++
-		i = encodeVarintImportKvpb(dAtA, i, uint64(m.ParseSstFailed.Size()))
-		n12, err := m.ParseSstFailed.MarshalTo(dAtA[i:])
+		i = encodeVarintImportKvpb(dAtA, i, uint64(m.FileNotFound.Size()))
+		n12, err := m.FileNotFound.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n12
+	}
+	if m.ParseSstFailed != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintImportKvpb(dAtA, i, uint64(m.ParseSstFailed.Size()))
+		n13, err := m.ParseSstFailed.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n13
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -2514,11 +2495,11 @@ func (m *Error_FileNotFound) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintImportKvpb(dAtA, i, uint64(m.File.Size()))
-		n13, err := m.File.MarshalTo(dAtA[i:])
+		n14, err := m.File.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n13
+		i += n14
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -2545,11 +2526,11 @@ func (m *Error_ParseSstFailed) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0xa
 		i++
 		i = encodeVarintImportKvpb(dAtA, i, uint64(m.File.Size()))
-		n14, err := m.File.MarshalTo(dAtA[i:])
+		n15, err := m.File.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n14
+		i += n15
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -2808,15 +2789,16 @@ func (m *CompactClusterResponse) Size() (n int) {
 	return n
 }
 
-func (m *ImportFileRequest) Size() (n int) {
+func (m *RestoreFileRequest) Size() (n int) {
 	var l int
 	_ = l
-	if m.File != nil {
-		l = m.File.Size()
+	if m.Default != nil {
+		l = m.Default.Size()
 		n += 1 + l + sovImportKvpb(uint64(l))
 	}
-	if m.Mode != 0 {
-		n += 1 + sovImportKvpb(uint64(m.Mode))
+	if m.Write != nil {
+		l = m.Write.Size()
+		n += 1 + l + sovImportKvpb(uint64(l))
 	}
 	l = len(m.Path)
 	if l > 0 {
@@ -2844,7 +2826,7 @@ func (m *ImportFileRequest) Size() (n int) {
 	return n
 }
 
-func (m *ImportFileResponse) Size() (n int) {
+func (m *RestoreFileResponse) Size() (n int) {
 	var l int
 	_ = l
 	if m.Error != nil {
@@ -4381,7 +4363,7 @@ func (m *CompactClusterResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ImportFileRequest) Unmarshal(dAtA []byte) error {
+func (m *RestoreFileRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4404,15 +4386,15 @@ func (m *ImportFileRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ImportFileRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: RestoreFileRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ImportFileRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RestoreFileRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field File", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Default", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4436,18 +4418,18 @@ func (m *ImportFileRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.File == nil {
-				m.File = &backup.File{}
+			if m.Default == nil {
+				m.Default = &backup.File{}
 			}
-			if err := m.File.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Default.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Mode", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Write", wireType)
 			}
-			m.Mode = 0
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowImportKvpb
@@ -4457,11 +4439,25 @@ func (m *ImportFileRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Mode |= (ImportFileRequest_Mode(b) & 0x7F) << shift
+				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			if msglen < 0 {
+				return ErrInvalidLengthImportKvpb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Write == nil {
+				m.Write = &backup.File{}
+			}
+			if err := m.Write.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Path", wireType)
@@ -4604,7 +4600,7 @@ func (m *ImportFileRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ImportFileResponse) Unmarshal(dAtA []byte) error {
+func (m *RestoreFileResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4627,10 +4623,10 @@ func (m *ImportFileResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ImportFileResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: RestoreFileResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ImportFileResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RestoreFileResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5282,69 +5278,68 @@ var (
 	ErrIntOverflowImportKvpb   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("import_kvpb.proto", fileDescriptor_import_kvpb_f711ee01ca5cccd2) }
+func init() { proto.RegisterFile("import_kvpb.proto", fileDescriptor_import_kvpb_599c86cf51039706) }
 
-var fileDescriptor_import_kvpb_f711ee01ca5cccd2 = []byte{
-	// 967 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x56, 0xdd, 0x6e, 0xe3, 0x44,
-	0x14, 0xb6, 0x9d, 0x9f, 0x26, 0x27, 0xd9, 0x90, 0x4e, 0xd3, 0x36, 0x0a, 0x28, 0x4d, 0xbd, 0x08,
-	0x22, 0x84, 0xbc, 0xab, 0xac, 0xb4, 0x88, 0x1b, 0x56, 0xb4, 0x6a, 0xd5, 0x68, 0xb5, 0x34, 0x9a,
-	0x2d, 0x3f, 0x12, 0x12, 0x91, 0x93, 0x99, 0x26, 0x56, 0x1c, 0x8f, 0xb1, 0xc7, 0xed, 0x22, 0xf1,
-	0x20, 0xf0, 0x06, 0xbc, 0x00, 0xef, 0xc0, 0x25, 0x97, 0x5c, 0xa2, 0xf2, 0x0a, 0x3c, 0xc0, 0x6a,
-	0xc6, 0x4e, 0xea, 0xb1, 0xb3, 0x8d, 0xf6, 0x2a, 0x33, 0x67, 0xbe, 0xf3, 0x9d, 0x73, 0x3c, 0xe7,
-	0x7c, 0x13, 0xd8, 0x75, 0x96, 0x3e, 0x0b, 0xf8, 0x78, 0x71, 0xe3, 0x4f, 0x2c, 0x3f, 0x60, 0x9c,
-	0xa1, 0x5a, 0xca, 0xd4, 0x41, 0xc9, 0x26, 0x0c, 0xf9, 0x0a, 0xd0, 0xa9, 0x4f, 0xec, 0xe9, 0x22,
-	0xf2, 0x93, 0x5d, 0x6b, 0xc6, 0x66, 0x4c, 0x2e, 0x9f, 0x88, 0x55, 0x62, 0xfd, 0x20, 0x88, 0x42,
-	0x2e, 0x97, 0xb1, 0xc1, 0x9c, 0xc1, 0xee, 0xeb, 0x5b, 0x87, 0x4f, 0xe7, 0xaf, 0x18, 0xa1, 0x98,
-	0xfe, 0x1c, 0xd1, 0x90, 0xa3, 0x43, 0xd8, 0xf1, 0xc9, 0xd8, 0x26, 0x24, 0x68, 0xeb, 0x3d, 0xbd,
-	0x5f, 0xc5, 0x65, 0x9f, 0x7c, 0x4d, 0x48, 0x80, 0xbe, 0x84, 0x9d, 0x20, 0xc6, 0xb4, 0x8d, 0x9e,
-	0xde, 0xaf, 0x0d, 0x8e, 0x2c, 0x25, 0x91, 0x1c, 0x15, 0x5e, 0xe1, 0xcd, 0x16, 0xa0, 0xf4, 0x69,
-	0xe8, 0x33, 0x2f, 0xa4, 0xe6, 0xa7, 0xb0, 0x7b, 0xe9, 0x53, 0xef, 0xcc, 0x9b, 0x39, 0xde, 0x3a,
-	0x3c, 0x82, 0x62, 0x14, 0x39, 0x44, 0xc6, 0xae, 0x63, 0xb9, 0x16, 0xee, 0x69, 0x60, 0xe2, 0x7e,
-	0x04, 0xd5, 0xef, 0x03, 0x87, 0xd3, 0x0b, 0x6a, 0x93, 0x8d, 0x6e, 0x0b, 0xa8, 0xbc, 0x8a, 0xb8,
-	0xcd, 0x1d, 0xe6, 0xa1, 0x3e, 0x18, 0xcc, 0x97, 0xa7, 0x8d, 0x41, 0xdb, 0x4a, 0x7f, 0xe0, 0x15,
-	0xc4, 0xba, 0x1c, 0x61, 0x83, 0xf9, 0xa8, 0x09, 0x85, 0x05, 0xfd, 0x45, 0x96, 0x58, 0xc7, 0x62,
-	0x89, 0x5a, 0x50, 0xba, 0xb1, 0xdd, 0x88, 0xb6, 0x0b, 0xd2, 0x16, 0x6f, 0xcc, 0x47, 0x60, 0x5c,
-	0x8e, 0xd0, 0x0e, 0x14, 0x46, 0x11, 0x6f, 0x6a, 0xe6, 0x4f, 0x00, 0x32, 0x9b, 0x13, 0x9b, 0x4f,
-	0xe7, 0xe8, 0x43, 0xa8, 0x4e, 0xd9, 0x72, 0xe9, 0xf0, 0x31, 0x0f, 0x65, 0xd4, 0x22, 0xae, 0xc4,
-	0x86, 0xab, 0x10, 0x3d, 0x83, 0xea, 0x32, 0x09, 0x1a, 0xb6, 0x8d, 0x5e, 0xa1, 0x5f, 0x1b, 0xec,
-	0x6f, 0x4c, 0x09, 0xdf, 0xe3, 0xcc, 0x5f, 0x01, 0x49, 0x7e, 0xf5, 0x6b, 0x7d, 0x0e, 0xc5, 0x39,
-	0xb5, 0xe3, 0xb2, 0x6b, 0x83, 0x03, 0x85, 0x65, 0xfd, 0x71, 0x2e, 0x34, 0x2c, 0x51, 0xe8, 0x09,
-	0x94, 0x26, 0x22, 0xbd, 0xe4, 0xfe, 0x0e, 0xf3, 0x70, 0x99, 0xfd, 0x85, 0x86, 0x63, 0xdc, 0xc9,
-	0x0e, 0x94, 0xa6, 0xf3, 0xc8, 0x5b, 0x98, 0x2f, 0x60, 0x4f, 0x89, 0x1e, 0x5f, 0x01, 0xea, 0x43,
-	0x89, 0x06, 0x01, 0x0b, 0x92, 0xf8, 0x48, 0x21, 0x3c, 0x13, 0x27, 0x38, 0x06, 0x98, 0x7d, 0x40,
-	0xa7, 0x2e, 0x0b, 0xe9, 0xf6, 0xcb, 0x7e, 0x01, 0x7b, 0x0a, 0xf2, 0xbd, 0x43, 0x9d, 0xc0, 0xde,
-	0x50, 0x9e, 0x6d, 0x8d, 0x95, 0xee, 0x75, 0x23, 0xdd, 0xeb, 0xe6, 0x01, 0xb4, 0x54, 0x8e, 0xa4,
-	0xe7, 0x3e, 0x83, 0xd6, 0xa9, 0x4b, 0x6d, 0x2f, 0xf2, 0xb7, 0x17, 0x72, 0x08, 0xfb, 0x19, 0x6c,
-	0x42, 0x32, 0x87, 0xfd, 0x53, 0xb6, 0xf4, 0xed, 0x29, 0x3f, 0x75, 0xa3, 0x90, 0xd3, 0x60, 0xeb,
-	0xe8, 0x3d, 0xcf, 0x8e, 0xde, 0x47, 0xea, 0xe8, 0x25, 0x74, 0xb9, 0xb9, 0x6b, 0xc3, 0x41, 0x36,
-	0x52, 0x92, 0xc3, 0xef, 0x06, 0xec, 0xc6, 0x15, 0x9e, 0x3b, 0xee, 0xba, 0x8c, 0x1e, 0x14, 0xaf,
-	0x1d, 0x97, 0x26, 0xdf, 0xb8, 0x6e, 0x25, 0xa2, 0x22, 0x21, 0xf2, 0x04, 0x7d, 0x01, 0xc5, 0x25,
-	0x23, 0x54, 0xa6, 0xd1, 0x18, 0x3c, 0x56, 0x6e, 0x21, 0xc7, 0x67, 0xc9, 0x71, 0x97, 0x0e, 0xe2,
-	0x0b, 0xf9, 0x36, 0x9f, 0xcb, 0x19, 0xaa, 0x62, 0xb9, 0x4e, 0xd7, 0x5b, 0x54, 0xea, 0x7d, 0x0a,
-	0x55, 0x6e, 0x4f, 0x5c, 0x3a, 0x76, 0x48, 0xd8, 0x2e, 0xc9, 0x09, 0xd9, 0x53, 0x43, 0x91, 0x91,
-	0xed, 0x04, 0xb8, 0x22, 0x51, 0x43, 0x12, 0x0a, 0x0f, 0xc7, 0x23, 0xf4, 0x8d, 0xf4, 0x28, 0x3f,
-	0xe0, 0x21, 0x51, 0x43, 0x12, 0x9a, 0x6d, 0x28, 0x8a, 0xf4, 0xc4, 0x04, 0x63, 0xfb, 0xb6, 0xa9,
-	0x89, 0xc5, 0xd5, 0x1b, 0xaf, 0xa9, 0x9b, 0x5f, 0x01, 0x4a, 0x97, 0xf2, 0xde, 0x0d, 0xf8, 0x1c,
-	0xca, 0x71, 0x34, 0xb4, 0x0f, 0x65, 0xe6, 0x92, 0x71, 0xd2, 0x18, 0x05, 0x5c, 0x62, 0x2e, 0x19,
-	0x12, 0x61, 0xf6, 0xe8, 0xad, 0x30, 0x1b, 0xb1, 0xd9, 0xa3, 0xb7, 0x43, 0x62, 0xfe, 0x6f, 0x40,
-	0x49, 0x12, 0xa1, 0x97, 0xd0, 0xa4, 0xb2, 0x67, 0xc6, 0x1e, 0xe3, 0xe3, 0x6b, 0x16, 0x79, 0xab,
-	0x11, 0x3f, 0xce, 0x87, 0xb5, 0xe2, 0xf6, 0xfa, 0x86, 0xf1, 0x73, 0x01, 0xc4, 0x0d, 0xaa, 0xec,
-	0xd1, 0x19, 0x34, 0xc4, 0xd5, 0xa5, 0xa8, 0x32, 0xf2, 0x9d, 0xa2, 0x12, 0x15, 0xaf, 0x89, 0xea,
-	0xd7, 0xa9, 0x9d, 0xc8, 0xc9, 0xb7, 0x83, 0x90, 0x8a, 0x96, 0x1b, 0x5f, 0xdb, 0x8e, 0x4b, 0x89,
-	0xbc, 0xcc, 0xcd, 0x39, 0x8d, 0x04, 0xf4, 0x75, 0xc8, 0xcf, 0x25, 0x10, 0x37, 0x7c, 0x65, 0xdf,
-	0xf9, 0x18, 0x1a, 0x6a, 0xd6, 0x9b, 0x26, 0xa8, 0xf3, 0x14, 0xea, 0xe9, 0x84, 0xb6, 0xb7, 0x67,
-	0x67, 0x00, 0x0d, 0x35, 0xf2, 0x76, 0x9f, 0xc1, 0x9f, 0x25, 0xa8, 0xc4, 0xf7, 0xfd, 0xf2, 0x3b,
-	0x74, 0x09, 0x70, 0xff, 0x52, 0xa1, 0xae, 0x52, 0x59, 0xee, 0x81, 0xeb, 0x1c, 0xbd, 0xf3, 0x3c,
-	0x19, 0x33, 0x4d, 0x10, 0xde, 0xbf, 0x5d, 0x19, 0xc2, 0xdc, 0xeb, 0x97, 0x21, 0xdc, 0xf0, 0xe8,
-	0x69, 0xe8, 0x0a, 0x6a, 0x29, 0x29, 0x46, 0x47, 0x79, 0x11, 0x57, 0x29, 0x7b, 0xef, 0x06, 0xac,
-	0x38, 0xfb, 0x3a, 0xc2, 0x50, 0x4b, 0xa9, 0x6e, 0x86, 0x35, 0xaf, 0xdc, 0x19, 0xd6, 0x0d, 0x82,
-	0x6d, 0x6a, 0xe8, 0x5b, 0xa8, 0xa7, 0x45, 0x14, 0xf5, 0x36, 0xa8, 0x85, 0xca, 0x7a, 0xfc, 0x00,
-	0x62, 0x4d, 0xfb, 0x03, 0x3c, 0x52, 0x74, 0x15, 0x1d, 0x67, 0x72, 0xc9, 0xeb, 0x73, 0xc7, 0x7c,
-	0x08, 0xb2, 0x66, 0xfe, 0x11, 0x1a, 0xaa, 0x5c, 0xa2, 0x8c, 0xdf, 0x26, 0xd5, 0xee, 0x3c, 0x7e,
-	0x10, 0x93, 0x6e, 0x84, 0x7b, 0x55, 0xc9, 0x34, 0x42, 0x4e, 0x39, 0x33, 0x8d, 0x90, 0x97, 0x23,
-	0x53, 0x3b, 0xf9, 0xe4, 0x9f, 0x3f, 0x2a, 0xfa, 0x5f, 0x77, 0x5d, 0xfd, 0xef, 0xbb, 0xae, 0xfe,
-	0xef, 0x5d, 0x57, 0xff, 0xed, 0xbf, 0xae, 0x06, 0x4d, 0x16, 0xcc, 0x2c, 0xee, 0x2c, 0x6e, 0xac,
-	0xc5, 0x8d, 0xfc, 0x97, 0x37, 0x29, 0xcb, 0x9f, 0x67, 0x6f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x4f,
-	0x0a, 0x12, 0x9d, 0x57, 0x0a, 0x00, 0x00,
+var fileDescriptor_import_kvpb_599c86cf51039706 = []byte{
+	// 954 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x56, 0xdd, 0x6e, 0xe2, 0x46,
+	0x14, 0xc6, 0x80, 0xf9, 0x39, 0xb0, 0x34, 0x99, 0x90, 0x04, 0xb9, 0x15, 0x21, 0x6e, 0xb5, 0x45,
+	0x55, 0xc5, 0xae, 0x58, 0x69, 0xa5, 0x5e, 0xad, 0x9a, 0x28, 0x51, 0xd0, 0x6a, 0x1b, 0x34, 0xbb,
+	0xfd, 0x91, 0x2a, 0x15, 0x19, 0x66, 0x00, 0x0b, 0xe3, 0x71, 0xed, 0x71, 0xd2, 0x4a, 0x7d, 0x90,
+	0x3e, 0x42, 0x1f, 0xa1, 0x8f, 0xd0, 0xcb, 0x5e, 0xf6, 0xb2, 0x4a, 0x9f, 0xa0, 0x52, 0x1f, 0xa0,
+	0x9a, 0xb1, 0x21, 0x1e, 0xdb, 0x1b, 0x94, 0x2b, 0x66, 0xe6, 0x7c, 0xe7, 0x3b, 0xe7, 0xcc, 0x9c,
+	0xf3, 0x19, 0xd8, 0xb7, 0xd7, 0x1e, 0xf3, 0xf9, 0x64, 0x75, 0xe3, 0x4d, 0x07, 0x9e, 0xcf, 0x38,
+	0x43, 0x8d, 0xc4, 0x91, 0x81, 0xe2, 0x4d, 0x10, 0xf0, 0x0d, 0xc0, 0x68, 0x4e, 0xad, 0xd9, 0x2a,
+	0xf4, 0xe2, 0x5d, 0x7b, 0xc1, 0x16, 0x4c, 0x2e, 0x9f, 0x89, 0x55, 0x7c, 0xfa, 0x81, 0x1f, 0x06,
+	0x5c, 0x2e, 0xa3, 0x03, 0x73, 0x01, 0xfb, 0x6f, 0x6f, 0x6d, 0x3e, 0x5b, 0xbe, 0x61, 0x84, 0x62,
+	0xfa, 0x63, 0x48, 0x03, 0x8e, 0x8e, 0xa1, 0xea, 0x91, 0x89, 0x45, 0x88, 0xdf, 0xd1, 0x7a, 0x5a,
+	0xbf, 0x8e, 0x2b, 0x1e, 0xf9, 0x92, 0x10, 0x1f, 0x7d, 0x01, 0x55, 0x3f, 0xc2, 0x74, 0x8a, 0x3d,
+	0xad, 0xdf, 0x18, 0x9e, 0x0c, 0x94, 0x44, 0x32, 0x54, 0x78, 0x83, 0x37, 0xdb, 0x80, 0x92, 0xd6,
+	0xc0, 0x63, 0x6e, 0x40, 0xcd, 0x4f, 0x61, 0xff, 0xda, 0xa3, 0xee, 0x85, 0xbb, 0xb0, 0xdd, 0x6d,
+	0x78, 0x04, 0xe5, 0x30, 0xb4, 0x89, 0x8c, 0xdd, 0xc4, 0x72, 0x2d, 0xdc, 0x93, 0xc0, 0xd8, 0xfd,
+	0x04, 0xea, 0xdf, 0xfa, 0x36, 0xa7, 0x57, 0xd4, 0x22, 0xb9, 0x6e, 0x2b, 0xa8, 0xbd, 0x09, 0xb9,
+	0xc5, 0x6d, 0xe6, 0xa2, 0x3e, 0x14, 0x99, 0x27, 0xad, 0xad, 0x61, 0x67, 0x90, 0xbc, 0xe0, 0x0d,
+	0x64, 0x70, 0x3d, 0xc6, 0x45, 0xe6, 0xa1, 0x3d, 0x28, 0xad, 0xe8, 0xcf, 0xb2, 0xc4, 0x26, 0x16,
+	0x4b, 0xd4, 0x06, 0xfd, 0xc6, 0x72, 0x42, 0xda, 0x29, 0xc9, 0xb3, 0x68, 0x63, 0x3e, 0x81, 0xe2,
+	0xf5, 0x18, 0x55, 0xa1, 0x34, 0x0e, 0xf9, 0x5e, 0xc1, 0xfc, 0x01, 0x40, 0x66, 0x73, 0x66, 0xf1,
+	0xd9, 0x12, 0x7d, 0x08, 0xf5, 0x19, 0x5b, 0xaf, 0x6d, 0x3e, 0xe1, 0x81, 0x8c, 0x5a, 0xc6, 0xb5,
+	0xe8, 0xe0, 0x5d, 0x80, 0x5e, 0x40, 0x7d, 0x1d, 0x07, 0x0d, 0x3a, 0xc5, 0x5e, 0xa9, 0xdf, 0x18,
+	0x1e, 0xe6, 0xa6, 0x84, 0xef, 0x71, 0xe6, 0x2f, 0x80, 0x24, 0xbf, 0x7a, 0x5b, 0x9f, 0x43, 0x79,
+	0x49, 0xad, 0xa8, 0xec, 0xc6, 0xf0, 0x48, 0x61, 0xd9, 0x5e, 0xce, 0x55, 0x01, 0x4b, 0x14, 0x7a,
+	0x06, 0xfa, 0x54, 0xa4, 0x17, 0xbf, 0xdf, 0x71, 0x16, 0x2e, 0xb3, 0xbf, 0x2a, 0xe0, 0x08, 0x77,
+	0x56, 0x05, 0x7d, 0xb6, 0x0c, 0xdd, 0x95, 0xf9, 0x0a, 0x0e, 0x94, 0xe8, 0xd1, 0x13, 0xa0, 0x3e,
+	0xe8, 0xd4, 0xf7, 0x99, 0x1f, 0xc7, 0x47, 0x0a, 0xe1, 0x85, 0xb0, 0xe0, 0x08, 0x60, 0xf6, 0x01,
+	0x9d, 0x3b, 0x2c, 0xa0, 0xbb, 0x1f, 0xfb, 0x15, 0x1c, 0x28, 0xc8, 0x47, 0x87, 0x3a, 0x83, 0x83,
+	0x91, 0xb4, 0xed, 0x8c, 0x95, 0xec, 0xf5, 0x62, 0xb2, 0xd7, 0xcd, 0x23, 0x68, 0xab, 0x1c, 0x71,
+	0xcf, 0x7d, 0x06, 0xed, 0x73, 0x87, 0x5a, 0x6e, 0xe8, 0xed, 0x2e, 0xe4, 0x18, 0x0e, 0x53, 0xd8,
+	0x98, 0x64, 0x09, 0x87, 0xe7, 0x6c, 0xed, 0x59, 0x33, 0x7e, 0xee, 0x84, 0x01, 0xa7, 0xfe, 0xce,
+	0xd1, 0x7b, 0x99, 0x1e, 0xbd, 0x8f, 0xd4, 0xd1, 0x8b, 0xe9, 0x32, 0x73, 0xd7, 0x81, 0xa3, 0x74,
+	0xa4, 0x38, 0x87, 0x7f, 0x35, 0x40, 0x98, 0x06, 0x9c, 0xf9, 0xf4, 0xd2, 0x76, 0xb6, 0x75, 0x3c,
+	0x85, 0x2a, 0xa1, 0x73, 0x2b, 0x74, 0x78, 0x7c, 0xcf, 0xcd, 0x41, 0x2c, 0x2c, 0x12, 0xb5, 0x31,
+	0x22, 0x13, 0xf4, 0x5b, 0xd1, 0x0f, 0x71, 0x3a, 0x2a, 0x2a, 0x32, 0x89, 0x3b, 0xf1, 0x2c, 0xbe,
+	0x94, 0x53, 0x53, 0xc7, 0x72, 0x9d, 0xac, 0xb0, 0xac, 0x54, 0xf8, 0x1c, 0xea, 0xdc, 0x9a, 0x3a,
+	0x74, 0x62, 0x93, 0xa0, 0xa3, 0xcb, 0x99, 0x38, 0x50, 0x9e, 0x78, 0x44, 0xc6, 0x96, 0xed, 0xe3,
+	0x9a, 0x44, 0x8d, 0x48, 0x20, 0x3c, 0x6c, 0x97, 0xd0, 0x9f, 0xa4, 0x47, 0xe5, 0x01, 0x0f, 0x89,
+	0x1a, 0x91, 0x40, 0x74, 0x96, 0x52, 0xf2, 0xa3, 0x3b, 0xeb, 0x25, 0x54, 0x22, 0x52, 0x74, 0x08,
+	0x15, 0xe6, 0x90, 0x49, 0xfc, 0xe2, 0x25, 0xac, 0x33, 0x87, 0x8c, 0x88, 0x38, 0x76, 0xe9, 0xad,
+	0x38, 0x2e, 0x46, 0xc7, 0x2e, 0xbd, 0x1d, 0x11, 0xf3, 0xbf, 0x22, 0xe8, 0x92, 0x08, 0xbd, 0x86,
+	0x3d, 0x2a, 0x9b, 0x61, 0xe2, 0x32, 0x3e, 0x99, 0xb3, 0xd0, 0xdd, 0xcc, 0xee, 0x69, 0x36, 0xec,
+	0x20, 0xea, 0x9b, 0xaf, 0x18, 0xbf, 0x14, 0x40, 0xdc, 0xa2, 0xca, 0x1e, 0x5d, 0x40, 0x6b, 0x6e,
+	0x3b, 0x49, 0xaa, 0x94, 0x2e, 0x27, 0xa8, 0x44, 0xc5, 0x5b, 0xa2, 0xe6, 0x3c, 0xb1, 0x13, 0x39,
+	0x79, 0x96, 0x1f, 0x50, 0xd1, 0x4b, 0x93, 0xb9, 0x65, 0x3b, 0x94, 0xc8, 0x37, 0xcb, 0xcf, 0x69,
+	0x2c, 0xa0, 0x6f, 0x03, 0x7e, 0x29, 0x81, 0xb8, 0xe5, 0x29, 0x7b, 0xe3, 0x13, 0x68, 0xa9, 0x59,
+	0xe7, 0x8d, 0x86, 0xf1, 0x1c, 0x9a, 0xc9, 0x84, 0x50, 0x0f, 0xca, 0x22, 0xa5, 0xdc, 0x9e, 0x93,
+	0x16, 0x63, 0x08, 0x2d, 0x35, 0xf2, 0x6e, 0x9f, 0xe1, 0xef, 0x3a, 0xd4, 0xa2, 0x29, 0x7e, 0xfd,
+	0x0d, 0xba, 0x06, 0xb8, 0xff, 0x04, 0xa1, 0xae, 0x52, 0x59, 0xe6, 0xcb, 0x65, 0x9c, 0xbc, 0xd7,
+	0x1e, 0xcf, 0x4f, 0x41, 0x10, 0xde, 0x7f, 0x94, 0x52, 0x84, 0x99, 0xcf, 0x5a, 0x8a, 0x30, 0xe7,
+	0x6b, 0x56, 0x40, 0xef, 0xa0, 0x91, 0xd0, 0x58, 0x74, 0x92, 0x55, 0x67, 0x95, 0xb2, 0xf7, 0x7e,
+	0xc0, 0x86, 0xb3, 0xaf, 0x21, 0x0c, 0x8d, 0x84, 0x9c, 0xa6, 0x58, 0xb3, 0x92, 0x9c, 0x62, 0xcd,
+	0x51, 0x62, 0xb3, 0x80, 0xbe, 0x86, 0x66, 0x52, 0x1d, 0x91, 0xea, 0x93, 0x23, 0xbe, 0xc6, 0xe9,
+	0x03, 0x88, 0x2d, 0xed, 0x77, 0xf0, 0x44, 0x11, 0x4c, 0x74, 0x9a, 0xca, 0x25, 0x2b, 0xbc, 0x86,
+	0xf9, 0x10, 0x64, 0xcb, 0xfc, 0x3d, 0xb4, 0x54, 0x1d, 0x44, 0x29, 0xbf, 0x3c, 0x39, 0x36, 0x3e,
+	0x7e, 0x10, 0xb3, 0x25, 0xc7, 0xd0, 0x48, 0xc8, 0x4a, 0xea, 0x86, 0xb3, 0x1a, 0x9b, 0xba, 0xe1,
+	0x1c, 0x45, 0x32, 0x0b, 0x67, 0x4f, 0xff, 0xfa, 0xad, 0xa6, 0xfd, 0x71, 0xd7, 0xd5, 0xfe, 0xbc,
+	0xeb, 0x6a, 0x7f, 0xdf, 0x75, 0xb5, 0x5f, 0xff, 0xe9, 0x16, 0x60, 0x8f, 0xf9, 0x8b, 0x01, 0xb7,
+	0x57, 0x37, 0x83, 0xd5, 0x8d, 0xfc, 0x07, 0x37, 0xad, 0xc8, 0x9f, 0x17, 0xff, 0x07, 0x00, 0x00,
+	0xff, 0xff, 0x15, 0x67, 0x61, 0x54, 0x33, 0x0a, 0x00, 0x00,
 }

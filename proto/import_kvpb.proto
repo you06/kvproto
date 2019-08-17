@@ -47,7 +47,7 @@ service ImportKV {
     rpc CleanupEngine(CleanupEngineRequest) returns (CleanupEngineResponse) {}
     // Compact the target cluster for better performance.
     rpc CompactCluster(CompactClusterRequest) returns (CompactClusterResponse) {}
-    rpc ImportFile(ImportFileRequest) returns (ImportFileResponse) {}
+    rpc RestoreFile(RestoreFileRequest) returns (RestoreFileResponse) {}
 }
 
 message SwitchModeRequest {
@@ -125,20 +125,16 @@ message CompactClusterRequest {
 message CompactClusterResponse {
 }
 
-message ImportFileRequest {
-    enum Mode {
-        Raw = 0;
-        Txn = 1;
-    }
-    backup.File file = 1;
-    Mode mode = 2;
+message RestoreFileRequest {
+    backup.File default = 1;
+    backup.File write = 2;
     string path = 3;
     string pd_addr = 4;
     repeated IdPair table_ids = 5;
     repeated IdPair index_ids = 6;
 }
 
-message ImportFileResponse {
+message RestoreFileResponse {
     Error error = 1;
 }
 
