@@ -267,6 +267,7 @@ message CheckTxnStatusRequest {
     Context context = 1;
     bytes primary_key = 2;
     uint64 start_version = 3;
+    uint64 current_ts = 4;
 }
 
 message CheckTxnStatusResponse {
