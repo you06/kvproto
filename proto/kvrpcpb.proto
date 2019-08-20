@@ -178,7 +178,8 @@ message PrewriteRequest {
 // Used to update the lock_ttl of a large transaction to prevent it from been killed.
 message TxnHeartBeatRequest {
     bytes primary_lock = 1;
-    uint64 advise_lock_ttl = 2;
+    uint64 start_version = 2;
+    uint64 advise_lock_ttl = 3;
 }
 
 message TxnHeartBeatResponse {
