@@ -103,6 +103,7 @@ message BatchCommandsRequest {
             kvrpcpb.PessimisticRollbackRequest PessimisticRollback = 24;
 
             kvrpcpb.CheckTxnStatusRequest CheckTxnStatus = 25;
+            kvrpcpb.TxnHeartBeatRequest TxnHeartBeat = 26;
 
             // For some test cases.
             BatchCommandsEmptyRequest Empty = 255;
@@ -144,6 +145,9 @@ message BatchCommandsResponse {
             coprocessor.Response Coprocessor = 22;
             kvrpcpb.PessimisticLockResponse PessimisticLock = 23;
             kvrpcpb.PessimisticRollbackResponse PessimisticRollback = 24;
+
+            kvrpcpb.CheckTxnStatusResponse CheckTxnStatus = 25;
+            kvrpcpb.TxnHeartBeatResponse TxnHeartBeat = 26;
 
             // For some test cases.
             BatchCommandsEmptyResponse Empty = 255;
