@@ -49,7 +49,7 @@ func (x Mutation_OP) String() string {
 	return proto.EnumName(Mutation_OP_name, int32(x))
 }
 func (Mutation_OP) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{5, 0}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{5, 0}
 }
 
 type SwitchModeRequest struct {
@@ -64,7 +64,7 @@ func (m *SwitchModeRequest) Reset()         { *m = SwitchModeRequest{} }
 func (m *SwitchModeRequest) String() string { return proto.CompactTextString(m) }
 func (*SwitchModeRequest) ProtoMessage()    {}
 func (*SwitchModeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{0}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{0}
 }
 func (m *SwitchModeRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -117,7 +117,7 @@ func (m *SwitchModeResponse) Reset()         { *m = SwitchModeResponse{} }
 func (m *SwitchModeResponse) String() string { return proto.CompactTextString(m) }
 func (*SwitchModeResponse) ProtoMessage()    {}
 func (*SwitchModeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{1}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{1}
 }
 func (m *SwitchModeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -157,7 +157,7 @@ func (m *OpenEngineRequest) Reset()         { *m = OpenEngineRequest{} }
 func (m *OpenEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*OpenEngineRequest) ProtoMessage()    {}
 func (*OpenEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{2}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{2}
 }
 func (m *OpenEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -203,7 +203,7 @@ func (m *OpenEngineResponse) Reset()         { *m = OpenEngineResponse{} }
 func (m *OpenEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*OpenEngineResponse) ProtoMessage()    {}
 func (*OpenEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{3}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{3}
 }
 func (m *OpenEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -243,7 +243,7 @@ func (m *WriteHead) Reset()         { *m = WriteHead{} }
 func (m *WriteHead) String() string { return proto.CompactTextString(m) }
 func (*WriteHead) ProtoMessage()    {}
 func (*WriteHead) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{4}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{4}
 }
 func (m *WriteHead) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -292,7 +292,7 @@ func (m *Mutation) Reset()         { *m = Mutation{} }
 func (m *Mutation) String() string { return proto.CompactTextString(m) }
 func (*Mutation) ProtoMessage()    {}
 func (*Mutation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{5}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{5}
 }
 func (m *Mutation) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -354,7 +354,7 @@ func (m *WriteBatch) Reset()         { *m = WriteBatch{} }
 func (m *WriteBatch) String() string { return proto.CompactTextString(m) }
 func (*WriteBatch) ProtoMessage()    {}
 func (*WriteBatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{6}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{6}
 }
 func (m *WriteBatch) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -411,7 +411,7 @@ func (m *WriteEngineRequest) Reset()         { *m = WriteEngineRequest{} }
 func (m *WriteEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*WriteEngineRequest) ProtoMessage()    {}
 func (*WriteEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{7}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{7}
 }
 func (m *WriteEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -562,7 +562,7 @@ func (m *WriteEngineResponse) Reset()         { *m = WriteEngineResponse{} }
 func (m *WriteEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*WriteEngineResponse) ProtoMessage()    {}
 func (*WriteEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{8}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{8}
 }
 func (m *WriteEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -609,7 +609,7 @@ func (m *CloseEngineRequest) Reset()         { *m = CloseEngineRequest{} }
 func (m *CloseEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*CloseEngineRequest) ProtoMessage()    {}
 func (*CloseEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{9}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{9}
 }
 func (m *CloseEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -656,7 +656,7 @@ func (m *CloseEngineResponse) Reset()         { *m = CloseEngineResponse{} }
 func (m *CloseEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*CloseEngineResponse) ProtoMessage()    {}
 func (*CloseEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{10}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{10}
 }
 func (m *CloseEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -704,7 +704,7 @@ func (m *ImportEngineRequest) Reset()         { *m = ImportEngineRequest{} }
 func (m *ImportEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*ImportEngineRequest) ProtoMessage()    {}
 func (*ImportEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{11}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{11}
 }
 func (m *ImportEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -757,7 +757,7 @@ func (m *ImportEngineResponse) Reset()         { *m = ImportEngineResponse{} }
 func (m *ImportEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*ImportEngineResponse) ProtoMessage()    {}
 func (*ImportEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{12}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{12}
 }
 func (m *ImportEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -797,7 +797,7 @@ func (m *CleanupEngineRequest) Reset()         { *m = CleanupEngineRequest{} }
 func (m *CleanupEngineRequest) String() string { return proto.CompactTextString(m) }
 func (*CleanupEngineRequest) ProtoMessage()    {}
 func (*CleanupEngineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{13}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{13}
 }
 func (m *CleanupEngineRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -843,7 +843,7 @@ func (m *CleanupEngineResponse) Reset()         { *m = CleanupEngineResponse{} }
 func (m *CleanupEngineResponse) String() string { return proto.CompactTextString(m) }
 func (*CleanupEngineResponse) ProtoMessage()    {}
 func (*CleanupEngineResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{14}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{14}
 }
 func (m *CleanupEngineResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -884,7 +884,7 @@ func (m *CompactClusterRequest) Reset()         { *m = CompactClusterRequest{} }
 func (m *CompactClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*CompactClusterRequest) ProtoMessage()    {}
 func (*CompactClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{15}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{15}
 }
 func (m *CompactClusterRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -937,7 +937,7 @@ func (m *CompactClusterResponse) Reset()         { *m = CompactClusterResponse{}
 func (m *CompactClusterResponse) String() string { return proto.CompactTextString(m) }
 func (*CompactClusterResponse) ProtoMessage()    {}
 func (*CompactClusterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{16}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{16}
 }
 func (m *CompactClusterResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -983,7 +983,7 @@ func (m *RestoreFileRequest) Reset()         { *m = RestoreFileRequest{} }
 func (m *RestoreFileRequest) String() string { return proto.CompactTextString(m) }
 func (*RestoreFileRequest) ProtoMessage()    {}
 func (*RestoreFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{17}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{17}
 }
 func (m *RestoreFileRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1072,7 +1072,7 @@ func (m *RestoreFileResponse) Reset()         { *m = RestoreFileResponse{} }
 func (m *RestoreFileResponse) String() string { return proto.CompactTextString(m) }
 func (*RestoreFileResponse) ProtoMessage()    {}
 func (*RestoreFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{18}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{18}
 }
 func (m *RestoreFileResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1120,7 +1120,7 @@ func (m *IdPair) Reset()         { *m = IdPair{} }
 func (m *IdPair) String() string { return proto.CompactTextString(m) }
 func (*IdPair) ProtoMessage()    {}
 func (*IdPair) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{19}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{19}
 }
 func (m *IdPair) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1182,7 +1182,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{20}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{20}
 }
 func (m *Error) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1243,7 +1243,7 @@ func (m *Error_EngineNotFound) Reset()         { *m = Error_EngineNotFound{} }
 func (m *Error_EngineNotFound) String() string { return proto.CompactTextString(m) }
 func (*Error_EngineNotFound) ProtoMessage()    {}
 func (*Error_EngineNotFound) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{20, 0}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{20, 0}
 }
 func (m *Error_EngineNotFound) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1290,7 +1290,7 @@ func (m *Error_FileNotFound) Reset()         { *m = Error_FileNotFound{} }
 func (m *Error_FileNotFound) String() string { return proto.CompactTextString(m) }
 func (*Error_FileNotFound) ProtoMessage()    {}
 func (*Error_FileNotFound) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{20, 1}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{20, 1}
 }
 func (m *Error_FileNotFound) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1337,7 +1337,7 @@ func (m *Error_ParseSstFailed) Reset()         { *m = Error_ParseSstFailed{} }
 func (m *Error_ParseSstFailed) String() string { return proto.CompactTextString(m) }
 func (*Error_ParseSstFailed) ProtoMessage()    {}
 func (*Error_ParseSstFailed) Descriptor() ([]byte, []int) {
-	return fileDescriptor_import_kvpb_0cfb52841efb8da1, []int{20, 2}
+	return fileDescriptor_import_kvpb_fdba9f39c8b9456c, []int{20, 2}
 }
 func (m *Error_ParseSstFailed) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -5313,9 +5313,9 @@ var (
 	ErrIntOverflowImportKvpb   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("import_kvpb.proto", fileDescriptor_import_kvpb_0cfb52841efb8da1) }
+func init() { proto.RegisterFile("import_kvpb.proto", fileDescriptor_import_kvpb_fdba9f39c8b9456c) }
 
-var fileDescriptor_import_kvpb_0cfb52841efb8da1 = []byte{
+var fileDescriptor_import_kvpb_fdba9f39c8b9456c = []byte{
 	// 970 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x56, 0xdf, 0x6e, 0xe2, 0xc6,
 	0x17, 0x06, 0x83, 0xf9, 0x73, 0x60, 0xf9, 0x25, 0x13, 0x92, 0x20, 0xff, 0x5a, 0x42, 0xdc, 0x6a,
