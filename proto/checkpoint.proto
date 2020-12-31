@@ -1,0 +1,41 @@
+syntax = "proto3";
+package checkpoint;
+
+import "gogoproto/gogo.proto";
+
+enum CheckpointRequestType {
+	// write start checkpoint
+	CheckpointStart = 0;
+	// CleanUpWaitFor cleans a single entry the transaction is waiting.
+	CheckpointCommit = 1;
+	// CleanUp cleans all entries the transaction is waiting.
+	CheckpointRollback = 2;
+}
+
+message Checkpoint {
+	CheckpointRequestType tp = 1;
+	uint64 ts = 2;
+}
+
+message CheckpointRequest {
+}
+
+message CheckpointResponse {
+	Checkpoint cp = 1;
+}
+
+message WriteCheckpointRequest {
+	Checkpoint cp = 1;
+}
+
+message WriteCheckpointResponse {
+	Checkpoint cp = 1;
+	Checkpoint wait_for = 2;
+}
+
+service Checkpoint {
+	rpc Get(CheckpointRequest) returns (CheckpointResponse) {}
+
+	rpc Write(WriteCheckpointRequest) returns (WriteCheckpointResponse) {}
+}
+
