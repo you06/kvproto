@@ -12,7 +12,7 @@ enum CheckpointRequestType {
 	CheckpointRollback = 2;
 }
 
-message Checkpoint {
+message CheckpointEntry {
 	CheckpointRequestType tp = 1;
 	uint64 ts = 2;
 }
@@ -21,21 +21,31 @@ message CheckpointRequest {
 }
 
 message CheckpointResponse {
-	Checkpoint cp = 1;
+	CheckpointEntry entry = 1;
 }
 
 message WriteCheckpointRequest {
-	Checkpoint cp = 1;
+	CheckpointEntry entry = 1;
 }
 
 message WriteCheckpointResponse {
-	Checkpoint cp = 1;
-	Checkpoint wait_for = 2;
+	CheckpointEntry entry = 1;
+	CheckpointEntry wait_for = 2;
+}
+
+message ClearFromCheckpointRequest {
+	CheckpointEntry entry = 1;
+}
+
+// TODO: error response
+message ClearFromCheckpointResponse {
 }
 
 service Checkpoint {
 	rpc Get(CheckpointRequest) returns (CheckpointResponse) {}
 
 	rpc Write(WriteCheckpointRequest) returns (WriteCheckpointResponse) {}
+
+	rpc Clear(ClearFromCheckpointRequest) returns (ClearFromCheckpointResponse) {}
 }
 
