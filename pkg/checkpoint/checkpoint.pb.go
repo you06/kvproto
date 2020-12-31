@@ -31,11 +31,11 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type CheckpointRequestType int32
 
 const (
-	// write start checkpoint
+	// start checkpoint
 	CheckpointRequestType_CheckpointStart CheckpointRequestType = 0
-	// CleanUpWaitFor cleans a single entry the transaction is waiting.
+	// commit checkpoint
 	CheckpointRequestType_CheckpointCommit CheckpointRequestType = 1
-	// CleanUp cleans all entries the transaction is waiting.
+	// rollback checkpoint
 	CheckpointRequestType_CheckpointRollback CheckpointRequestType = 2
 )
 
@@ -54,7 +54,7 @@ func (x CheckpointRequestType) String() string {
 	return proto.EnumName(CheckpointRequestType_name, int32(x))
 }
 func (CheckpointRequestType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{0}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{0}
 }
 
 type CheckpointEntry struct {
@@ -69,7 +69,7 @@ func (m *CheckpointEntry) Reset()         { *m = CheckpointEntry{} }
 func (m *CheckpointEntry) String() string { return proto.CompactTextString(m) }
 func (*CheckpointEntry) ProtoMessage()    {}
 func (*CheckpointEntry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{0}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{0}
 }
 func (m *CheckpointEntry) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -122,7 +122,7 @@ func (m *CheckpointRequest) Reset()         { *m = CheckpointRequest{} }
 func (m *CheckpointRequest) String() string { return proto.CompactTextString(m) }
 func (*CheckpointRequest) ProtoMessage()    {}
 func (*CheckpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{1}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{1}
 }
 func (m *CheckpointRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -162,7 +162,7 @@ func (m *CheckpointResponse) Reset()         { *m = CheckpointResponse{} }
 func (m *CheckpointResponse) String() string { return proto.CompactTextString(m) }
 func (*CheckpointResponse) ProtoMessage()    {}
 func (*CheckpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{2}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{2}
 }
 func (m *CheckpointResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -209,7 +209,7 @@ func (m *WriteCheckpointRequest) Reset()         { *m = WriteCheckpointRequest{}
 func (m *WriteCheckpointRequest) String() string { return proto.CompactTextString(m) }
 func (*WriteCheckpointRequest) ProtoMessage()    {}
 func (*WriteCheckpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{3}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{3}
 }
 func (m *WriteCheckpointRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -257,7 +257,7 @@ func (m *WriteCheckpointResponse) Reset()         { *m = WriteCheckpointResponse
 func (m *WriteCheckpointResponse) String() string { return proto.CompactTextString(m) }
 func (*WriteCheckpointResponse) ProtoMessage()    {}
 func (*WriteCheckpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{4}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{4}
 }
 func (m *WriteCheckpointResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -311,7 +311,7 @@ func (m *ClearFromCheckpointRequest) Reset()         { *m = ClearFromCheckpointR
 func (m *ClearFromCheckpointRequest) String() string { return proto.CompactTextString(m) }
 func (*ClearFromCheckpointRequest) ProtoMessage()    {}
 func (*ClearFromCheckpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{5}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{5}
 }
 func (m *ClearFromCheckpointRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -358,7 +358,7 @@ func (m *ClearFromCheckpointResponse) Reset()         { *m = ClearFromCheckpoint
 func (m *ClearFromCheckpointResponse) String() string { return proto.CompactTextString(m) }
 func (*ClearFromCheckpointResponse) ProtoMessage()    {}
 func (*ClearFromCheckpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_checkpoint_47b2d9af80f33952, []int{6}
+	return fileDescriptor_checkpoint_76166d4dcde5d6ab, []int{6}
 }
 func (m *ClearFromCheckpointResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1519,9 +1519,9 @@ var (
 	ErrIntOverflowCheckpoint   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("checkpoint.proto", fileDescriptor_checkpoint_47b2d9af80f33952) }
+func init() { proto.RegisterFile("checkpoint.proto", fileDescriptor_checkpoint_76166d4dcde5d6ab) }
 
-var fileDescriptor_checkpoint_47b2d9af80f33952 = []byte{
+var fileDescriptor_checkpoint_76166d4dcde5d6ab = []byte{
 	// 359 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0xdf, 0x4a, 0x02, 0x41,
 	0x14, 0xc6, 0x9d, 0x2d, 0x2b, 0x4e, 0x60, 0xdb, 0xd1, 0x4c, 0x56, 0x5c, 0x6c, 0x83, 0x92, 0x2e,

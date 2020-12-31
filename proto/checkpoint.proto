@@ -4,11 +4,11 @@ package checkpoint;
 import "gogoproto/gogo.proto";
 
 enum CheckpointRequestType {
-	// write start checkpoint
+	// start checkpoint
 	CheckpointStart = 0;
-	// CleanUpWaitFor cleans a single entry the transaction is waiting.
+	// commit checkpoint
 	CheckpointCommit = 1;
-	// CleanUp cleans all entries the transaction is waiting.
+	// rollback checkpoint
 	CheckpointRollback = 2;
 }
 
