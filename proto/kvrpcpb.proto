@@ -1063,7 +1063,7 @@ message DeterministicWriteRequest {
     // The data to be written to the database.
     repeated Mutation mutations = 2;
     uint64 start_version = 3;
-    uint64 coommit_ts = 4;
+    uint64 commit_ts = 4;
 }
 
 message DeterministicWriteResponse {
