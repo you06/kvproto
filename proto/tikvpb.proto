@@ -97,6 +97,10 @@ service Tikv {
     /// After the client collected all responses from all stores, it checks if got a quorum of responses from
     /// other stores for every region, and decides to advance resolved ts from these regions.
     rpc CheckLeader(kvrpcpb.CheckLeaderRequest) returns(kvrpcpb.CheckLeaderResponse);
+
+	rpc GetCheckpoint(kvrpcpb.GetCheckpointRequest) returns (kvrpcpb.GetCheckpointResponse) {}
+    rpc WriteCheckpoint(kvrpcpb.WriteCheckpointRequest) returns (kvrpcpb.WriteCheckpointResponse) {}
+    rpc DeterministicWrite(kvrpcpb.DeterministicWriteRequest) returns (kvrpcpb.DeterministicWriteResponse) {}
 }
 
 message BatchCommandsRequest {
