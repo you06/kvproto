@@ -102,7 +102,7 @@ service Tikv {
     rpc WriteCheckpoint(kvrpcpb.WriteCheckpointRequest) returns (kvrpcpb.WriteCheckpointResponse) {}
     rpc DeterministicWrite(kvrpcpb.DeterministicWriteRequest) returns (kvrpcpb.DeterministicWriteResponse) {}
 
-    rpc DeleteVersionByCommitTs(kvrpcpb.DeleteVersionsByCommitTsRequest) returns (kvrpcpb.DeleteVersionsByCommitTsResponse) {}
+    rpc DeleteVersionsByCommitTs(kvrpcpb.DeleteVersionsByCommitTsRequest) returns (kvrpcpb.DeleteVersionsByCommitTsResponse) {}
 }
 
 message BatchCommandsRequest {
