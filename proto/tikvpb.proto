@@ -101,6 +101,8 @@ service Tikv {
 	rpc GetCheckpoint(kvrpcpb.GetCheckpointRequest) returns (kvrpcpb.GetCheckpointResponse) {}
     rpc WriteCheckpoint(kvrpcpb.WriteCheckpointRequest) returns (kvrpcpb.WriteCheckpointResponse) {}
     rpc DeterministicWrite(kvrpcpb.DeterministicWriteRequest) returns (kvrpcpb.DeterministicWriteResponse) {}
+
+    rpc DeleteVersionByCommitTs(kvrpcpb.DeleteVersionsByCommitTsRequest) returns (kvrpcpb.DeleteVersionsByCommitTsResponse) {}
 }
 
 message BatchCommandsRequest {
@@ -147,6 +149,8 @@ message BatchCommandsRequest {
             kvrpcpb.VerDeleteRangeRequest VerDeleteRange = 32;
 
             kvrpcpb.CheckSecondaryLocksRequest CheckSecondaryLocks = 33;
+
+            kvrpcpb.DeterministicWriteRequest DeterministicWrite = 34;
 
             // For some test cases.
             BatchCommandsEmptyRequest Empty = 255;
@@ -200,6 +204,8 @@ message BatchCommandsResponse {
             kvrpcpb.VerDeleteRangeResponse VerDeleteRange = 32;
 
             kvrpcpb.CheckSecondaryLocksResponse CheckSecondaryLocks = 33;
+
+            kvrpcpb.DeterministicWriteResponse DeterministicWrite = 34;
 
             // For some test cases.
             BatchCommandsEmptyResponse Empty = 255;
