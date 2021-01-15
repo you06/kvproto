@@ -98,8 +98,8 @@ service Tikv {
     /// other stores for every region, and decides to advance resolved ts from these regions.
     rpc CheckLeader(kvrpcpb.CheckLeaderRequest) returns(kvrpcpb.CheckLeaderResponse);
 
-	rpc GetCheckpoint(kvrpcpb.GetCheckpointRequest) returns (kvrpcpb.GetCheckpointResponse) {}
-    rpc WriteCheckpoint(kvrpcpb.WriteCheckpointRequest) returns (kvrpcpb.WriteCheckpointResponse) {}
+	// rpc GetCheckpoint(kvrpcpb.GetCheckpointRequest) returns (kvrpcpb.GetCheckpointResponse) {}
+    // rpc WriteCheckpoint(kvrpcpb.WriteCheckpointRequest) returns (kvrpcpb.WriteCheckpointResponse) {}
     rpc DeterministicWrite(kvrpcpb.DeterministicWriteRequest) returns (kvrpcpb.DeterministicWriteResponse) {}
 
     rpc DeleteVersionsByCommitTs(kvrpcpb.DeleteVersionsByCommitTsRequest) returns (kvrpcpb.DeleteVersionsByCommitTsResponse) {}

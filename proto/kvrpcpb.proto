@@ -1013,49 +1013,49 @@ message CheckLeaderResponse {
     uint64 ts = 2;
 }
 
-enum CheckpointRequestType {
-    // start checkpoint
-    CheckpointStart = 0;
-    // commit checkpoint
-    CheckpointCommit = 1;
-    // rollback checkpoint
-    CheckpointRollback = 2;
-}
+// enum CheckpointRequestType {
+//     // start checkpoint
+//     CheckpointStart = 0;
+//     // commit checkpoint
+//     CheckpointCommit = 1;
+//     // rollback checkpoint
+//     CheckpointRollback = 2;
+// }
 
-message CheckpointEntry {
-    CheckpointRequestType tp = 1;
-    uint64 ts = 2;
-}
+// message CheckpointEntry {
+//     CheckpointRequestType tp = 1;
+//     uint64 ts = 2;
+// }
 
-// get the latest checkpoint status
-// if all the checkpoints are committed, entry'tp should be CheckpointCommit and ts is the max timestamp among them
-// if there are rollbacked checkpoints, entry's tp should be CheckpointRollback, client meet this should wait for Rollback cleanup and get status again later
-// if there is not rollbacked checkpoint but not all checkpoints are committed, entry'tp should be CheckpointStart, client meet this should wait and get status again later
-message GetCheckpointRequest {
-    Context context = 1;
-    bytes key = 2;
-}
+// // get the latest checkpoint status
+// // if all the checkpoints are committed, entry'tp should be CheckpointCommit and ts is the max timestamp among them
+// // if there are rollbacked checkpoints, entry's tp should be CheckpointRollback, client meet this should wait for Rollback cleanup and get status again later
+// // if there is not rollbacked checkpoint but not all checkpoints are committed, entry'tp should be CheckpointStart, client meet this should wait and get status again later
+// message GetCheckpointRequest {
+//     Context context = 1;
+//     bytes key = 2;
+// }
 
-message GetCheckpointResponse {
-    errorpb.Error region_error = 1;
-    // entry indicates for 
-    CheckpointEntry entry = 2;
-}
+// message GetCheckpointResponse {
+//     errorpb.Error region_error = 1;
+//     // entry indicates for 
+//     CheckpointEntry entry = 2;
+// }
 
-// ts is always the start ts of a batch, which is unique
-// TODO: design a two phase checkpoint mechanism which support ordering multi TiDB's commits
-message WriteCheckpointRequest {
-    Context context = 1;
-    bytes key = 2;
-    uint64 start_ts = 3;
-    CheckpointEntry entry = 4;
-}
+// // ts is always the start ts of a batch, which is unique
+// // TODO: design a two phase checkpoint mechanism which support ordering multi TiDB's commits
+// message WriteCheckpointRequest {
+//     Context context = 1;
+//     bytes key = 2;
+//     uint64 start_ts = 3;
+//     CheckpointEntry entry = 4;
+// }
 
-message WriteCheckpointResponse {
-    errorpb.Error region_error = 1;
+// message WriteCheckpointResponse {
+//     errorpb.Error region_error = 1;
 
-    string error = 2;
-}
+//     string error = 2;
+// }
 
 // A deterministic write is for writing data to TiKV directly, like raw key interface based upon MVCC.
 // TiKV will write the data into committed state. Data can be read once it's success.
