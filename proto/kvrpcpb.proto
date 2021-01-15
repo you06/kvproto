@@ -149,6 +149,8 @@ message PessimisticLockRequest {
     // If min_commit_ts > 0, this is large transaction proto, the final commit_ts
     // would be infered from min_commit_ts.
     uint64 min_commit_ts = 11;
+    
+    bool is_deterministic = 12;
 }
 
 message PessimisticLockResponse {
