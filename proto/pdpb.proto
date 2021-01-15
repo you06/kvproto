@@ -81,6 +81,8 @@ service PD {
     rpc SplitRegions(SplitRegionsRequest) returns (SplitRegionsResponse) {}
 
     rpc GetDCLocations(GetDCLocationsRequest) returns (GetDCLocationsResponse) {}
+
+    rpc SetCheckpoint(SetCheckpointRequest) returns (SetCheckpointResponse) {}
 }
 
 message RequestHeader {
@@ -660,4 +662,29 @@ message GetDCLocationsResponse {
     ResponseHeader header = 1;
     // dc-location -> suffix sign
     map<string, int32> dc_locations = 2;
+}
+
+enum CheckpointRequestType {
+    // start checkpoint
+    CheckpointStart = 0;
+    // commit checkpoint
+    CheckpointCommit = 1;
+    // rollback checkpoint
+    CheckpointRollback = 2;
+}
+
+message CheckpointEntry {
+    CheckpointRequestType tp = 1;
+    uint64 ts = 2;
+}
+
+message SetCheckpointRequest {
+    RequestHeader header = 1;
+    uint64 batcher_id = 2;
+    uint64 start_ts = 3;
+    CheckpointEntry checkpoint = 4;
+}
+
+message SetCheckpointResponse {
+    ResponseHeader header = 1;
 }
