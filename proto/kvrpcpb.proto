@@ -1064,7 +1064,7 @@ message DeterministicWriteRequest {
     Context context = 1;
     // The data to be written to the database.
     repeated Mutation mutations = 2;
-    uint64 start_version = 3;
+    repeated uint64 start_version = 3;
     uint64 commit_ts = 4;
     bool skip_lock = 5;
 }
