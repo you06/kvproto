@@ -24,6 +24,9 @@ message GetRequest {
     Context context = 1;
     bytes key = 2;
     uint64 version = 3;
+    // start_ts == 0, ignore
+    // start_ts > 0, this read should not be blocked by lock_ts == start_ts
+    uint64 start_ts = 4;
 }
 
 message GetResponse {
@@ -317,6 +320,9 @@ message BatchGetRequest {
     Context context = 1;
     repeated bytes keys = 2;
     uint64 version = 3;
+    // start_ts == 0, ignore
+    // start_ts > 0, this read should not be blocked by lock_ts == start_ts
+    uint64 start_ts = 4;
 }
 
 message BatchGetResponse {
