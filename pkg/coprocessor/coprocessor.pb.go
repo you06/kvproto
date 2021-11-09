@@ -47,7 +47,7 @@ func (m *KeyRange) Reset()         { *m = KeyRange{} }
 func (m *KeyRange) String() string { return proto.CompactTextString(m) }
 func (*KeyRange) ProtoMessage()    {}
 func (*KeyRange) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{0}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{0}
 }
 func (m *KeyRange) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -101,8 +101,9 @@ type Request struct {
 	IsCacheEnabled      bool   `protobuf:"varint,5,opt,name=is_cache_enabled,json=isCacheEnabled,proto3" json:"is_cache_enabled,omitempty"`
 	CacheIfMatchVersion uint64 `protobuf:"varint,6,opt,name=cache_if_match_version,json=cacheIfMatchVersion,proto3" json:"cache_if_match_version,omitempty"`
 	// Any schema-ful storage to validate schema correctness if necessary.
-	SchemaVer            int64    `protobuf:"varint,8,opt,name=schema_ver,json=schemaVer,proto3" json:"schema_ver,omitempty"`
-	IsTraceEnabled       bool     `protobuf:"varint,9,opt,name=is_trace_enabled,json=isTraceEnabled,proto3" json:"is_trace_enabled,omitempty"`
+	SchemaVer      int64 `protobuf:"varint,8,opt,name=schema_ver,json=schemaVer,proto3" json:"schema_ver,omitempty"`
+	IsTraceEnabled bool  `protobuf:"varint,9,opt,name=is_trace_enabled,json=isTraceEnabled,proto3" json:"is_trace_enabled,omitempty"`
+	// TODO: use optional field
 	PagingSize           uint64   `protobuf:"varint,10,opt,name=paging_size,json=pagingSize,proto3" json:"paging_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -113,7 +114,7 @@ func (m *Request) Reset()         { *m = Request{} }
 func (m *Request) String() string { return proto.CompactTextString(m) }
 func (*Request) ProtoMessage()    {}
 func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{1}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{1}
 }
 func (m *Request) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -237,7 +238,7 @@ func (m *Response) Reset()         { *m = Response{} }
 func (m *Response) String() string { return proto.CompactTextString(m) }
 func (*Response) ProtoMessage()    {}
 func (*Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{2}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{2}
 }
 func (m *Response) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -349,7 +350,7 @@ func (m *RegionInfo) Reset()         { *m = RegionInfo{} }
 func (m *RegionInfo) String() string { return proto.CompactTextString(m) }
 func (*RegionInfo) ProtoMessage()    {}
 func (*RegionInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{3}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{3}
 }
 func (m *RegionInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -416,7 +417,7 @@ func (m *BatchRequest) Reset()         { *m = BatchRequest{} }
 func (m *BatchRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchRequest) ProtoMessage()    {}
 func (*BatchRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{4}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{4}
 }
 func (m *BatchRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -501,7 +502,7 @@ func (m *BatchResponse) Reset()         { *m = BatchResponse{} }
 func (m *BatchResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchResponse) ProtoMessage()    {}
 func (*BatchResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coprocessor_6b62d88e7c5265cd, []int{5}
+	return fileDescriptor_coprocessor_ddfce864bb6add57, []int{5}
 }
 func (m *BatchResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2564,9 +2565,9 @@ var (
 	ErrIntOverflowCoprocessor   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("coprocessor.proto", fileDescriptor_coprocessor_6b62d88e7c5265cd) }
+func init() { proto.RegisterFile("coprocessor.proto", fileDescriptor_coprocessor_ddfce864bb6add57) }
 
-var fileDescriptor_coprocessor_6b62d88e7c5265cd = []byte{
+var fileDescriptor_coprocessor_ddfce864bb6add57 = []byte{
 	// 808 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x54, 0xcd, 0x6e, 0xdb, 0x46,
 	0x10, 0x0e, 0xf5, 0x4b, 0x0f, 0x25, 0x47, 0xd9, 0xb8, 0x29, 0x9b, 0xa2, 0xb6, 0xa0, 0x02, 0x85,
