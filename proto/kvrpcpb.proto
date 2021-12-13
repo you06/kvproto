@@ -710,6 +710,10 @@ message Context {
     // Read request should read through locks belonging to these transactions because these
     // transactions are committed and theirs commit_ts <= read request's start_ts.
     repeated uint64 committed_locks = 22;
+
+    // When using TiKV RC, rc_read_through_lock should be set to true when reading rows by indexes.
+    // Because the indexes keys are committed while the rows may not committed yet, so we lookup locks and read through them.
+    bool rc_read_through_lock = 23;
 }
 
 // The API version the server and the client is using.
