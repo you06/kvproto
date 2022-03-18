@@ -110,7 +110,7 @@ message PrewriteRequest {
     // The level of assertion to use on this prewrte request.
     AssertionLevel assertion_level = 15;
     // write intent hack, plan2
-    bool write_intent = 16;
+    Intent write_intent = 16;
 }
 
 message PrewriteResponse {
@@ -1155,4 +1155,10 @@ message RawChecksumResponse {
     uint64 checksum = 3;
     uint64 total_kvs = 4;
     uint64 total_bytes = 5;
+}
+
+enum Intent {
+    NoneIntent = 0;
+    WriteIntent = 1;
+    PrewriteIntent = 2;
 }
