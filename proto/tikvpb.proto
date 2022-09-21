@@ -172,6 +172,7 @@ message BatchCommandsResponse {
     repeated uint64 request_ids = 2;
     // 280 means TiKV gRPC cpu usage is 280%.
     uint64 transport_layer_load = 3;
+    uint64 max_ts = 4;
 
     message Response {
         oneof cmd {
