@@ -20,3 +20,4 @@ kvprotobuild
 .DS_Store
 
 /protoc
+**/mod.desc

@@ -17,8 +17,7 @@ go: check
 	GO111MODULE=on go build ./pkg/...
 
 rust: init
-	cargo check && \
-	cargo check --no-default-features --features prost-codec
+	cargo check
 
 c++: check
 	mkdir -p kvprotobuild && cd kvprotobuild && cmake ../cpp -DCMAKE_PREFIX_PATH=$$GRPC_INSTALL_PATH && make
