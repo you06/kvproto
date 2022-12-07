@@ -209,6 +209,7 @@ message CommitMergeRequest {
     metapb.Region source = 1;
     uint64 commit = 2;
     repeated eraftpb.Entry entries = 3;
+    bytes source_meta = 4;
 }
 
 message CommitMergeResponse {}

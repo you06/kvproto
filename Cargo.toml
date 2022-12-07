@@ -12,12 +12,9 @@ path = "src/lib.rs"
 [features]
 default = ["protobuf-codec"]
 protobuf-codec = ["protobuf-build/grpcio-protobuf-codec", "raft-proto/protobuf-codec", "grpcio/protobuf-codec"]
-prost-codec = ["prost", "prost-derive", "lazy_static", "protobuf-build/grpcio-prost-codec", "raft-proto/prost-codec", "grpcio/prost-codec"]
 
 [dependencies]
 protobuf = "=2.8.0"
-prost = { version = "0.9", optional = true }
-prost-derive = { version = "0.9", optional = true }
 futures = "0.3.5"
 raft-proto = { version = "0.7.0", default-features = false }
 grpcio = { version = "0.10.0", default-features = false }
