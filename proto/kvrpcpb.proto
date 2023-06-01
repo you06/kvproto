@@ -1339,11 +1339,17 @@ message ReadState {
     uint64 safe_ts = 2;
 }
 
+message CheckedLeader {
+    uint64 region_id = 1;
+    ReadState read_state = 2;
+}
+
 message CheckLeaderRequest {
     repeated LeaderInfo regions = 1;
     uint64 ts = 2;
     uint64 store_id = 3;
     repeated uint64 hibernated_regions = 4;
+    repeated CheckedLeader checked_leaders = 5;
 }
 
 message CheckLeaderResponse {
