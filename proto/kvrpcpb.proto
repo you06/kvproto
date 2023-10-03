@@ -369,6 +369,8 @@ message CommitRequest {
     repeated bytes keys = 3;
     // Timestamp for the end of the transaction. Must be greater than `start_version`.
     uint64 commit_version = 4;
+    // hack implementation for lower and upper bound
+    repeated bytes bounds = 6;
 }
 
 message CommitResponse {
