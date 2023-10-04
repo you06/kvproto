@@ -8498,6 +8498,12 @@
                 "id": 4,
                 "name": "commit_version",
                 "type": "uint64"
+              },
+              {
+                "id": 6,
+                "name": "bounds",
+                "type": "bytes",
+                "is_repeated": true
               }
             ],
             "reserved_ids": [
