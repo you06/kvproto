@@ -53,6 +53,8 @@ service PD {
 
     rpc ScanRegions(ScanRegionsRequest) returns (ScanRegionsResponse) {}
 
+    rpc BatchScanRegions(BatchScanRegionsRequest) returns (BatchScanRegionsResponse) {}
+
     rpc AskSplit(AskSplitRequest) returns (AskSplitResponse) {
         // Use AskBatchSplit instead.
         option deprecated = true;

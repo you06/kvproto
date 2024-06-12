@@ -15889,6 +15889,11 @@
                 "out_type": "ScanRegionsResponse"
               },
               {
+                "name": "BatchScanRegions",
+                "in_type": "BatchScanRegionsRequest",
+                "out_type": "BatchScanRegionsResponse"
+              },
+              {
                 "name": "AskSplit",
                 "in_type": "AskSplitRequest",
                 "out_type": "AskSplitResponse",
