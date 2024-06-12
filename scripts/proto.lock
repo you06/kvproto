@@ -13739,6 +13739,69 @@
             ]
           },
           {
+            "name": "Range",
+            "fields": [
+              {
+                "id": 1,
+                "name": "start_key",
+                "type": "bytes"
+              },
+              {
+                "id": 2,
+                "name": "end_key",
+                "type": "bytes"
+              }
+            ]
+          },
+          {
+            "name": "BatchScanRegionsRequest",
+            "fields": [
+              {
+                "id": 1,
+                "name": "header",
+                "type": "RequestHeader"
+              },
+              {
+                "id": 2,
+                "name": "ranges",
+                "type": "Range",
+                "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "limit",
+                "type": "int32"
+              }
+            ]
+          },
+          {
+            "name": "Regions",
+            "fields": [
+              {
+                "id": 1,
+                "name": "regions",
+                "type": "Region",
+                "is_repeated": true
+              }
+            ]
+          },
+          {
+            "name": "BatchScanRegionsResponse",
+            "fields": [
+              {
+                "id": 1,
+                "name": "header",
+                "type": "ResponseHeader"
+              },
+              {
+                "id": 2,
+                "name": "regions_batches",
+                "type": "Regions",
+                "is_repeated": true
+              }
+            ]
+          },
+          {
             "name": "GetClusterConfigRequest",
             "fields": [
               {

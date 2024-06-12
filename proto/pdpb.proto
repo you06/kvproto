@@ -361,6 +361,28 @@ message ScanRegionsResponse {
     repeated Region regions = 4;
 }
 
+message Range {
+    bytes start_key = 1;
+    bytes end_key = 2; // end_key is +inf when it is empty.
+}
+
+message BatchScanRegionsRequest {
+    RequestHeader header = 1;
+
+    repeated Range ranges = 2; // the given ranges must be in order.
+    int32 limit = 3; // limit the total number of regions to scan.
+}
+
+message Regions {
+    repeated Region regions = 1;
+}
+
+message BatchScanRegionsResponse {
+    ResponseHeader header = 1;
+
+    repeated Regions regions_batches = 2;
+}
+
 message GetClusterConfigRequest {
     RequestHeader header = 1;
 }
