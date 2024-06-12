@@ -363,7 +363,7 @@ message ScanRegionsResponse {
     repeated Region regions = 4;
 }
 
-message Range {
+message KeyRange {
     bytes start_key = 1;
     bytes end_key = 2; // end_key is +inf when it is empty.
 }
@@ -371,7 +371,7 @@ message Range {
 message BatchScanRegionsRequest {
     RequestHeader header = 1;
 
-    repeated Range ranges = 2; // the given ranges must be in order.
+    repeated KeyRange ranges = 2; // the given ranges must be in order.
     int32 limit = 3; // limit the total number of regions to scan.
 }
 

@@ -13739,7 +13739,7 @@
             ]
           },
           {
-            "name": "Range",
+            "name": "KeyRange",
             "fields": [
               {
                 "id": 1,
@@ -13764,7 +13764,7 @@
               {
                 "id": 2,
                 "name": "ranges",
-                "type": "Range",
+                "type": "KeyRange",
                 "is_repeated": true
               },
               {
