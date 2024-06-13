@@ -13790,17 +13790,6 @@
             ]
           },
           {
-            "name": "Regions",
-            "fields": [
-              {
-                "id": 1,
-                "name": "regions",
-                "type": "Region",
-                "is_repeated": true
-              }
-            ]
-          },
-          {
             "name": "BatchScanRegionsResponse",
             "fields": [
               {
@@ -13810,8 +13799,8 @@
               },
               {
                 "id": 2,
-                "name": "regions_batches",
-                "type": "Regions",
+                "name": "regions",
+                "type": "Region",
                 "is_repeated": true
               }
             ]

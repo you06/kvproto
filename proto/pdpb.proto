@@ -379,14 +379,11 @@ message BatchScanRegionsRequest {
     int32 limit = 4; // limit the total number of regions to scan.
 }
 
-message Regions {
-    repeated Region regions = 1;
-}
-
 message BatchScanRegionsResponse {
     ResponseHeader header = 1;
 
-    repeated Regions regions_batches = 2;
+    // the returned regions are flattened into a list, because the given ranges can located in the same range, we do not return duplicated regions then.
+    repeated Region regions = 2;
 }
 
 message GetClusterConfigRequest {
