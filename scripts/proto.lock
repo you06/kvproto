@@ -13680,6 +13680,11 @@
                 "id": 4,
                 "name": "end_key",
                 "type": "bytes"
+              },
+              {
+                "id": 5,
+                "name": "need_buckets",
+                "type": "bool"
               }
             ]
           },
@@ -13707,6 +13712,11 @@
                 "name": "pending_peers",
                 "type": "metapb.Peer",
                 "is_repeated": true
+              },
+              {
+                "id": 5,
+                "name": "buckets",
+                "type": "metapb.Buckets"
               }
             ]
           },
@@ -13763,12 +13773,17 @@
               },
               {
                 "id": 2,
+                "name": "need_buckets",
+                "type": "bool"
+              },
+              {
+                "id": 3,
                 "name": "ranges",
                 "type": "KeyRange",
                 "is_repeated": true
               },
               {
-                "id": 3,
+                "id": 4,
                 "name": "limit",
                 "type": "int32"
               }

@@ -340,6 +340,7 @@ message ScanRegionsRequest {
     bytes start_key = 2;
     int32 limit = 3; // no limit when limit <= 0.
     bytes end_key = 4; // end_key is +inf when it is empty.
+    bool need_buckets = 5; // whether to return buckets in the response.
 }
 
 message Region {
@@ -350,6 +351,8 @@ message Region {
     // Pending peers are the peers that the leader can't consider as
     // working followers.
     repeated metapb.Peer pending_peers = 4;
+    // buckets isn't nil only when need_buckets is true.
+    metapb.Buckets buckets = 5;
 }
 
 message ScanRegionsResponse {
@@ -370,9 +373,10 @@ message KeyRange {
 
 message BatchScanRegionsRequest {
     RequestHeader header = 1;
+    bool need_buckets = 2;
 
-    repeated KeyRange ranges = 2; // the given ranges must be in order.
-    int32 limit = 3; // limit the total number of regions to scan.
+    repeated KeyRange ranges = 3; // the given ranges must be in order.
+    int32 limit = 4; // limit the total number of regions to scan.
 }
 
 message Regions {
