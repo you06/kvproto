@@ -9843,6 +9843,12 @@
                 "name": "regions",
                 "type": "metapb.Region",
                 "is_repeated": true
+              },
+              {
+                "id": 100,
+                "name": "errors",
+                "type": "KeyError",
+                "is_repeated": true
               }
             ]
           },

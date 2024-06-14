@@ -766,6 +766,9 @@ message SplitRegionResponse {
     metapb.Region left  = 2 [deprecated=true]; // set when there are only 2 result regions.
     metapb.Region right = 3 [deprecated=true]; // set when there are only 2 result regions.
     repeated metapb.Region regions = 4; // include all result regions.
+
+    // Reserved for file based transaction.
+    repeated KeyError errors = 100;
 }
 
 // Sent from TiFlash to a TiKV node.
