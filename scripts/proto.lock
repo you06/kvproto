@@ -13680,11 +13680,6 @@
                 "id": 4,
                 "name": "end_key",
                 "type": "bytes"
-              },
-              {
-                "id": 5,
-                "name": "need_buckets",
-                "type": "bool"
               }
             ]
           },

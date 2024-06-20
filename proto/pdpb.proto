@@ -51,6 +51,7 @@ service PD {
 
     rpc GetRegionByID(GetRegionByIDRequest) returns (GetRegionResponse) {}
 
+    // Deprecated: use BatchScanRegions instead.
     rpc ScanRegions(ScanRegionsRequest) returns (ScanRegionsResponse) {}
 
     rpc BatchScanRegions(BatchScanRegionsRequest) returns (BatchScanRegionsResponse) {}
@@ -333,14 +334,13 @@ message GetRegionByIDRequest {
 }
 
 // Use GetRegionResponse as the response of GetRegionByIDRequest.
-
+// Deprecated: use BatchScanRegionsRequest instead.
 message ScanRegionsRequest {
     RequestHeader header = 1;
 
     bytes start_key = 2;
     int32 limit = 3; // no limit when limit <= 0.
     bytes end_key = 4; // end_key is +inf when it is empty.
-    bool need_buckets = 5; // whether to return buckets in the response.
 }
 
 message Region {
