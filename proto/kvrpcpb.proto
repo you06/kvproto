@@ -933,6 +933,10 @@ message Context {
 
     // The cluster id of the request
     uint64 cluster_id = 35;
+
+    // The trace id of the request, will be used for tracing the request's execution's inner steps.
+    // Empty means trace is disabled.
+    string trace_id = 36;
 }
 
 message ResourceControlContext {
